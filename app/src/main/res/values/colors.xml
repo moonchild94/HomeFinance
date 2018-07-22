@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="revenueText">#089f08</color>
+    <color name="expenseText">#bf0f0f</color>
+
 </resources>
