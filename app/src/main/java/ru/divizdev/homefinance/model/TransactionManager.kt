@@ -7,21 +7,26 @@ import java.math.BigDecimal
 
 class TransactionManager {
 
-
-    fun calculate(wallet: Wallet): Money {
+    fun calculate(wallet: Wallet, typeTransaction: TypeTransaction? = null): Money {
         var result = BigDecimal.ZERO
         val currency = wallet.mainCurrency
         for (transaction in wallet.listTransactions) {
             if (currency != transaction.sum.currency){
                 IllegalArgumentException("All transactions must be in the same currency")
             }
-            result = if (transaction.typeOperation == TypeTransaction.Revenue) {
-                result.add(transaction.sum.value)
-            }else{
-                result.subtract(transaction.sum.value)
+            if (typeTransaction != null && typeTransaction != transaction.typeTransaction) {
+             continue
             }
+                result = if (transaction.typeTransaction == TypeTransaction.Revenue) {
+                    result.add(transaction.sum.value)
+                } else {
+                    result.subtract(transaction.sum.value)
+                }
+
         }
 
         return Money(result,  currency)
     }
+
+
 }

@@ -6,17 +6,22 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.presentation.about.AboutDialog
 import ru.divizdev.homefinance.presentation.home.view.HomeFragment
+import ru.divizdev.homefinance.presentation.main.presenter.IMainPresenter
+import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IMainView {
 
     private val TAG_ABOUT_DIALOG_FRAGMENT = "tagAbout"
     private val TAG_SETTINGS_DIALOG_FRAGMENT = "tagSettings"
+
+    private val presenter: IMainPresenter = MainPresenter()
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -26,11 +31,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_account -> {
 
-                return@OnNavigationItemSelectedListener false
+                return@OnNavigationItemSelectedListener presenter.actionNavigationAccount()
             }
             R.id.navigation_operation -> {
 
-                return@OnNavigationItemSelectedListener false
+                return@OnNavigationItemSelectedListener presenter.actionNavigationListOperation()
             }
         }
         false
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.fragment_container, fragment)
                     .commit()
         }
+        presenter.attachView(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -64,11 +70,11 @@ class MainActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.option_about -> {
 
-                showAboutDialog()
+                presenter.actionShowAbout()
                 return true
             }
             R.id.option_settings -> {
-                showSettingsDialog()
+                presenter.actionShowSettings()
                 return true
             }
         }
@@ -76,7 +82,11 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showSettingsDialog() {
+    override fun showErrorNotAvailable(){
+        Toast.makeText(this, R.string.text_error_available, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showSettingsDialog() {
         val dialogSettings = SettingsDialog()
         dialogSettings.show(
                 supportFragmentManager,
@@ -84,11 +94,17 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun showAboutDialog() {
+    override fun showAboutDialog() {
         val dialogFragment = AboutDialog()
         dialogFragment.show(
                 supportFragmentManager,
                 TAG_ABOUT_DIALOG_FRAGMENT
         )
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
+
     }
 }

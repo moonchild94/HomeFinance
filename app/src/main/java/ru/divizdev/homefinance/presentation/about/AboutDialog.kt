@@ -13,6 +13,7 @@ class AboutDialog : DialogFragment() {
 
     private val gitHub = "divizdev/HomeFinance"
     private val website = "http://divizdev.ru"
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         var version = "1.0"
