@@ -1,14 +1,14 @@
 package ru.divizdev.homefinance.model
 
 import ru.divizdev.homefinance.data.FakeRepositoryWallet
+import ru.divizdev.homefinance.data.IRepositoryWallet
 import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.TypeTransaction
 
-class UserWalletManager {
+class UserWalletManager(private val repositoryWallet:IRepositoryWallet = FakeRepositoryWallet(), private val transactionManager:TransactionManager = TransactionManager()) {
 
-    private val repositoryWallet = FakeRepositoryWallet()
-    private val transactionManager = TransactionManager()
+
 
     fun getBalance(currency: Currency): Money {
 

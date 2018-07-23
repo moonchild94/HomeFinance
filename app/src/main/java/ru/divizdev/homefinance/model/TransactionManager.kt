@@ -7,6 +7,8 @@ import java.math.BigDecimal
 
 class TransactionManager {
 
+    //Предполагается, что все транзакции в одном кошельке имеют одну валюту. При добавлении транзакции будет осуществляться конвертация в валюту кошелька
+
     fun calculate(wallet: Wallet, typeTransaction: TypeTransaction? = null): Money {
         var result = BigDecimal.ZERO
         val currency = wallet.mainCurrency

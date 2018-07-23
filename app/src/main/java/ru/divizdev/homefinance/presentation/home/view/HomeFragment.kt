@@ -12,12 +12,19 @@ import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
+import ru.divizdev.homefinance.presentation.home.presenter.IHomePresenter
 import java.util.*
 
 
 class HomeFragment : Fragment(), IHomeView {
     private var localeUtils: LocaleUtils? = null
-    private val presenter = HomePresenter()
+    private val presenter = getHomePresenter()
+
+
+    //Заготовка для получения Presenter, пока прямая инициализация
+    private fun getHomePresenter(): IHomePresenter {
+        return HomePresenter()
+    }
 
     private fun setMoney(money: Money, value: TextView, currency: TextView) {
         value.text = localeUtils?.formatBigDecimal(money.value) ?: money.value.toString()
