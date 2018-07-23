@@ -4,7 +4,7 @@ import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Transaction
 import ru.divizdev.homefinance.entities.TypeTransaction
-import ru.divizdev.homefinance.model.Wallet
+import ru.divizdev.homefinance.entities.Wallet
 import java.math.BigDecimal
 
 class FakeRepositoryWallet: IRepositoryWallet{

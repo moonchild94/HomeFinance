@@ -7,7 +7,7 @@ import ru.divizdev.homefinance.presentation.home.view.IHomeView
 import java.lang.ref.WeakReference
 
 
-class HomePresenter(private val userWalletManager: UserWalletManager = UserWalletManager()): IHomePresenter{//В дальнейшем получение models необходимо через DI
+class HomePresenter(private val userWalletManager: UserWalletManager = UserWalletManager()): IHomePresenter{//В дальнейшем получать models необходимо через Фабрику
 
 
     private var weakReferenceView: WeakReference<IHomeView>? = null

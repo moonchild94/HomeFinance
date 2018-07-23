@@ -2,12 +2,13 @@ package ru.divizdev.homefinance.model
 
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.TypeTransaction
+import ru.divizdev.homefinance.entities.Wallet
 import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 
 class TransactionManager {
 
-    //Предполагается, что все транзакции в одном кошельке имеют одну валюту. При добавлении транзакции будет осуществляться конвертация в валюту кошелька
+    //Предполагается, что все транзакции в одном кошельке имеют одну валюту. При добавлении транзакции в кошелек будет осуществляться конвертация в валюту кошелька
 
     fun calculate(wallet: Wallet, typeTransaction: TypeTransaction? = null): Money {
         var result = BigDecimal.ZERO

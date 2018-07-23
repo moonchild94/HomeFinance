@@ -6,8 +6,9 @@ import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.TypeTransaction
 
-class UserWalletManager(private val repositoryWallet:IRepositoryWallet = FakeRepositoryWallet(), private val transactionManager:TransactionManager = TransactionManager()) {
 
+class UserWalletManager(private val repositoryWallet:IRepositoryWallet = FakeRepositoryWallet(), private val transactionManager:TransactionManager = TransactionManager()) {
+//В дальнейшем получать зависимости необходимо через Фабрику
 
 
     fun getBalance(currency: Currency): Money {
