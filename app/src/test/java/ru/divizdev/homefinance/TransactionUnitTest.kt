@@ -7,9 +7,7 @@ import ru.divizdev.homefinance.model.TransactionManager
 import java.math.BigDecimal
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * Tests for [Transaction]
  */
 class TransactionUnitTest {
     @Test
@@ -70,9 +68,6 @@ class TransactionUnitTest {
         assertEquals(BigDecimal.valueOf(135.40).setScale(2), moneyRevenu.value)
 
     }
-
-
-
 
 
 }

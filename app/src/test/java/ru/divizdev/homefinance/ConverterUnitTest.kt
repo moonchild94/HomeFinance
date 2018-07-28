@@ -7,6 +7,10 @@ import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.model.Converter
 import java.math.BigDecimal
 
+
+/**
+ * Tests for [Converter]
+ */
 class ConverterUnitTest {
 
     private val converter = Converter()
