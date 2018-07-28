@@ -2,26 +2,34 @@ package ru.divizdev.homefinance.presentation.main.view
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import ru.divizdev.homefinance.R
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.presentation.about.AboutDialog
 import ru.divizdev.homefinance.presentation.home.view.HomeFragment
-import ru.divizdev.homefinance.presentation.main.presenter.IMainPresenter
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
 
-class MainActivity : AppCompatActivity(), IMainView {
+class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainView {
+
+
+    override fun getInstancePresenter(): AbstractMainPresenter {
+        return MainPresenter()
+    }
+
+    override fun getMvpView(): IMainView {
+        return this
+    }
 
     private val TAG_ABOUT_DIALOG_FRAGMENT = "tagAbout"
     private val TAG_SETTINGS_DIALOG_FRAGMENT = "tagSettings"
 
-    private val presenter: IMainPresenter = MainPresenter()
+
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -47,16 +55,11 @@ class MainActivity : AppCompatActivity(), IMainView {
         setSupportActionBar(toolbar)
         navigation.selectedItemId = R.id.navigation_home
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val fragmentManager = supportFragmentManager
-        var fragment: Fragment? = fragmentManager.findFragmentById(R.id.fragment_container)
-        if (fragment == null) {
-            fragment = HomeFragment()
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit()
+
+        if (savedInstanceState == null){
+            val homeFragment = HomeFragment()
+            supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
         }
-        presenter.attachView(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -100,11 +103,5 @@ class MainActivity : AppCompatActivity(), IMainView {
                 supportFragmentManager,
                 TAG_ABOUT_DIALOG_FRAGMENT
         )
-    }
-
-    override fun onDestroy() {
-        presenter.detachView()
-        super.onDestroy()
-
     }
 }

@@ -7,10 +7,10 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import ru.divizdev.homefinance.R
 
+private const val KEY_NAME_PREF = "pref_currency"
 
 class SettingsDialog : DialogFragment() {
 
-    public  val KEY_NAME_PREF = "pref_currency"
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -29,17 +29,16 @@ class SettingsDialog : DialogFragment() {
 
         return AlertDialog.Builder(activity!!)
                 .setTitle(R.string.pref_name_currency)
-                .setSingleChoiceItems(stringArray, index, { dialogInterface, i ->
+                .setSingleChoiceItems(stringArray, index) { dialogInterface, i ->
                     android.preference.PreferenceManager.getDefaultSharedPreferences(context).edit().putString(KEY_NAME_PREF, stringArray[i]).apply()
                     dialogInterface.dismiss()
-                })
-                .setNegativeButton(android.R.string.cancel, { dialogInterface, _ ->
+                }
+                .setNegativeButton(android.R.string.cancel) { dialogInterface, _ ->
 
                     dialogInterface.dismiss()
-                })
+                }
                 .create()
     }
-
 
 
 }

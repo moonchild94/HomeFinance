@@ -7,12 +7,16 @@ import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.model.Converter
 import java.math.BigDecimal
 
+
+/**
+ * Tests for [Converter]
+ */
 class ConverterUnitTest {
 
+    private val converter = Converter()
     @Test
     fun convertMoneyRubToUsd() {
         val moneyRub = Money(BigDecimal.valueOf(70), Currency.RUB)
-        val converter = Converter()
 
         val moneyUsd = converter.convert(moneyRub, Currency.USD)
 
@@ -24,7 +28,6 @@ class ConverterUnitTest {
     @Test
     fun convertMoneyRubToRub() {
         val moneyRub = Money(BigDecimal.valueOf(10), Currency.RUB)
-        val converter = Converter()
 
         val moneyTo = converter.convert(moneyRub, Currency.RUB)
 
@@ -36,7 +39,6 @@ class ConverterUnitTest {
     @Test
     fun convertMoneyUsdToRub() {
         val moneyUsd = Money(BigDecimal.valueOf(20), Currency.USD)
-        val converter = Converter()
 
         val moneyTo = converter.convert(moneyUsd, Currency.RUB)
 
@@ -48,7 +50,6 @@ class ConverterUnitTest {
     @Test
     fun convertMoneyUsdToUsd() {
         val moneyRub = Money(BigDecimal.valueOf(50), Currency.USD)
-        val converter = Converter()
 
         val moneyUsd = converter.convert(moneyRub, Currency.USD)
 

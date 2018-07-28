@@ -14,8 +14,8 @@ class Converter {
 
     fun convert(moneyFrom: Money, currencyTo: Currency):Money {
         val map = mapConvert[moneyFrom.currency]
-        val coefficient = map!![currencyTo]
-        return Money(BigDecimal.valueOf(moneyFrom.value.toDouble() * coefficient!!), currencyTo)
+        val coefficient = map?.get(currencyTo) ?: 0f
+        return Money(BigDecimal.valueOf(moneyFrom.value.toDouble() * coefficient), currencyTo)
     }
 
 }
