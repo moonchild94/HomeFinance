@@ -2,7 +2,6 @@ package ru.divizdev.homefinance.presentation.home.view
 
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,21 +9,25 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_home.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
+import ru.divizdev.homefinance.mvp.BaseMvpFragment
 import ru.divizdev.homefinance.presentation.LocaleUtils
+import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
-import ru.divizdev.homefinance.presentation.home.presenter.IHomePresenter
 import java.util.*
 
 
-class HomeFragment : Fragment(), IHomeView {
-    private var localeUtils: LocaleUtils? = null
-    private val presenter = getHomePresenter()
-
+class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView>(), IHomeView {
+    override fun getMvpView(): IHomeView {
+        return this
+    }
 
     //Заготовка для получения Presenter, пока прямая инициализация
-    private fun getHomePresenter(): IHomePresenter {
+    override fun getInstancePresenter(): AbstractHomePresenter {
         return HomePresenter()
     }
+
+    private var localeUtils: LocaleUtils? = null
+
 
     private fun setMoney(money: Money, value: TextView, currency: TextView) {
         value.text = localeUtils?.formatBigDecimal(money.value) ?: money.value.toString()
@@ -60,22 +63,11 @@ class HomeFragment : Fragment(), IHomeView {
         localeUtils = LocaleUtils(locale)
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.attachView(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-
-    override fun onDetach() {
-        presenter.detachView()
-        super.onDetach()
-
     }
 
 

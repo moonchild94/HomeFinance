@@ -1,6 +1,8 @@
 package ru.divizdev.homefinance.presentation.main.view
 
-interface IMainView {
+import ru.divizdev.homefinance.mvp.IMvpView
+
+interface IMainView: IMvpView {
 
     fun showAboutDialog()
 
