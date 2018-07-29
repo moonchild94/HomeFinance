@@ -13,7 +13,7 @@
 
 
         <TextView
-            android:id="@+id/wallet_name_text_view"
+            android:id="@+id/transaction_category_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
@@ -35,34 +35,34 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wallet_name_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_category_text_view"
             tools:text="Основная валюта" />
 
         <TextView
-            android:id="@+id/wallet_main_currency_text_view"
+            android:id="@+id/transaction_main_currency_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintStart_toEndOf="@+id/wallet_title_main_currency_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/wallet_name_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_category_text_view"
             tools:text="USD" />
 
         <TextView
-            android:id="@+id/wallet_balance_text_view"
+            android:id="@+id/transaction_balance_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="32dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toStartOf="@+id/wallet_currency_balance_text_view"
+            app:layout_constraintEnd_toStartOf="@+id/transaction_currency_balance_text_view"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1 000 000" />
 
         <TextView
-            android:id="@+id/wallet_currency_balance_text_view"
+            android:id="@+id/transaction_currency_balance_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"

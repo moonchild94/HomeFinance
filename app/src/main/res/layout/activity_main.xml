@@ -5,19 +5,21 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.view.MainActivity"
-    android:orientation="vertical">
-    <include layout="@layout/toolbar"/>
+    android:orientation="vertical"
+    tools:context=".presentation.main.view.MainActivity">
+
+    <include layout="@layout/toolbar" />
 
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/fragment_container"
         tools:context=".presentation.main.view.MainActivity">
 
-    </RelativeLayout>
+    </FrameLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -38,8 +40,6 @@
 
 
         app:menu="@menu/navigation" />
-
-
 
 
 </LinearLayout>

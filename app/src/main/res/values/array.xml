@@ -23,4 +23,11 @@
         <item>Коммунальные платежи</item>
         <item>Подарки</item>
     </string-array>
+
+    <string-array name="hardcore_date_filter">
+        <item>07.2018</item>
+        <item>06.2018</item>
+        <item>05.2018</item>
+        <item>04.2018</item>
+    </string-array>
 </resources>
