@@ -4,4 +4,23 @@
         <item>USD</item>
         <item>RUB</item>
     </string-array>
+
+    <string-array name="type_operation">
+        <item>Expense</item>
+        <item>Revenue</item>
+    </string-array>
+
+    <string-array name="hardcode_wallet">
+        <item>Кошелек</item>
+        <item>Зарплатная карта</item>
+        <item>Накопительная карта</item>
+        <item>Кредитная карта</item>
+    </string-array>
+
+    <string-array name="hardcode_category_operation">
+        <item>Продукты</item>
+        <item>Одежда</item>
+        <item>Коммунальные платежи</item>
+        <item>Подарки</item>
+    </string-array>
 </resources>

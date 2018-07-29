@@ -1,5 +1,6 @@
 package ru.divizdev.homefinance.presentation.main.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.view.Menu
@@ -14,6 +15,7 @@ import ru.divizdev.homefinance.presentation.home.view.HomeFragment
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
+import ru.divizdev.homefinance.presentation.transaction.view.TransactionActivity
 
 class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainView {
 
@@ -28,7 +30,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
 
     private val TAG_ABOUT_DIALOG_FRAGMENT = "tagAbout"
     private val TAG_SETTINGS_DIALOG_FRAGMENT = "tagSettings"
-
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -56,9 +57,13 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         navigation.selectedItemId = R.id.navigation_home
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             val homeFragment = HomeFragment()
             supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
+        }
+        fab.setOnClickListener {
+            val intent = Intent(this, TransactionActivity::class.java)
+            this.startActivity(intent)
         }
     }
 
@@ -85,7 +90,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showErrorNotAvailable(){
+    override fun showErrorNotAvailable() {
         Toast.makeText(this, R.string.text_error_available, Toast.LENGTH_LONG).show()
     }
 
