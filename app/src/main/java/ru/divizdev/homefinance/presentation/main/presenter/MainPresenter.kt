@@ -1,5 +1,9 @@
 package ru.divizdev.homefinance.presentation.main.presenter
 
+import android.util.Log
+import ru.divizdev.homefinance.data.RepositoryCurrencyRate
+import ru.divizdev.homefinance.presentation.main.view.IMainView
+
 class MainPresenter: AbstractMainPresenter() {
 
 
@@ -25,5 +29,11 @@ class MainPresenter: AbstractMainPresenter() {
         return false
     }
 
+    override fun attachView(view: IMainView) {
+        super.attachView(view)
 
+        val repository = RepositoryCurrencyRate()
+
+        repository.loadCurrencyRate({ Log.e("r", it.toString())}, {Log.e("r", it)})
+    }
 }
