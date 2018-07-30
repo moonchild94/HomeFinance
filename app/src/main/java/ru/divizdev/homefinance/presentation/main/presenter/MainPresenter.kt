@@ -5,6 +5,10 @@ import ru.divizdev.homefinance.data.RepositoryCurrencyRate
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 
 class MainPresenter : AbstractMainPresenter() {
+    override fun actionShowAddTransaction() {
+        val view = weakReferenceView.get()
+        view?.openAddTransaction()
+    }
 
     override fun actionNavigationHome(): Boolean {
         val view = weakReferenceView.get()

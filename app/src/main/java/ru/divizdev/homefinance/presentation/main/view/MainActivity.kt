@@ -1,6 +1,5 @@
 package ru.divizdev.homefinance.presentation.main.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.view.Menu
@@ -16,9 +15,12 @@ import ru.divizdev.homefinance.presentation.home.view.HomeFragment
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.TypeSubScreen
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
-import ru.divizdev.homefinance.presentation.transaction.view.TransactionActivity
 
 class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainView {
+    override fun openTransactions() {
+        Factory.getRouter().navToTransactions(this)
+    }
+
     override fun getOpenTypeScreen(): TypeSubScreen {
         when (navigation.selectedItemId) {
             R.id.navigation_home -> return TypeSubScreen.HOME
@@ -28,8 +30,9 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         return TypeSubScreen.UNDEFINE
     }
 
-    override fun openTransactions() {
-        Factory.getRouter().navToTransactions(this)
+    override fun openAddTransaction() {
+
+        Factory.getRouter().navToAddTransaction(this)
     }
 
     override fun openHome() {
@@ -87,8 +90,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
             supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
         }
         fab.setOnClickListener {
-            val intent = Intent(this, TransactionActivity::class.java)
-            this.startActivity(intent)
+            presenter.actionShowAddTransaction()
         }
     }
 

@@ -11,11 +11,13 @@ interface IMainView: IMvpView {
 
     fun showErrorNotAvailable()
 
-    fun openTransactions()
+    fun openAddTransaction()
 
     fun openHome()
 
     fun openWallets()
 
     fun getOpenTypeScreen(): TypeSubScreen
+
+    fun openTransactions()
 }
