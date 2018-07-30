@@ -2,6 +2,7 @@ package ru.divizdev.homefinance
 
 import org.junit.Assert
 import org.junit.Test
+import ru.divizdev.homefinance.data.RepositoryCurrencyRate
 import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.model.Converter
@@ -13,7 +14,7 @@ import java.math.BigDecimal
  */
 class ConverterUnitTest {
 
-    private val converter = Converter()
+    private val converter = Converter(RepositoryCurrencyRate())
     @Test
     fun convertMoneyRubToUsd() {
         val moneyRub = Money(BigDecimal.valueOf(70), Currency.RUB)

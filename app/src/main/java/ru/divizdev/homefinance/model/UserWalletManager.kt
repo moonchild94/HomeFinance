@@ -10,8 +10,7 @@ import ru.divizdev.homefinance.presentation.transaction.view.TransactionUI
 import java.math.BigDecimal
 
 
-class UserWalletManager(private val repositoryWallet: IRepositoryWallet = FakeRepositoryWallet(),
-                        private val converter: Converter = Converter()) {
+class UserWalletManager(private val repositoryWallet: IRepositoryWallet = FakeRepositoryWallet(), private val converter: Converter ) {
 //В дальнейшем получать зависимости необходимо через Фабрику
 
     fun addTransaction(keyWallet: Int, transactionUI: TransactionUI) {

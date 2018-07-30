@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import ru.divizdev.homefinance.data.FakeRepositoryWallet
 import ru.divizdev.homefinance.data.IRepositoryWallet
+import ru.divizdev.homefinance.data.RepositoryCurrencyRate
 import ru.divizdev.homefinance.model.Converter
 import ru.divizdev.homefinance.model.UserWalletManager
 import ru.divizdev.homefinance.presentation.LocaleUtils
@@ -20,9 +21,10 @@ import java.util.*
 
 object Factory {
     private val router: Router = Router()
-    private var localeUtils: LocaleUtils = LocaleUtils(null)
+    private var localeUtils: LocaleUtils = LocaleUtils(null) //Для смены локали приходится перезаходить, нужно исправить
     private val mainPresenter = MainPresenter()
-    private val converter = Converter()
+    private val repositoryCurrencyRate = RepositoryCurrencyRate()
+    private val converter = Converter(repositoryCurrencyRate)
     private val repositoryWallet: IRepositoryWallet = FakeRepositoryWallet()
     private val userWalletManager: UserWalletManager = UserWalletManager(repositoryWallet, converter)
 
@@ -64,5 +66,9 @@ object Factory {
 
     fun getTransactionPresenter():AbstractTransactionPresenter{
         return TransactionPresenter(userWalletManager)
+    }
+
+    fun getConvertor(): Converter{
+        return converter
     }
 }

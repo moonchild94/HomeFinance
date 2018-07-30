@@ -2,4 +2,6 @@ package ru.divizdev.homefinance.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrencyRateAPI(@SerializedName("USD_RUB") val rateRubUsd: Double)
+
+//переделать загрузку на key-value, сейчас загрузка подходит только для одного курса
+data class CurrencyRateAPI(@SerializedName("USD_RUB") val rateUsdRub: Float)

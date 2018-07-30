@@ -5,7 +5,7 @@ import ru.divizdev.homefinance.entities.TypeTransaction
 import ru.divizdev.homefinance.model.UserWalletManager
 
 
-class HomePresenter(private val userWalletManager: UserWalletManager = UserWalletManager()): AbstractHomePresenter(){//В дальнейшем получать models необходимо через Фабрику
+class HomePresenter(private val userWalletManager: UserWalletManager): AbstractHomePresenter(){//В дальнейшем получать models необходимо через Фабрику
 
 
     override fun update() {

@@ -5,5 +5,5 @@
     <color name="colorAccent">#FDA626</color>
     <color name="revenueText">#089f08</color>
     <color name="expenseText">#bf0f0f</color>
-    <color name="icLauncherBackground">#FFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
