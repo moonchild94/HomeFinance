@@ -13,4 +13,6 @@ abstract class AbstractMainPresenter: BaseMvpPresenter<IMainView>() {
 
     abstract fun actionNavigationAccount():Boolean
 
+    abstract fun actionNavigationHome():Boolean
+
 }

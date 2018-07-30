@@ -20,5 +20,7 @@
     <string name="title_type_operation">Type operation</string>
     <string name="title_value_operation">Transaction amount</string>
     <string name="title_save_button">Save</string>
+    <string name="wallet_title_main_currency">Main currency</string>
+    <string name="text_error_obligatory">Fill in the required field</string>
 
 </resources>

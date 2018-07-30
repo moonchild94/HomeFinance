@@ -4,7 +4,16 @@ import android.util.Log
 import ru.divizdev.homefinance.data.RepositoryCurrencyRate
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 
-class MainPresenter: AbstractMainPresenter() {
+class MainPresenter : AbstractMainPresenter() {
+
+    override fun actionNavigationHome(): Boolean {
+        val view = weakReferenceView.get()
+        if(view?.getOpenTypeScreen() != TypeSubScreen.HOME) {
+            view?.openHome()
+            return true
+        }
+        return false
+    }
 
 
     override fun actionShowAbout() {
@@ -17,15 +26,21 @@ class MainPresenter: AbstractMainPresenter() {
         view?.showSettingsDialog()
     }
 
-    override fun actionNavigationListOperation():Boolean {
+    override fun actionNavigationListOperation(): Boolean {
         val view = weakReferenceView.get()
-        view?.showErrorNotAvailable()
+        if (view?.getOpenTypeScreen() != TypeSubScreen.OPERATIONS) {
+            view?.openTransactions()
+            return true
+        }
         return false
     }
 
-    override fun actionNavigationAccount():Boolean {
+    override fun actionNavigationAccount(): Boolean {
         val view = weakReferenceView.get()
-        view?.showErrorNotAvailable()
+        if (view?.getOpenTypeScreen() != TypeSubScreen.WALLETS) {
+            view?.openWallets()
+            return true
+        }
         return false
     }
 
@@ -34,6 +49,6 @@ class MainPresenter: AbstractMainPresenter() {
 
         val repository = RepositoryCurrencyRate()
 
-        repository.loadCurrencyRate({ Log.e("r", it.toString())}, {Log.e("r", it)})
+        repository.loadCurrencyRate({ Log.e("r", it.toString()) }, { Log.e("r", it) })
     }
 }

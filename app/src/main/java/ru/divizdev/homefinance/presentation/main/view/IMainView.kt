@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.presentation.main.view
 
 import ru.divizdev.homefinance.mvp.IMvpView
+import ru.divizdev.homefinance.presentation.main.presenter.TypeSubScreen
 
 interface IMainView: IMvpView {
 
@@ -9,4 +10,12 @@ interface IMainView: IMvpView {
     fun showSettingsDialog()
 
     fun showErrorNotAvailable()
+
+    fun openTransactions()
+
+    fun openHome()
+
+    fun openWallets()
+
+    fun getOpenTypeScreen(): TypeSubScreen
 }

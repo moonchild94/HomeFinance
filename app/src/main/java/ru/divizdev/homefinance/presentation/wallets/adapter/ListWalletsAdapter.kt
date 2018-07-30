@@ -35,10 +35,10 @@ class ListWalletsAdapter(val listWallets: List<Wallet>, val localeUtils: LocaleU
 
         fun setData(wallet: Wallet) {
             this.wallet = wallet
-            itemView.transaction_category_text_view.text = wallet.name
-            itemView.transaction_main_currency_text_view.text = wallet.mainCurrency.name
+            itemView.wallet_name_text_view.text = wallet.name
+            itemView.wallet_main_currency_text_view.text = wallet.mainCurrency.name
 
-            setMoney(wallet.getBalance(), itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
+            setMoney(wallet.getBalance(), itemView.wallet_balance_text_view, itemView.wallet_currency_balance_text_view)
 
         }
 

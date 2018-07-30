@@ -35,7 +35,7 @@ class ListTransactionsAdapter(val listTransactions: List<Transaction>, val local
             this.transaction = transaction
 
 
-            setMoney(transaction.sum, itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
+            setMoney(transaction.sumCurrencyMain, itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
 
         }
 

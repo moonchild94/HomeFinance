@@ -9,19 +9,40 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import ru.divizdev.homefinance.R
+import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.presentation.about.AboutDialog
 import ru.divizdev.homefinance.presentation.home.view.HomeFragment
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
-import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
+import ru.divizdev.homefinance.presentation.main.presenter.TypeSubScreen
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
 import ru.divizdev.homefinance.presentation.transaction.view.TransactionActivity
 
 class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainView {
+    override fun getOpenTypeScreen(): TypeSubScreen {
+        when (navigation.selectedItemId) {
+            R.id.navigation_home -> return TypeSubScreen.HOME
+            R.id.navigation_operation -> return TypeSubScreen.OPERATIONS
+            R.id.navigation_account -> return TypeSubScreen.WALLETS
+        }
+        return TypeSubScreen.UNDEFINE
+    }
+
+    override fun openTransactions() {
+        Factory.getRouter().navToTransactions(this)
+    }
+
+    override fun openHome() {
+        Factory.getRouter().navToHome(this)
+    }
+
+    override fun openWallets() {
+        Factory.getRouter().navToWallets(this)
+    }
 
 
     override fun getInstancePresenter(): AbstractMainPresenter {
-        return MainPresenter()
+        return Factory.getMainPresenter()
     }
 
     override fun getMvpView(): IMainView {
@@ -36,7 +57,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         when (item.itemId) {
             R.id.navigation_home -> {
 
-                return@OnNavigationItemSelectedListener true
+                return@OnNavigationItemSelectedListener presenter.actionNavigationHome()
             }
             R.id.navigation_account -> {
 
@@ -54,6 +75,10 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+
+
+
         navigation.selectedItemId = R.id.navigation_home
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -66,6 +91,8 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
             this.startActivity(intent)
         }
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
