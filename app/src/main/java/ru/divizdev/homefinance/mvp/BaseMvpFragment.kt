@@ -19,4 +19,9 @@ abstract class BaseMvpFragment<Presenter: BaseMvpPresenter<MvpView>, MvpView: IM
         presenter.detachView()
         super.onDestroyView()
     }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.update()
+    }
 }

@@ -3,7 +3,6 @@ package ru.divizdev.homefinance
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.divizdev.homefinance.entities.*
-import ru.divizdev.homefinance.model.TransactionManager
 import java.math.BigDecimal
 
 /**
@@ -15,10 +14,10 @@ class TransactionUnitTest {
 
         val transactionFirst = Transaction(TypeTransaction.Expense, Money(BigDecimal.valueOf(100.405), Currency.USD))
         val transactionSecond = Transaction(TypeTransaction.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
-        val wallet = Wallet("Sberbank", Currency.USD, listOf(transactionFirst, transactionSecond))
-        val transactionManager = TransactionManager()
+        val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond))
 
-        val money = transactionManager.calculate(wallet)
+
+        val money = wallet.getBalance()
 
         assertEquals(BigDecimal.valueOf(-125.51).setScale(2), money.value)
         assertEquals(Currency.USD, money.currency)
@@ -29,11 +28,10 @@ class TransactionUnitTest {
         val transactionFirst = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
         val transactionSecond = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(25.10), Currency.USD))
         val transactionThird = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
-        val wallet = Wallet("Sberbank", Currency.USD, listOf(transactionFirst, transactionSecond, transactionThird))
+        val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
-        val transactionManager = TransactionManager()
 
-        val money = transactionManager.calculate(wallet)
+        val money = wallet.getBalance()
 
         assertEquals(BigDecimal.valueOf(160.50).setScale(2), money.value)
         assertEquals(Currency.USD, money.currency)
@@ -44,10 +42,10 @@ class TransactionUnitTest {
         val transactionFirst = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
         val transactionSecond = Transaction(TypeTransaction.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
         val transactionThird = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
-        val wallet = Wallet("Sberbank", Currency.USD, listOf(transactionFirst, transactionSecond, transactionThird))
-        val transactionManager = TransactionManager()
+        val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
-        val money = transactionManager.calculate(wallet)
+
+        val money = wallet.getBalance()
 
         assertEquals(BigDecimal.valueOf(110.30).setScale(2), money.value)
         assertEquals(Currency.USD, money.currency)
@@ -58,14 +56,14 @@ class TransactionUnitTest {
         val transactionFirst = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
         val transactionSecond = Transaction(TypeTransaction.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
         val transactionThird = Transaction(TypeTransaction.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
-        val wallet = Wallet("Sberbank", Currency.USD, listOf(transactionFirst, transactionSecond, transactionThird))
-        val transactionManager = TransactionManager()
+        val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
-        val moneyRevenu = transactionManager.calculate(wallet, TypeTransaction.Revenue)
-        val moneyExpense = transactionManager.calculate(wallet, TypeTransaction.Expense)
+
+        val moneyRevenue = wallet.getBalanseRevenue()
+        val moneyExpense = wallet.getBalanceExpense()
 
         assertEquals(BigDecimal.valueOf(-25.10).setScale(2), moneyExpense.value)
-        assertEquals(BigDecimal.valueOf(135.40).setScale(2), moneyRevenu.value)
+        assertEquals(BigDecimal.valueOf(135.40).setScale(2), moneyRevenue.value)
 
     }
 

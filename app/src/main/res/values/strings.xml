@@ -15,4 +15,12 @@
     <string name="pref_name_currency">Default transaction currency</string>
     <string name="pref_currency_default_value">RUB</string>
     <string name="text_error_available">This functionality is not yet available</string>
+    <string name="title_date">Date</string>
+    <string name="title_time">Time</string>
+    <string name="title_type_operation">Type operation</string>
+    <string name="title_value_operation">Transaction amount</string>
+    <string name="title_save_button">Save</string>
+    <string name="wallet_title_main_currency">Main currency</string>
+    <string name="text_error_obligatory">Fill in the required field</string>
+
 </resources>

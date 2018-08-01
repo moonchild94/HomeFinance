@@ -14,4 +14,8 @@ abstract class BaseMvpPresenter<T: IMvpView> {
     open fun detachView(){
         weakReferenceView.clear()
     }
+
+    open fun update(){
+
+    }
 }

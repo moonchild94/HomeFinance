@@ -11,14 +11,15 @@ import java.util.*
  * Created by diviz on 10.02.2018.
  */
 
-class LocaleUtils(private val currentLocale: Locale) {
+class LocaleUtils(private val currentLocale: Locale?) {
 
     private val currentScale: Int
         get() = 2
 
     fun formatBigDecimal(decimal: BigDecimal): String {
+        val locale = currentLocale ?: Locale.getDefault()
         val decimalCopy = decimal.setScale(currentScale, RoundingMode.HALF_UP)
-        val df = NumberFormat.getInstance(currentLocale) as DecimalFormat
+        val df = NumberFormat.getInstance(locale) as DecimalFormat
         df.minimumFractionDigits = currentScale
         df.isGroupingUsed = true
         return df.format(decimalCopy)
