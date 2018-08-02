@@ -5,42 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.main.item_transaction.view.*
+import kotlinx.android.synthetic.main.item_operation.view.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
-import ru.divizdev.homefinance.entities.Transaction
+import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
-class ListTransactionsAdapter(val listTransactions: List<Transaction>, val localeUtils: LocaleUtils) : RecyclerView.Adapter<ListTransactionsAdapter.ViewHolder>()  {
+class OperationListAdapter(val listOperations: List<Operation>, val localeUtils: LocaleUtils) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>()  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction,
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_operation,
                 parent, false)
         return ViewHolder(view, localeUtils)
     }
 
     override fun getItemCount(): Int {
-        return listTransactions.size
+        return listOperations.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setData(listTransactions[position])
+        holder.setData(listOperations[position])
     }
 
 
     class ViewHolder(view: View, val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
-        private var transaction: Transaction? = null
+        private var operation: Operation? = null
 
-        fun setData(transaction: Transaction) {
-            this.transaction = transaction
+        fun setData(operation: Operation) {
+            this.operation = operation
 
 
-            setMoney(transaction.sumCurrencyMain, itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
-
+            setMoney(operation.sumCurrencyMain, itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
         }
 
         private fun setMoney(money: Money, value: TextView, currency: TextView) {
-            value.text = localeUtils.formatBigDecimal(money.value)
+            value.text = localeUtils.formatBigDecimal(money.amount)
             currency.text = localeUtils.formatCurrency(money.currency)
         }
     }

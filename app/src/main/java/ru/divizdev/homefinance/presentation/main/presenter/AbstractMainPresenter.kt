@@ -7,7 +7,7 @@ abstract class AbstractMainPresenter: BaseMvpPresenter<IMainView>() {
 
     abstract fun actionShowAbout()
 
-    abstract fun actionShowAddTransaction()
+    abstract fun actionShowAddOperation()
 
     abstract fun actionShowSettings()
 

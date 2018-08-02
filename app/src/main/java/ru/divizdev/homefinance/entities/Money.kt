@@ -3,8 +3,11 @@ package ru.divizdev.homefinance.entities
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Money(_value: BigDecimal, val currency: Currency)  {
-    val value:BigDecimal = _value.setScale(2, RoundingMode.HALF_UP)
+class Money(amount: BigDecimal, var currency: Currency) {
+    var amount: BigDecimal = amount
+        set (value) {
+            field = value.setScale(2, RoundingMode.HALF_UP)
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -13,19 +16,19 @@ class Money(_value: BigDecimal, val currency: Currency)  {
         other as Money
 
         if (currency != other.currency) return false
-        if (value != other.value) return false
+        if (amount != other.amount) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = currency.hashCode()
-        result = 31 * result + value.hashCode()
+        result = 31 * result + amount.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "Money(currency=$currency, value=$value)"
+        return "Money(currency=$currency, amount=$amount)"
     }
 
 

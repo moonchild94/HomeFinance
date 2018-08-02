@@ -1,19 +1,19 @@
-package ru.divizdev.homefinance.presentation.transaction.view
+package ru.divizdev.homefinance.presentation.operation.view
 
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_transaction.*
+import kotlinx.android.synthetic.main.activity_operation.*
 import kotlinx.android.synthetic.main.toolbar.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Currency
-import ru.divizdev.homefinance.entities.TypeTransaction
+import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.mvp.BaseMvpActivity
-import ru.divizdev.homefinance.presentation.transaction.presenter.AbstractTransactionPresenter
+import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import java.util.*
 
-class TransactionActivity : BaseMvpActivity<AbstractTransactionPresenter, ITransactionView>(), ITransactionView {
+class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperationView>(), IOperationView {
     override fun showErrorObligatoryField() {
         Toast.makeText(this, R.string.text_error_obligatory, Toast.LENGTH_LONG).show()
     }
@@ -22,24 +22,24 @@ class TransactionActivity : BaseMvpActivity<AbstractTransactionPresenter, ITrans
         onBackPressed()
     }
 
-    override fun getInstancePresenter(): AbstractTransactionPresenter {
-        return Factory.getTransactionPresenter()
+    override fun getInstancePresenter(): AbstractOperationPresenter {
+        return Factory.getOperationPresenter()
     }
 
-    override fun getMvpView(): ITransactionView {
+    override fun getMvpView(): IOperationView {
         return this
     }
 
-    override fun getTransaction(): TransactionUI {
-        val typeTransaction = getTypeTransaction()
+    override fun getOperation(): OperationUI {
+        val operationType = getOperationType()
 
         val currency: Currency = getCurrency()
 
 
-        return TransactionUI(datePickerInputEditText.date.time,
+        return OperationUI(datePickerInputEditText.date.time,
                 timePickerInputEditText.time.time,
-                typeTransaction,
-                category_spinner.getSelectedItem().toString(),
+                operationType,
+                category_spinner.selectedItem.toString(),
                 wallet_spinner.selectedItemPosition,
                 value_edit_text.text.toString().toFloatOrNull(),
                 currency
@@ -57,17 +57,17 @@ class TransactionActivity : BaseMvpActivity<AbstractTransactionPresenter, ITrans
     }
 
     //Пока хардкод, в будущем нужно написать свой адаптер
-    private fun getTypeTransaction(): TypeTransaction {
+    private fun getOperationType(): OperationType {
         return when (type_operation_spinner.selectedItemPosition) {
-            0 -> TypeTransaction.Expense
-            1 -> TypeTransaction.Revenue
-            else -> TypeTransaction.Expense
+            0 -> OperationType.Expense
+            1 -> OperationType.Revenue
+            else -> OperationType.Expense
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_transaction)
+        setContentView(R.layout.activity_operation)
 
         setSupportActionBar(toolbar)
         val supportActionBar = supportActionBar

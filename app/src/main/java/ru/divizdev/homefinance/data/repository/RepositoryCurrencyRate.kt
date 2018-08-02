@@ -1,10 +1,10 @@
-package ru.divizdev.homefinance.data
+package ru.divizdev.homefinance.data.repository
 
 import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.divizdev.homefinance.data.api.IApiCurrencyRate
+import ru.divizdev.homefinance.data.api.ApiCurrencyRate
 import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.CurrencyRateAPI
 
@@ -35,7 +35,7 @@ class RepositoryCurrencyRate {
     fun loadCurrencyRate() {
 
 
-        val apiCurrencyRate = IApiCurrencyRate.create()
+        val apiCurrencyRate = ApiCurrencyRate.create()
 
         val currencyRate = apiCurrencyRate.getCurrency("USD_RUB", "ultra")
 

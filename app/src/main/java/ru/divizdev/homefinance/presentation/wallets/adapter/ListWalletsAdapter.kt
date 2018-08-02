@@ -9,13 +9,12 @@ import kotlinx.android.synthetic.main.item_wallet.view.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Wallet
-import ru.divizdev.homefinance.entities.emptyWallet
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
 class ListWalletsAdapter(val listWallets: List<Wallet>, val localeUtils: LocaleUtils) : RecyclerView.Adapter<ListWalletsAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_wallet,
                 parent, false)
         return ViewHolder(view, localeUtils)
@@ -29,21 +28,20 @@ class ListWalletsAdapter(val listWallets: List<Wallet>, val localeUtils: LocaleU
         holder.setData(listWallets[position])
     }
 
-    class ViewHolder(view: View, val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
-        private var wallet: Wallet = emptyWallet()
+        private lateinit var wallet: Wallet
 
         fun setData(wallet: Wallet) {
             this.wallet = wallet
             itemView.wallet_name_text_view.text = wallet.name
-            itemView.wallet_main_currency_text_view.text = wallet.mainCurrency.name
+            itemView.wallet_main_currency_text_view.text = wallet.balance.currency.name
 
-            setMoney(wallet.getBalance(), itemView.wallet_balance_text_view, itemView.wallet_currency_balance_text_view)
-
+            setMoney(wallet.balance, itemView.wallet_balance_text_view, itemView.wallet_currency_balance_text_view)
         }
 
         private fun setMoney(money: Money, value: TextView, currency: TextView) {
-            value.text = localeUtils.formatBigDecimal(money.value)
+            value.text = localeUtils.formatBigDecimal(money.amount)
             currency.text = localeUtils.formatCurrency(money.currency)
         }
     }

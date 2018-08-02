@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.presentation.home.view.HomeFragment
-import ru.divizdev.homefinance.presentation.listTransaction.ui.ListTransactionFragment
-import ru.divizdev.homefinance.presentation.transaction.view.TransactionActivity
+import ru.divizdev.homefinance.presentation.listTransaction.view.OperationListFragment
+import ru.divizdev.homefinance.presentation.operation.view.OperationActivity
 import ru.divizdev.homefinance.presentation.wallets.ui.WalletsFragment
 
 class Router {
@@ -20,11 +20,11 @@ class Router {
     }
 
     fun navToTransactions(activity: AppCompatActivity){
-        replaceMainFragment(activity, ListTransactionFragment())
+        replaceMainFragment(activity, OperationListFragment())
     }
 
     fun navToAddTransaction(activity: AppCompatActivity){
-        val intent = Intent(activity, TransactionActivity::class.java)
+        val intent = Intent(activity, OperationActivity::class.java)
         activity.startActivity(intent)
     }
 

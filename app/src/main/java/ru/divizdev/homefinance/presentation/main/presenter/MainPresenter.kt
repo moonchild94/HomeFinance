@@ -1,10 +1,10 @@
 package ru.divizdev.homefinance.presentation.main.presenter
 
-import ru.divizdev.homefinance.data.RepositoryCurrencyRate
+import ru.divizdev.homefinance.data.repository.RepositoryCurrencyRate
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 
 class MainPresenter : AbstractMainPresenter() {
-    override fun actionShowAddTransaction() {
+    override fun actionShowAddOperation() {
         val view = weakReferenceView.get()
         view?.openAddTransaction()
     }

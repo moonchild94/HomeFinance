@@ -79,9 +79,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
-
-
         navigation.selectedItemId = R.id.navigation_home
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -90,7 +87,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
             supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
         }
         fab.setOnClickListener {
-            presenter.actionShowAddTransaction()
+            presenter.actionShowAddOperation()
         }
     }
 

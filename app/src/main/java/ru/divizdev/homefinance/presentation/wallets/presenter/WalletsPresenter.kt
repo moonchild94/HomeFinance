@@ -1,10 +1,11 @@
 package ru.divizdev.homefinance.presentation.wallets.presenter
 
-import ru.divizdev.homefinance.data.FakeRepositoryWallet
-import ru.divizdev.homefinance.data.IRepositoryWallet
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.Wallet
 
-class WalletsPresenter(val repositoryWallet: IRepositoryWallet = FakeRepositoryWallet()): AbstractWalletsPresenter() {
+class WalletsPresenter(private val repositoryWallet: RepositoryWallet) : AbstractWalletsPresenter() {
     override fun selectWallet(wallet: Wallet) {
         //Заготовка для выбора кошелька
     }
@@ -12,6 +13,9 @@ class WalletsPresenter(val repositoryWallet: IRepositoryWallet = FakeRepositoryW
     override fun update() {
         super.update()
         val view = weakReferenceView.get()
-        view?.setListWallets(repositoryWallet.getListWallet())
+        launch {
+            val wallets = repositoryWallet.getAllWallets()
+            launch(UI) { view?.setListWallets(wallets) }
+        }
     }
 }

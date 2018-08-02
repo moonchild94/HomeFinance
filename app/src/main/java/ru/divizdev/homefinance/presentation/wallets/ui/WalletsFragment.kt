@@ -1,6 +1,5 @@
 package ru.divizdev.homefinance.presentation.wallets.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
 import ru.divizdev.homefinance.presentation.wallets.adapter.ListWalletsAdapter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
-
 
 class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(), IWalletsView {
 
@@ -33,10 +31,6 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         wallets_recycler_view.adapter.notifyDataSetChanged()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -50,17 +44,4 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         wallets_recycler_view.adapter = listWalletsAdapter
         super.onViewCreated(view, savedInstanceState)
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-
-    }
-
-
-
 }

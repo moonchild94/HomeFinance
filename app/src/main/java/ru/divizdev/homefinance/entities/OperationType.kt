@@ -1,8 +1,6 @@
 package ru.divizdev.homefinance.entities
 
-enum class TypeTransaction {
-
+enum class OperationType {
     Expense,
     Revenue
-
 }
