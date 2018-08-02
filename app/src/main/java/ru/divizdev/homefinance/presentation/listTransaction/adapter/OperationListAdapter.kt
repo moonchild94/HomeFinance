@@ -11,10 +11,9 @@ import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
-class OperationListAdapter(val listOperations: List<Operation>, val localeUtils: LocaleUtils) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>()  {
+class OperationListAdapter(private var listOperations: List<Operation>, private val localeUtils: LocaleUtils) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>()  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_operation,
-                parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_operation, parent, false)
         return ViewHolder(view, localeUtils)
     }
 
@@ -26,15 +25,17 @@ class OperationListAdapter(val listOperations: List<Operation>, val localeUtils:
         holder.setData(listOperations[position])
     }
 
+    fun setData(newListOperation: List<Operation>) {
+        listOperations = newListOperation
+        notifyDataSetChanged()
+    }
 
-    class ViewHolder(view: View, val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
         private var operation: Operation? = null
 
         fun setData(operation: Operation) {
             this.operation = operation
-
-
             setMoney(operation.sumCurrencyMain, itemView.transaction_balance_text_view, itemView.transaction_currency_balance_text_view)
         }
 

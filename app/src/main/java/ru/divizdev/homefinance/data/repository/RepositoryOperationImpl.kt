@@ -4,12 +4,12 @@ import ru.divizdev.homefinance.data.db.dao.OperationDao
 import ru.divizdev.homefinance.entities.Operation
 
 class RepositoryOperationImpl(private val operationDao: OperationDao) : RepositoryOperation {
-    override fun getAllOperations(): Collection<Operation> {
+    override fun getAllOperations(): List<Operation> {
        return operationDao.getAll()
     }
 
     override fun deleteOperation(operation: Operation) {
-        operationDao.delete()
+     //   operationDao.delete()
     }
 
     override fun addOperation(operation: Operation) {

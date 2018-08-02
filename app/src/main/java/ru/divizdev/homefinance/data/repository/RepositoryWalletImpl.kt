@@ -8,7 +8,7 @@ class RepositoryWalletImpl(private val walletDao: WalletDao) : RepositoryWallet 
         return walletDao.getById(id)
     }
 
-    override fun getAllWallets(): Collection<Wallet> {
+    override fun getAllWallets(): List<Wallet> {
         return walletDao.getAll()
     }
 

@@ -5,7 +5,7 @@ import ru.divizdev.homefinance.entities.Operation
 interface RepositoryOperation {
     fun getOperation(id: Int): Operation?
 
-    fun getAllOperations(): Collection<Operation>
+    fun getAllOperations(): List<Operation>
 
     fun deleteOperation(operation: Operation)
 

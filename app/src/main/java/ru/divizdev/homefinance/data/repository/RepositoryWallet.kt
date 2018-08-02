@@ -6,7 +6,7 @@ interface RepositoryWallet {
 
     fun getWallet(id: Int): Wallet?
 
-    fun getAllWallets(): Collection<Wallet>
+    fun getAllWallets(): List<Wallet>
 
     fun deleteWallet(wallet: Wallet)
 
