@@ -9,7 +9,7 @@ import ru.divizdev.homefinance.entities.OperationType
  */
 @Entity
 data class Category(
-        @PrimaryKey(autoGenerate = true) val categoryId: Int? = null,
+        @PrimaryKey(autoGenerate = true) val categoryId: Int = 0,
         val operationType: OperationType,
         val categoryName: String,
         val iconUri: String)

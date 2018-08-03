@@ -14,8 +14,7 @@ import ru.divizdev.homefinance.presentation.wallets.adapter.ListWalletsAdapter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 
 class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(), IWalletsView {
-
-    private var list: MutableList<Wallet> = mutableListOf()
+    private lateinit var listWalletsAdapter: ListWalletsAdapter
 
     override fun getInstancePresenter(): AbstractWalletsPresenter {
         return Factory.getWalletsPresenter()
@@ -25,10 +24,8 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         return this
     }
 
-    override fun setListWallets(list: Collection<Wallet>) {
-        this.list.clear()
-        this.list.addAll(list)
-        wallets_recycler_view.adapter.notifyDataSetChanged()
+    override fun setListWallets(wallets: List<Wallet>) {
+        listWalletsAdapter.updateData(wallets)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +34,15 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         return inflater.inflate(R.layout.fragment_wallets, container, false)
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.loadData()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val linearLayoutManager = LinearLayoutManager(view.context)
         wallets_recycler_view.layoutManager = linearLayoutManager
-        val listWalletsAdapter = ListWalletsAdapter(list, Factory.getLocaleUtils())
+        listWalletsAdapter = ListWalletsAdapter(listOf(), Factory.getLocaleUtils())
         wallets_recycler_view.adapter = listWalletsAdapter
         super.onViewCreated(view, savedInstanceState)
     }

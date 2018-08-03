@@ -31,7 +31,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
     }
 
     override fun openAddTransaction() {
-
         Factory.getRouter().navToAddTransaction(this)
     }
 
@@ -90,7 +89,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
             presenter.actionShowAddOperation()
         }
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

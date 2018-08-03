@@ -10,7 +10,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "ru.divizdev.homefinance"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -30,8 +30,8 @@ ext {
     constraint_layout_version = "1.1.2"
     retrofit_version = "2.4.0"
     coroutines_version = "0.24.0"
+    dagger_version = "2.16"
 }
-
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -58,3 +58,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+kotlin { experimental { coroutines 'enable' } }

@@ -12,17 +12,14 @@ import ru.divizdev.homefinance.entities.Operation
  */
 @Dao
 interface OperationDao {
-    // Добавление IdleOperation в бд
-    @Insert
-    fun insert(operation: IdleOperation)
 
     // Удаление IdleOperation из бд
     @Delete
     fun delete(operation: IdleOperation)
 
-    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, " +
-            "IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, " +
-            "IdleOperation.sumOperationcurrency, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON " +
-            "IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.categoryId = wallet.walletId")
+    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId")
     fun getAll(): List<Operation>
+
+    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.walletId = :walletId")
+    fun query(walletId: Int): List<Operation>
 }

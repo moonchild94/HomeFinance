@@ -7,4 +7,5 @@ abstract class AbstractOperationPresenter: BaseMvpPresenter<IOperationView>() {
 
     abstract fun save()
 
+    abstract fun loadData()
 }

@@ -23,4 +23,7 @@
     <string name="wallet_title_main_currency">Основная валюта</string>
     <string name="text_error_obligatory">Заполните необходимые поля</string>
     <string name="title_value_operation">Сумма операции</string>
+    <string name="title_comment_operation">Описание операции</string>
+    <string name="income">Доход</string>
+    <string name="outcome">Расход</string>
 </resources>

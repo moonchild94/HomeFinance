@@ -1,6 +1,8 @@
 package ru.divizdev.homefinance.entities
 
-enum class OperationType {
-    Expense,
-    Revenue
+import ru.divizdev.homefinance.R
+
+enum class OperationType(val stringId: Int) {
+    OUTCOME(R.string.outcome),
+    INCOME(R.string.income)
 }

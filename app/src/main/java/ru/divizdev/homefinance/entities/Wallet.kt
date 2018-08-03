@@ -10,7 +10,7 @@ import ru.divizdev.homefinance.entities.Money
  */
 @Entity
 data class Wallet(
-        @PrimaryKey(autoGenerate = true) val walletId: Int? = null,
-        val name: String,
+        @PrimaryKey(autoGenerate = true) val walletId: Int = 0,
+        val walletName: String,
         @Embedded
         var balance: Money)

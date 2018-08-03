@@ -12,8 +12,8 @@ class OperationUnitTest {
     @Test
     fun expenseTransactions() {
 
-        val transactionFirst = Transaction(OperationType.Expense, Money(BigDecimal.valueOf(100.405), Currency.USD))
-        val transactionSecond = Transaction(OperationType.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
+        val transactionFirst = Transaction(OperationType.OUTCOME, Money(BigDecimal.valueOf(100.405), Currency.USD))
+        val transactionSecond = Transaction(OperationType.OUTCOME, Money(BigDecimal.valueOf(25.10), Currency.USD))
         val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond))
 
 
@@ -25,9 +25,9 @@ class OperationUnitTest {
 
     @Test
     fun profitableTransactions() {
-        val transactionFirst = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
-        val transactionSecond = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(25.10), Currency.USD))
-        val transactionThird = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
+        val transactionFirst = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(100.40), Currency.USD))
+        val transactionSecond = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(25.10), Currency.USD))
+        val transactionThird = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(35), Currency.USD))
         val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
 
@@ -39,9 +39,9 @@ class OperationUnitTest {
 
     @Test
     fun otherTransactions() {
-        val transactionFirst = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
-        val transactionSecond = Transaction(OperationType.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
-        val transactionThird = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
+        val transactionFirst = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(100.40), Currency.USD))
+        val transactionSecond = Transaction(OperationType.OUTCOME, Money(BigDecimal.valueOf(25.10), Currency.USD))
+        val transactionThird = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(35), Currency.USD))
         val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
 
@@ -53,9 +53,9 @@ class OperationUnitTest {
 
     @Test
     fun filterTransactions() {
-        val transactionFirst = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(100.40), Currency.USD))
-        val transactionSecond = Transaction(OperationType.Expense, Money(BigDecimal.valueOf(25.10), Currency.USD))
-        val transactionThird = Transaction(OperationType.Revenue, Money(BigDecimal.valueOf(35), Currency.USD))
+        val transactionFirst = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(100.40), Currency.USD))
+        val transactionSecond = Transaction(OperationType.OUTCOME, Money(BigDecimal.valueOf(25.10), Currency.USD))
+        val transactionThird = Transaction(OperationType.INCOME, Money(BigDecimal.valueOf(35), Currency.USD))
         val wallet = Wallet("Sberbank", Currency.USD, mutableListOf(transactionFirst, transactionSecond, transactionThird))
 
 

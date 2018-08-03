@@ -2,6 +2,7 @@ package ru.divizdev.homefinance.presentation.operation.view
 
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_operation.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -14,6 +15,11 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperatio
 import java.util.*
 
 class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperationView>(), IOperationView {
+    override fun onLoadData(categories: List<String>, wallets: List<String>) {
+        category_spinner.adapter = ArrayAdapter(category_spinner.context, android.R.layout.simple_spinner_item, categories)
+        wallet_spinner.adapter = ArrayAdapter(wallet_spinner.context, android.R.layout.simple_spinner_item, wallets)
+    }
+
     override fun showErrorObligatoryField() {
         Toast.makeText(this, R.string.text_error_obligatory, Toast.LENGTH_LONG).show()
     }
@@ -31,38 +37,16 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
     }
 
     override fun getOperation(): OperationUI {
-        val operationType = getOperationType()
-
-        val currency: Currency = getCurrency()
-
-
+        val operationType = OperationType.values()[type_operation_spinner.selectedItemPosition]
+        val currency: Currency = Currency.values()[currency_spinner.selectedItemPosition]
         return OperationUI(datePickerInputEditText.date.time,
                 timePickerInputEditText.time.time,
                 operationType,
-                category_spinner.selectedItem.toString(),
+                category_spinner.selectedItemPosition,
                 wallet_spinner.selectedItemPosition,
-                value_edit_text.text.toString().toFloatOrNull(),
-                currency
-                )
-    }
-
-
-    //Пока хардкод, в будущем нужно написать свой адаптер
-    private fun getCurrency(): Currency {
-        return when (currency_spinner.selectedItemPosition) {
-            0 -> Currency.USD
-            1 -> Currency.RUB
-            else -> Currency.RUB
-        }
-    }
-
-    //Пока хардкод, в будущем нужно написать свой адаптер
-    private fun getOperationType(): OperationType {
-        return when (type_operation_spinner.selectedItemPosition) {
-            0 -> OperationType.Expense
-            1 -> OperationType.Revenue
-            else -> OperationType.Expense
-        }
+                value_edit_text.text.toString().toDoubleOrNull(),
+                currency,
+                comment_edit_text.text.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,20 +57,27 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         val supportActionBar = supportActionBar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        presenter.loadData()
+
+        val operationTypes = OperationType.values().map { type -> getString(type.stringId) }
+        type_operation_spinner.adapter = ArrayAdapter(type_operation_spinner.context, android.R.layout.simple_spinner_item, operationTypes)
+
+        val currencies = Currency.values().map { currency ->  currency.sign}
+        currency_spinner.adapter = ArrayAdapter(currency_spinner.context, android.R.layout.simple_spinner_item, currencies)
+
         datePickerInputEditText.manager = supportFragmentManager
         timePickerInputEditText.manager = supportFragmentManager
         datePickerInputEditText.setDateFormat(DateFormat.getMediumDateFormat(applicationContext))
         timePickerInputEditText.setTimeFormat(DateFormat.getTimeFormat(applicationContext))
 
-        datePickerInputEditText.setDate(Calendar.getInstance())
+        datePickerInputEditText.date = Calendar.getInstance()
         datePickerInputEditText.setText(DateFormat.getDateFormat(applicationContext).format(Calendar.getInstance().time))
         timePickerInputEditText.setText(DateFormat.getTimeFormat(applicationContext).format(Calendar.getInstance().time))
-        timePickerInputEditText.setTime(Calendar.getInstance())
+        timePickerInputEditText.time = Calendar.getInstance()
 
         value_edit_text.requestFocus()
 
         save_button.setOnClickListener { presenter.save() }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

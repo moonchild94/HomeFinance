@@ -4,11 +4,7 @@ import ru.divizdev.homefinance.entities.Wallet
 
 interface RepositoryWallet {
 
-    fun getWallet(id: Int): Wallet?
+    fun getById(id: Int): Wallet?
 
-    fun getAllWallets(): List<Wallet>
-
-    fun deleteWallet(wallet: Wallet)
-
-    fun addWallet(wallet: Wallet)
+    fun getAll(): List<Wallet>
 }

@@ -26,10 +26,9 @@ class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView>(), IHomeV
 
     private var localeUtils: LocaleUtils = Factory.getLocaleUtils()
 
-
     private fun setMoney(money: Money, value: TextView, currency: TextView) {
         value.text = localeUtils.formatBigDecimal(money.amount)
-        currency.text = localeUtils.formatCurrency(money.currency)
+        currency.text = money.currency.sign
     }
 
     override fun setMainBalance(balance: Money) {

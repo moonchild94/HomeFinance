@@ -1,15 +1,11 @@
 package ru.divizdev.homefinance.di
 
-import android.arch.persistence.room.Room
 import android.content.Context
 import android.os.Build
-import kotlinx.coroutines.experimental.launch
 import ru.divizdev.homefinance.data.db.HomeFinanceDatabase
 import ru.divizdev.homefinance.data.repository.*
-import ru.divizdev.homefinance.entities.*
-import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.model.Converter
-import ru.divizdev.homefinance.model.UserWalletManager
+import ru.divizdev.homefinance.model.OperationInteractor
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.Router
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
@@ -22,7 +18,6 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperatio
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.WalletsPresenter
-import java.math.BigDecimal
 import java.util.*
 
 object Factory {
@@ -31,30 +26,22 @@ object Factory {
     private val mainPresenter = MainPresenter()
     private val repositoryCurrencyRate = RepositoryCurrencyRate()
     private val converter = Converter(repositoryCurrencyRate)
+
     private lateinit var repositoryWallet: RepositoryWallet
     private lateinit var repositoryOperation: RepositoryOperation
-    private lateinit var userWalletManager: UserWalletManager
+    private lateinit var repositoryCategory: RepositoryCategory
+    private lateinit var repositoryWalletOperation: RepositoryWalletOperation
+
+    private lateinit var operationInteractor: OperationInteractor
 
     fun create(context: Context) {
-        val db = Room.databaseBuilder(context, HomeFinanceDatabase::class.java, "populus-database").build()
+        val db = HomeFinanceDatabase.getDataBase(context)
         repositoryWallet = RepositoryWalletImpl(db.getWalletDao())
         repositoryOperation = RepositoryOperationImpl(db.getOperationDao())
-        launch {
-            if (repositoryWallet.getAllWallets().isEmpty()) {
-                repositoryWallet.addWallet(Wallet(name = "Кошелек", balance = Money(BigDecimal.valueOf(100), Currency.RUB)))
+        repositoryWalletOperation = RepositoryWalletOperationImpl(db.getWalletOperationDao())
+        repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
-                db.getCategoryDao().insert(Category(operationType = OperationType.Expense, categoryName = "Еда", iconUri = ""))
-
-                val wallet = repositoryWallet.getAllWallets()[0]
-                val category = db.getCategoryDao().getAll()[0]
-                val operation = IdleOperation(walletId = wallet.walletId ?: 0, comment = "бла",
-                        sumCurrencyMain = Money(BigDecimal.valueOf(13.34), Currency.RUB), date = Date(),
-                        categoryId = category.categoryId ?: 0)
-                db.getOperationDao().insert(operation)
-            }
-        }
-
-        userWalletManager = UserWalletManager(ru.divizdev.homefinance.di.Factory.repositoryWallet, converter)
+        operationInteractor = OperationInteractor(repositoryWalletOperation, converter)
 
         localeUtils = initUtils(context)
     }
@@ -74,7 +61,7 @@ object Factory {
     }
 
     fun getHomePresenter(): AbstractHomePresenter {
-        return HomePresenter(userWalletManager)
+        return HomePresenter(operationInteractor)
     }
 
     fun getMainPresenter(): AbstractMainPresenter {
@@ -86,7 +73,7 @@ object Factory {
     }
 
     fun getOperationListPresenter(): AbstractOperationListPresenter {
-        return OperationListPresenter(repositoryOperation)
+        return OperationListPresenter(repositoryOperation, repositoryWallet, repositoryWalletOperation)
     }
 
     fun getWalletsPresenter(): AbstractWalletsPresenter {
@@ -94,7 +81,7 @@ object Factory {
     }
 
     fun getOperationPresenter(): AbstractOperationPresenter {
-        return OperationPresenter(userWalletManager)
+        return OperationPresenter(repositoryWallet, repositoryCategory, operationInteractor)
     }
 
     fun getConvertor(): Converter {

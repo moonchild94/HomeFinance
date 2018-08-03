@@ -7,7 +7,8 @@ import java.util.*
 data class OperationUI(val date: Date,
                        val time: Date,
                        val operationType: OperationType,
-                       val category: String,
-                       val walletKey: Int,
-                       val value: Float?,
-                       val currency: Currency)
+                       val categoryNumber: Int,
+                       val walletNumber: Int,
+                       val value: Double?,
+                       val currency: Currency,
+                       val comment: String)

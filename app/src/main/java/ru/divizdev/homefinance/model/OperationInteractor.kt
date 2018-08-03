@@ -1,33 +1,22 @@
 package ru.divizdev.homefinance.model
 
-import ru.divizdev.homefinance.data.repository.RepositoryWallet
+import kotlinx.coroutines.experimental.launch
+import ru.divizdev.homefinance.data.repository.RepositoryWalletOperation
 import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
+import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.entities.OperationType
-import ru.divizdev.homefinance.presentation.operation.view.OperationUI
 import java.math.BigDecimal
 
+class OperationInteractor(private val repositoryWalletOperation: RepositoryWalletOperation,
+                          private val converter: Converter) {
 
-class UserWalletManager(private val repositoryWallet: RepositoryWallet, private val converter: Converter) {
-//В дальнейшем получать зависимости необходимо через Фабрику
-
-    fun addOperation(keyWallet: Int, operationUI: OperationUI) {
-//        val wallet = repositoryWallet.getWallet(keyWallet)
-//        if (wallet == null) {
-//            IllegalArgumentException("No wallet found")
-//            return
-//        }
-//        val moneyCurrencyOperation = Money(BigDecimal.valueOf((operationUI.value
-//                ?: 0f).toDouble()), operationUI.currency)
-//        var moneyCurrencyMain = Money(BigDecimal.valueOf((operationUI.value
-//                ?: 0f).toDouble()), operationUI.currency)
-//        if (wallet.mainCurrency != moneyCurrencyOperation.currency) {
-//            moneyCurrencyMain = converter.convert(moneyCurrencyOperation, wallet.mainCurrency)
-//        }
-//
-//        val transaction = IdleOperation(operationUI.operationType, moneyCurrencyMain, moneyCurrencyOperation)
-//
-//        repositoryWallet.addOperation(keyWallet, transaction)
+    fun addOperation(operation: Operation) {
+        val mainCurrency = operation.wallet.balance.currency
+        if (operation.sumCurrencyOperation.currency != mainCurrency) {
+            operation.sumCurrencyMain = converter.convert(operation.sumCurrencyOperation, mainCurrency)
+        }
+        launch { repositoryWalletOperation.add(operation) }
     }
 
     fun getBalance(currency: Currency): Money {
@@ -53,8 +42,8 @@ class UserWalletManager(private val repositoryWallet: RepositoryWallet, private 
 //        for (wallet in listWallet) {
 //
 //            var balance = when (operationType) {
-//                OperationType.Expense -> wallet.getBalanceExpense()
-//                OperationType.Revenue -> wallet.getBalanseRevenue()
+//                OperationType.OUTCOME -> wallet.getBalanceExpense()
+//                OperationType.INCOME -> wallet.getBalanseRevenue()
 //            }
 //            balance = if (balance.currency == currency) {
 //                balance
