@@ -34,4 +34,6 @@
     <string name="adding_wallet_start_balance_value">0.0</string>
     <string name="adding_wallet_title">Добавить счет</string>
     <string name="delete_wallet_confirmation">Do you want to delete the account?</string>
+    <string name="period_in_days">Period in days</string>
+    <string name="with_period">With period</string>
 </resources>

@@ -6,6 +6,7 @@ import ru.divizdev.homefinance.data.repository.RepositoryCategory
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.*
 import ru.divizdev.homefinance.model.OperationInteractor
+import ru.divizdev.homefinance.model.SummaryInteractor
 import ru.divizdev.homefinance.presentation.operation.view.OperationUI
 import java.math.BigDecimal
 
@@ -20,8 +21,9 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
             wallets = repositoryWallet.getAll()
 
             launch(UI) {
-                val walletNames = wallets.map { wallet -> wallet.walletName}
-                weakReferenceView.get()?.onLoadWallets(walletNames) }
+                val walletNames = wallets.map { wallet -> wallet.walletName }
+                weakReferenceView.get()?.onLoadWallets(walletNames)
+            }
         }
     }
 
@@ -30,8 +32,9 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
             categories = repositoryCategory.query(operationType)
 
             launch(UI) {
-                val categoryNames = categories.map { category ->  category.categoryName}
-                weakReferenceView.get()?.onLoadCategories(categoryNames) }
+                val categoryNames = categories.map { category -> category.categoryName }
+                weakReferenceView.get()?.onLoadCategories(categoryNames)
+            }
         }
     }
 
@@ -49,14 +52,16 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
         view.exit()
     }
 
-    private fun convertOperationUiTOModel(operationUI: OperationUI) : Operation {
+    private fun convertOperationUiTOModel(operationUI: OperationUI): Operation {
         val wallet = wallets[operationUI.walletNumber]
         val category = categories[operationUI.categoryNumber]
-        val sumCurrencyOperation = Money(BigDecimal.valueOf(operationUI.value ?: 0.0), operationUI.currency)
+        val sumCurrencyOperation = Money(BigDecimal.valueOf(operationUI.value
+                ?: 0.0), operationUI.currency)
         val date = operationUI.date
         val comment = operationUI.comment
+        val period = operationUI.period
 
         return Operation(comment = comment, sumCurrencyOperation = sumCurrencyOperation, date = date,
-                category = category, wallet = wallet)
+                category = category, wallet = wallet, pending = period != 0, period = period)
     }
 }

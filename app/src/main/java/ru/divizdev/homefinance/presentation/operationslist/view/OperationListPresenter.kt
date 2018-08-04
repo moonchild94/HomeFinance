@@ -2,13 +2,13 @@ package ru.divizdev.homefinance.presentation.operationslist.view
 
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.data.repository.RepositoryWalletOperation
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.model.OperationInteractor
 
-class OperationListPresenter(private val repositoryOperation: RepositoryOperation,
+class OperationListPresenter(private val operationInteractor: OperationInteractor,
                              private val repositoryWallet: RepositoryWallet,
                              private val repositoryWalletOperation: RepositoryWalletOperation) : AbstractOperationListPresenter() {
     private lateinit var operations: List<Operation>
@@ -32,7 +32,7 @@ class OperationListPresenter(private val repositoryOperation: RepositoryOperatio
     override fun loadOperations(position: Int) {
         launch {
             selectedWalletPosition = position
-            operations = if (selectedWalletPosition == 0) repositoryOperation.getAll() else repositoryOperation.queryByWallet(wallets[selectedWalletPosition - 1])
+            operations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations() else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1])
             launch(UI) { weakReferenceView.get()?.showOperationList(operations) }
         }
     }

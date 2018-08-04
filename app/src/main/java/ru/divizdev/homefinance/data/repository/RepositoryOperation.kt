@@ -11,4 +11,8 @@ interface RepositoryOperation {
     fun queryByWallet(wallet: Wallet): List<Operation>
 
     fun queryByOperationType(operationType: OperationType): List<Operation>
+
+    fun queryPeriodic(): List<Operation>
+
+    fun update(operation: Operation)
 }

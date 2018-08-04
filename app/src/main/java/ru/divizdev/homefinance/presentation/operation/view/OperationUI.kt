@@ -11,4 +11,5 @@ data class OperationUI(val date: Date,
                        val walletNumber: Int,
                        val value: Double?,
                        val currency: Currency,
-                       val comment: String)
+                       val comment: String,
+                       val period: Int)

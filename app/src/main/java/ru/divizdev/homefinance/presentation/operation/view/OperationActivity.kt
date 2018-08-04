@@ -15,6 +15,10 @@ import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import java.util.*
+import android.support.design.widget.Snackbar
+import android.widget.CompoundButton
+import java.time.LocalDate
+
 
 class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperationView>(), IOperationView {
     override fun onLoadCategories(categories: List<String>) {
@@ -44,14 +48,16 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
     override fun getOperation(): OperationUI {
         val operationType = OperationType.values()[type_operation_spinner.selectedItemPosition]
         val currency: Currency = Currency.values()[currency_spinner.selectedItemPosition]
-        return OperationUI(datePickerInputEditText.date.time,
+        val date = if (periodicSwitch.isChecked ) truncTimeFromDate(datePickerInputEditText.date) else datePickerInputEditText.date.time
+        return OperationUI(date,
                 timePickerInputEditText.time.time,
                 operationType,
                 category_spinner.selectedItemPosition,
                 wallet_spinner.selectedItemPosition,
                 value_edit_text.text.toString().toDoubleOrNull(),
                 currency,
-                comment_edit_text.text.toString())
+                comment_edit_text.text.toString(),
+                period_in_days.text.toString().toIntOrNull() ?: 0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +71,7 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         presenter.loadWallets()
 
         initOperationTypeSpinner()
+        initSwitchPeriodicType()
 
         val currencies = Currency.values().map { currency -> currency.sign }
         currency_spinner.adapter = ArrayAdapter(currency_spinner.context, android.R.layout.simple_spinner_item, currencies)
@@ -82,6 +89,20 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         value_edit_text.requestFocus()
 
         save_button.setOnClickListener { presenter.save() }
+    }
+
+    private fun initSwitchPeriodicType() {
+        periodicSwitch.setOnCheckedChangeListener { _, _ ->
+             periodicSwitcher.showNext()
+        }
+    }
+
+    private fun truncTimeFromDate(calendar: Calendar) : Date {
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return Date(calendar.timeInMillis)
     }
 
     private fun initOperationTypeSpinner() {

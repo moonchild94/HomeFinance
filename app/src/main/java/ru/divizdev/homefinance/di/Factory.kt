@@ -6,16 +6,17 @@ import ru.divizdev.homefinance.data.db.HomeFinanceDatabase
 import ru.divizdev.homefinance.data.repository.*
 import ru.divizdev.homefinance.model.Converter
 import ru.divizdev.homefinance.model.OperationInteractor
+import ru.divizdev.homefinance.model.SummaryInteractor
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.Router
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
+import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
@@ -34,6 +35,7 @@ object Factory {
     private lateinit var repositoryCategory: RepositoryCategory
     private lateinit var repositoryWalletOperation: RepositoryWalletOperation
 
+    private lateinit var summaryInteractor: SummaryInteractor
     private lateinit var operationInteractor: OperationInteractor
 
     fun create(context: Context) {
@@ -43,7 +45,8 @@ object Factory {
         repositoryWalletOperation = RepositoryWalletOperationImpl(db.getWalletOperationDao())
         repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
-        operationInteractor = OperationInteractor(repositoryWalletOperation, repositoryWallet, repositoryOperation, converter)
+        operationInteractor = OperationInteractor(repositoryWalletOperation, repositoryOperation, converter)
+        summaryInteractor = SummaryInteractor(repositoryWallet, operationInteractor, converter)
 
         localeUtils = initUtils(context)
     }
@@ -63,7 +66,7 @@ object Factory {
     }
 
     fun getHomePresenter(): AbstractHomePresenter {
-        return HomePresenter(operationInteractor)
+        return HomePresenter(summaryInteractor)
     }
 
     fun getMainPresenter(): AbstractMainPresenter {
@@ -75,7 +78,7 @@ object Factory {
     }
 
     fun getOperationListPresenter(): AbstractOperationListPresenter {
-        return OperationListPresenter(repositoryOperation, repositoryWallet, repositoryWalletOperation)
+        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryWalletOperation)
     }
 
     fun getWalletsPresenter(): AbstractWalletsPresenter {

@@ -66,6 +66,10 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                             sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(),
                                             categoryId = category2.categoryId)
                                     getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation3, wallet2)
+                                    val operation4 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
+                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(1533157200000L),
+                                            categoryId = category2.categoryId, period = 1, pending = true)
+                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation4, wallet2)
                                 }
                             }
                         })

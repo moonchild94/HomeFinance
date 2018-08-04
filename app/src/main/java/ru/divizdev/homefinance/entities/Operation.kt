@@ -9,8 +9,10 @@ data class Operation(val operationId: Int = 0,
                      var sumCurrencyOperation: Money,
                      @Embedded(prefix = "sumMain")
                      var sumCurrencyMain: Money = sumCurrencyOperation,
-                     val date: Date,
+                     var date: Date,
                      @Embedded
                      val wallet: Wallet,
                      @Embedded
-                     val category: Category)
+                     val category: Category,
+                     val pending: Boolean = false,
+                     val period: Int = 0)

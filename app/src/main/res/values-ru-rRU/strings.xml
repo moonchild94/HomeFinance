@@ -31,4 +31,6 @@
     <string name="ok">ОК</string>
     <string name="all">Все</string>
     <string name="delete_wallet_confirmation">Вы действительно хотите удалить счет?</string>
+    <string name="period_in_days">Период в днях</string>
+    <string name="with_period">С периодом</string>
 </resources>
