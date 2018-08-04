@@ -2,6 +2,8 @@ package ru.divizdev.homefinance.presentation.operation.view
 
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -15,8 +17,11 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperatio
 import java.util.*
 
 class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperationView>(), IOperationView {
-    override fun onLoadData(categories: List<String>, wallets: List<String>) {
+    override fun onLoadCategories(categories: List<String>) {
         category_spinner.adapter = ArrayAdapter(category_spinner.context, android.R.layout.simple_spinner_item, categories)
+    }
+
+    override fun onLoadWallets(wallets: List<String>) {
         wallet_spinner.adapter = ArrayAdapter(wallet_spinner.context, android.R.layout.simple_spinner_item, wallets)
     }
 
@@ -57,12 +62,11 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         val supportActionBar = supportActionBar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        presenter.loadData()
+        presenter.loadWallets()
 
-        val operationTypes = OperationType.values().map { type -> getString(type.stringId) }
-        type_operation_spinner.adapter = ArrayAdapter(type_operation_spinner.context, android.R.layout.simple_spinner_item, operationTypes)
+        initOperationTypeSpinner()
 
-        val currencies = Currency.values().map { currency ->  currency.sign}
+        val currencies = Currency.values().map { currency -> currency.sign }
         currency_spinner.adapter = ArrayAdapter(currency_spinner.context, android.R.layout.simple_spinner_item, currencies)
 
         datePickerInputEditText.manager = supportFragmentManager
@@ -78,6 +82,20 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         value_edit_text.requestFocus()
 
         save_button.setOnClickListener { presenter.save() }
+    }
+
+    private fun initOperationTypeSpinner() {
+        val operationTypes = OperationType.values().map { type -> getString(type.stringId) }
+        type_operation_spinner.adapter = ArrayAdapter(type_operation_spinner.context, android.R.layout.simple_spinner_item, operationTypes)
+
+        type_operation_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(adapter: AdapterView<*>) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                presenter.loadCategories(OperationType.values()[position])
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

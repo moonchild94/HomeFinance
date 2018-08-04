@@ -23,6 +23,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toEndOf="@id/transaction_category_name_text_view"
         app:layout_constraintTop_toTopOf="parent"
+        android:lines="1"
         tools:text="Обед" />
 
     <TextView

@@ -25,4 +25,13 @@
     <string name="text_error_obligatory">Fill in the required field</string>
     <string name="income">Income</string>
     <string name="outcome">Outcome</string>
+    <string name="delete_operation_confirmation">Do you want to delete the operation</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="all">All</string>
+    <string name="adding_wallet_name">Название</string>
+    <string name="adding_wallet_start_balance">Начальный баланс</string>
+    <string name="adding_wallet_start_balance_value">0.0</string>
+    <string name="adding_wallet_title">Добавить счет</string>
+    <string name="delete_wallet_confirmation">Do you want to delete the account?</string>
 </resources>

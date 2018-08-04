@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import ru.divizdev.homefinance.entities.Category
+import ru.divizdev.homefinance.entities.OperationType
 
 /**
  * Dao для работы с категориями.
@@ -23,4 +24,8 @@ interface CategoryDao {
     // Получение всех Category из бд
     @Query("SELECT * FROM category")
     fun getAll(): List<Category>
+
+    // Получение списка Category из бд по типу операции
+    @Query("SELECT * FROM category WHERE Category.operationType = :operationType")
+    fun query(operationType: OperationType): List<Category>
 }

@@ -49,17 +49,23 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                     val wallet2 = Wallet(2, "Кошелек2", Money(BigDecimal.valueOf(10000), Currency.USD))
                                     getInstance(context).getWalletDao().insert(wallet2)
 
-                                    val category = Category(1, OperationType.OUTCOME, "Еда", "")
-                                    getInstance(context).getCategoryDao().insert(category)
+                                    val category1 = Category(1, OperationType.OUTCOME, "Еда", "")
+                                    getInstance(context).getCategoryDao().insert(category1)
+                                    val category2 = Category(2, OperationType.INCOME, "Зарплата", "")
+                                    getInstance(context).getCategoryDao().insert(category2)
 
                                     val operation1 = IdleOperation(walletId = wallet1.walletId, comment = "Обед",
                                             sumCurrencyMain = Money(BigDecimal.valueOf(13.34), Currency.RUB), date = Date(),
-                                            categoryId = category.categoryId)
+                                            categoryId = category1.categoryId)
                                     getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation1, wallet1)
                                     val operation2 = IdleOperation(walletId = wallet2.walletId, comment = "Ужин",
                                             sumCurrencyMain = Money(BigDecimal.valueOf(230.34), Currency.USD), date = Date(),
-                                            categoryId = category.categoryId)
+                                            categoryId = category1.categoryId)
                                     getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation2, wallet2)
+                                    val operation3 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
+                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(),
+                                            categoryId = category2.categoryId)
+                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation3, wallet2)
                                 }
                             }
                         })

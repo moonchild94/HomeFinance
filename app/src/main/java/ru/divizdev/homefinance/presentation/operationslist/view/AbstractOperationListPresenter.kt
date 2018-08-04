@@ -1,4 +1,4 @@
-package ru.divizdev.homefinance.presentation.listTransaction.view
+package ru.divizdev.homefinance.presentation.operationslist.view
 
 import ru.divizdev.homefinance.mvp.BaseMvpPresenter
 

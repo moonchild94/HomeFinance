@@ -4,10 +4,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import ru.divizdev.homefinance.data.repository.RepositoryCategory
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
-import ru.divizdev.homefinance.entities.Category
-import ru.divizdev.homefinance.entities.Money
-import ru.divizdev.homefinance.entities.Operation
-import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.entities.*
 import ru.divizdev.homefinance.model.OperationInteractor
 import ru.divizdev.homefinance.presentation.operation.view.OperationUI
 import java.math.BigDecimal
@@ -18,15 +15,23 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
     private lateinit var wallets: List<Wallet>
     private lateinit var categories: List<Category>
 
-    override fun loadData() {
+    override fun loadWallets() {
         launch {
             wallets = repositoryWallet.getAll()
-            categories = repositoryCategory.getAll()
+
+            launch(UI) {
+                val walletNames = wallets.map { wallet -> wallet.walletName}
+                weakReferenceView.get()?.onLoadWallets(walletNames) }
+        }
+    }
+
+    override fun loadCategories(operationType: OperationType) {
+        launch {
+            categories = repositoryCategory.query(operationType)
 
             launch(UI) {
                 val categoryNames = categories.map { category ->  category.categoryName}
-                val walletNames = wallets.map { wallet -> wallet.walletName}
-                weakReferenceView.get()?.onLoadData(categoryNames, walletNames) }
+                weakReferenceView.get()?.onLoadCategories(categoryNames) }
         }
     }
 

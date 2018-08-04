@@ -11,7 +11,7 @@ interface IMainView: IMvpView {
 
     fun showErrorNotAvailable()
 
-    fun openAddTransaction()
+    fun openAddOperation()
 
     fun openHome()
 
@@ -19,5 +19,5 @@ interface IMainView: IMvpView {
 
     fun getOpenTypeScreen(): TypeSubScreen
 
-    fun openTransactions()
+    fun openOperations()
 }

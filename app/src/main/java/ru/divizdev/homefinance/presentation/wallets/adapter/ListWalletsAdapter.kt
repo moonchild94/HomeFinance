@@ -11,7 +11,9 @@ import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
-class ListWalletsAdapter(private var listWallets: List<Wallet>, private val localeUtils: LocaleUtils) : RecyclerView.Adapter<ListWalletsAdapter.ViewHolder>() {
+class ListWalletsAdapter(private var listWallets: List<Wallet>,
+                         private val localeUtils: LocaleUtils,
+                         private val onDeleteAction: (position: Int) -> Unit) : RecyclerView.Adapter<ListWalletsAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,9 +35,16 @@ class ListWalletsAdapter(private var listWallets: List<Wallet>, private val loca
         holder.setData(listWallets[position])
     }
 
-    class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
         private lateinit var wallet: Wallet
+
+        init {
+            view.setOnLongClickListener {
+                onDeleteAction.invoke(adapterPosition)
+                true
+            }
+        }
 
         fun setData(wallet: Wallet) {
             this.wallet = wallet

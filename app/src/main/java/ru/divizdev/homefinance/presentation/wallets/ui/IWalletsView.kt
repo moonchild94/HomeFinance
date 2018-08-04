@@ -5,4 +5,6 @@ import ru.divizdev.homefinance.mvp.IMvpView
 
 interface IWalletsView : IMvpView {
     fun setListWallets(wallets: List<Wallet>)
+
+    fun showDeleteFragmentDialog(position: Int)
 }

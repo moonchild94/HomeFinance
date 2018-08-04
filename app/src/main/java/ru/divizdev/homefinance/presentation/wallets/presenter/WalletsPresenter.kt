@@ -6,15 +6,17 @@ import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.Wallet
 
 class WalletsPresenter(private val repositoryWallet: RepositoryWallet) : AbstractWalletsPresenter() {
-    override fun loadData() {
-        launch {
-            val wallets = repositoryWallet.getAll()
-            launch(UI) { weakReferenceView.get()?.setListWallets(wallets) }
-        }
+    private lateinit var wallets: List<Wallet>
+
+    override fun onDeleteOperation(position: Int) {
+        launch { repositoryWallet.delete(wallets[position]) }
     }
 
-    override fun selectWallet(wallet: Wallet) {
-        //Заготовка для выбора кошелька
+    override fun loadData() {
+        launch {
+            wallets = repositoryWallet.getAll()
+            launch(UI) { weakReferenceView.get()?.setListWallets(wallets) }
+        }
     }
 
     override fun update() {

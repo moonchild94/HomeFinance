@@ -7,4 +7,8 @@ interface RepositoryWallet {
     fun getById(id: Int): Wallet?
 
     fun getAll(): List<Wallet>
+
+    fun add(wallet: Wallet)
+
+    fun delete(wallet: Wallet)
 }

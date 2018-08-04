@@ -1,5 +1,6 @@
-package ru.divizdev.homefinance.presentation.listTransaction.view
+package ru.divizdev.homefinance.presentation.operationslist.view
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -8,26 +9,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.fragment_list_transaction.*
+import kotlinx.android.synthetic.main.fragment_list_operation.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
-import ru.divizdev.homefinance.presentation.listTransaction.adapter.OperationListAdapter
+import ru.divizdev.homefinance.presentation.main.view.IMainView
+import ru.divizdev.homefinance.presentation.operationslist.adapter.OperationListAdapter
 
 class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IOperationListView>(), IOperationListView {
+    private lateinit var parentView: IMainView
+
     override fun showDeleteFragmentDialog(position: Int) {
         AlertDialog.Builder(requireContext())
-                .setTitle("Вы действительно хотите удалить операцию?")
-                .setPositiveButton("OK") { _, _ ->
+                .setTitle(getString(R.string.delete_operation_confirmation))
+                .setPositiveButton(getString(R.string.ok)) { _, _ ->
                     presenter.onDeleteOperation(position)
                 }
-                .setNegativeButton("Cancel") { _, _ -> }
+                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
                 .create()
                 .show()
     }
 
     override fun showWalletsSpinner(wallets: List<String>) {
+        wallets.toMutableList().add(0, getString(R.string.all))
         filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_item, wallets)
     }
 
@@ -41,9 +46,17 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         return this
     }
 
+    override fun onAttach(context: Context?) {
+        if (context !is IMainView) {
+            throw IllegalArgumentException() // todo переделать по-людски
+        }
+        parentView = context
+        super.onAttach(context)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list_transaction, container, false)
+        return inflater.inflate(R.layout.fragment_list_operation, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +70,8 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         list_transaction_recylcer_view.adapter = operationListAdapter
 
         initFilters()
+
+        fab.setOnClickListener { parentView.openAddOperation() }
     }
 
     override fun onStart() {

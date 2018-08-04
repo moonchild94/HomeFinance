@@ -1,4 +1,4 @@
-package ru.divizdev.homefinance.presentation.listTransaction.view
+package ru.divizdev.homefinance.presentation.operationslist.view
 
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -25,7 +25,6 @@ class OperationListPresenter(private val repositoryOperation: RepositoryOperatio
         launch {
             wallets = repositoryWallet.getAll()
             val walletNames = wallets.map { wallet -> wallet.walletName }.toMutableList()
-            walletNames.add(selectedWalletPosition, "all")
             launch(UI) { weakReferenceView.get()?.showWalletsSpinner(walletNames) }
         }
     }

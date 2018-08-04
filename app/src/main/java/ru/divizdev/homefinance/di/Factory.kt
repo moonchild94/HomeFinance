@@ -10,13 +10,15 @@ import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.Router
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
-import ru.divizdev.homefinance.presentation.listTransaction.view.AbstractOperationListPresenter
-import ru.divizdev.homefinance.presentation.listTransaction.view.OperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
+import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
+import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.WalletsPresenter
 import java.util.*
 
@@ -82,6 +84,10 @@ object Factory {
 
     fun getOperationPresenter(): AbstractOperationPresenter {
         return OperationPresenter(repositoryWallet, repositoryCategory, operationInteractor)
+    }
+
+    fun getAddWalletPresenter(): AbstractAddWalletPresenter {
+        return AddWalletPresenter(repositoryWallet)
     }
 
     fun getConvertor(): Converter {

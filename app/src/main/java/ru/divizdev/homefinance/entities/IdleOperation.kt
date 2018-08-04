@@ -23,7 +23,7 @@ import java.util.*
             childColumns = ["categoryId"]
     )]
 )
-data class IdleOperation(@PrimaryKey(autoGenerate = true) val idleOperationId: Int? = null,
+data class IdleOperation(@PrimaryKey(autoGenerate = true) var idleOperationId: Int = 0,
                          val walletId: Int,
                          val comment: String,
                          @Embedded(prefix = "sumMain") val sumCurrencyMain: Money,

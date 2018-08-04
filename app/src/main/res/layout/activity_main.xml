@@ -13,7 +13,6 @@
         android:orientation="vertical">
     <include layout="@layout/toolbar" />
 
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -23,8 +22,6 @@
         tools:context=".presentation.main.view.MainActivity">
 
     </FrameLayout>
-
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -37,17 +34,5 @@
 
         app:menu="@menu/navigation" />
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="90dp"
-        app:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_add_24dp"
-        android:layout_marginEnd="16dp" />
-
 
 </android.support.design.widget.CoordinatorLayout>
