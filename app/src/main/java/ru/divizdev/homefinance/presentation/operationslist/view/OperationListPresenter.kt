@@ -32,7 +32,7 @@ class OperationListPresenter(private val repositoryOperation: RepositoryOperatio
     override fun loadOperations(position: Int) {
         launch {
             selectedWalletPosition = position
-            operations = if (selectedWalletPosition == 0) repositoryOperation.getAll() else repositoryOperation.query(wallets[selectedWalletPosition - 1])
+            operations = if (selectedWalletPosition == 0) repositoryOperation.getAll() else repositoryOperation.queryByWallet(wallets[selectedWalletPosition - 1])
             launch(UI) { weakReferenceView.get()?.showOperationList(operations) }
         }
     }

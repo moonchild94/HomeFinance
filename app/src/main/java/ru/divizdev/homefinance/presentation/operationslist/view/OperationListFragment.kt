@@ -32,8 +32,9 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
     }
 
     override fun showWalletsSpinner(wallets: List<String>) {
-        wallets.toMutableList().add(0, getString(R.string.all))
-        filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_item, wallets)
+        val walletsWithAllElement = wallets.toMutableList()
+        walletsWithAllElement.add(0, getString(R.string.all))
+        filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_item, walletsWithAllElement)
     }
 
     private lateinit var operationListAdapter: OperationListAdapter

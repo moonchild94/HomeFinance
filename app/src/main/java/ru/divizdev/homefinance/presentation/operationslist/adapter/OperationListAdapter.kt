@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.item_operation.view.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
 class OperationListAdapter(private var listOperations: List<Operation>,
@@ -53,13 +54,23 @@ class OperationListAdapter(private var listOperations: List<Operation>,
 
         fun setData(operation: Operation) {
             this.operation = operation
+
             transactionCategoryName.text = operation.category.categoryName
             transactionCategoryComment.text = operation.comment
             transactionWalletName.text = operation.wallet.walletName
+
             if (operation.sumCurrencyOperation.currency != operation.sumCurrencyMain.currency) {
                 setMoney(operation.sumCurrencyMain, transactionMainAmount, transactionMainCurrency)
             }
             setMoney(operation.sumCurrencyOperation, transactionCurrentAmount, transactionCurrentCurrency)
+
+            val colorId = if (operation.category.operationType == OperationType.OUTCOME) R.color.expenseText else R.color.revenueText
+            val moneyColor = transactionMainAmount.context.resources.getColor(colorId)
+            transactionMainAmount.setTextColor(moneyColor)
+            transactionMainCurrency.setTextColor(moneyColor)
+            transactionCurrentAmount.setTextColor(moneyColor)
+            transactionCurrentCurrency.setTextColor(moneyColor)
+
         }
 
         private fun setMoney(money: Money, value: TextView, currency: TextView) {

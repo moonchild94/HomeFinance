@@ -43,7 +43,7 @@ object Factory {
         repositoryWalletOperation = RepositoryWalletOperationImpl(db.getWalletOperationDao())
         repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
-        operationInteractor = OperationInteractor(repositoryWalletOperation, converter)
+        operationInteractor = OperationInteractor(repositoryWalletOperation, repositoryWallet, repositoryOperation, converter)
 
         localeUtils = initUtils(context)
     }

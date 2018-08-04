@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.model
 
 import kotlinx.coroutines.experimental.launch
+import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.data.repository.RepositoryWalletOperation
 import ru.divizdev.homefinance.entities.Currency
@@ -11,6 +12,7 @@ import java.math.BigDecimal
 
 class OperationInteractor(private val repositoryWalletOperation: RepositoryWalletOperation,
                           private val repositoryWallet: RepositoryWallet,
+                          private val repositoryOperation: RepositoryOperation,
                           private val converter: Converter) {
 
     fun addOperation(operation: Operation) {
@@ -26,35 +28,23 @@ class OperationInteractor(private val repositoryWalletOperation: RepositoryWalle
         val wallets = repositoryWallet.getAll()
         for (wallet in wallets) {
             var balance = wallet.balance
-            balance = if (balance.currency == currency) {
-                balance
-            } else {
-                converter.convert(balance, currency)
-            }
-            allBalance = allBalance.add(balance.value)
+            balance = if (balance.currency == currency) balance else converter.convert(balance, currency)
+            allBalance = allBalance.add(balance.amount)
         }
 
         return Money(allBalance, currency)
     }
 
     fun getBriefOverview(currency: Currency, operationType: OperationType): Money {
-//        var allBalance: BigDecimal = BigDecimal.ZERO
-//        val listWallet = repositoryWallet.getListWallet()
-//        for (wallet in listWallet) {
-//
-//            var balance = when (operationType) {
-//                OperationType.OUTCOME -> wallet.getBalanceExpense()
-//                OperationType.INCOME -> wallet.getBalanseRevenue()
-//            }
-//            balance = if (balance.currency == currency) {
-//                balance
-//            } else {
-//                converter.convert(balance, currency)
-//            }
-//            allBalance = allBalance.add(balance.value)
-//        }
-//
-//        return Money(allBalance, currency)
-        return Money(BigDecimal.valueOf(0), currency)
+        var allBalance: BigDecimal = BigDecimal.ZERO
+        val operations = repositoryOperation.queryByOperationType(operationType)
+
+        for (operation in operations) {
+            val balance = if (currency == operation.sumCurrencyOperation.currency) operation.sumCurrencyOperation
+            else converter.convert(operation.sumCurrencyOperation, currency)
+            allBalance = allBalance.add(balance.amount)
+        }
+
+        return Money(allBalance, currency)
     }
 }
