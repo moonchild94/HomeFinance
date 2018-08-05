@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.data.db.dao
 
 import android.arch.persistence.room.*
+import io.reactivex.Flowable
 import ru.divizdev.homefinance.entities.Wallet
 
 /**
@@ -19,9 +20,9 @@ interface WalletDao {
 
     // Получение Wallet по идентификатору
     @Query("SELECT * FROM wallet WHERE walletId = :id")
-    fun getById(id: Int): Wallet?
+    fun getById(id: Int): Flowable<Wallet>
 
     // Получение всех Wallet из бд
     @Query("SELECT * FROM wallet")
-    fun getAll(): List<Wallet>
+    fun getAll(): Flowable<List<Wallet>>
 }

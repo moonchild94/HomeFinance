@@ -49,11 +49,6 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         return inflater.inflate(R.layout.fragment_wallets, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.loadData()
-    }
-
     override fun onAttach(context: Context?) {
         if (context !is IMainView) {
             throw IllegalArgumentException() // todo переделать по-людски
@@ -70,8 +65,10 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         wallets_recycler_view.adapter = listWalletsAdapter
 
         fab.setOnClickListener {
-            AddWalletDialogFragment.newInstance().show(childFragmentManager, "AddWalletDialogFragment")
+            AddWalletDialogFragment.newInstance().show(childFragmentManager, null)
         }
+
+        presenter.loadData()
 
         super.onViewCreated(view, savedInstanceState)
     }

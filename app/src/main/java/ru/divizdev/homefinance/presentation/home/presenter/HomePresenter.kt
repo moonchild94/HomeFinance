@@ -1,30 +1,30 @@
 package ru.divizdev.homefinance.presentation.home.presenter
 
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import ru.divizdev.homefinance.entities.Currency
-import ru.divizdev.homefinance.entities.OperationType
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.divizdev.homefinance.model.SummaryInteractor
 
-class HomePresenter(private val summaryInteractor: SummaryInteractor) : AbstractHomePresenter() {//В дальнейшем получать models необходимо через Фабрику
+class HomePresenter(private val summaryInteractor: SummaryInteractor) : AbstractHomePresenter() {
 
-    override fun update() {
-        super.update()
+    override fun loadData() {
+        summaryInteractor.balanceRUB
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setMainBalance(it) }
 
-        val view = weakReferenceView.get()
+        summaryInteractor.balanceUSD
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setSecondaryBalance(it) }
 
-        launch {
-            val rubBalance = summaryInteractor.getBalance(Currency.RUB)
-            val usdBalance = summaryInteractor.getBalance(Currency.USD)
-            val rubOutcomeOverview = summaryInteractor.getBriefOverview(Currency.RUB, OperationType.OUTCOME)
-            val rubIncomeOverview = summaryInteractor.getBriefOverview(Currency.RUB, OperationType.INCOME)
+        summaryInteractor.briefOverviewIncome
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setRevenue(it) }
 
-            launch(UI) {
-                view?.setMainBalance(rubBalance)
-                view?.setSecondaryBalance(usdBalance)
-                view?.setExpense(rubOutcomeOverview)
-                view?.setRevenue(rubIncomeOverview)
-            }
-        }
+        summaryInteractor.briefOverviewOutcome
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setExpense(it) }
     }
 }

@@ -20,9 +20,4 @@ abstract class BaseMvpDialogFragment<Presenter: BaseMvpPresenter<MvpView>, MvpVi
         presenter.detachView()
         super.onDestroyView()
     }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.update()
-    }
 }

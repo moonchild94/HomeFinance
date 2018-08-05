@@ -1,39 +1,47 @@
 package ru.divizdev.homefinance.presentation.operationslist.view
 
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
-import ru.divizdev.homefinance.data.repository.RepositoryWalletOperation
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.model.OperationInteractor
 
 class OperationListPresenter(private val operationInteractor: OperationInteractor,
                              private val repositoryWallet: RepositoryWallet,
-                             private val repositoryWalletOperation: RepositoryWalletOperation) : AbstractOperationListPresenter() {
+                             private val repositoryOperation: RepositoryOperation) : AbstractOperationListPresenter() {
     private lateinit var operations: List<Operation>
     private lateinit var wallets: List<Wallet>
     private var selectedWalletPosition = 0
 
     override fun onDeleteOperation(position: Int) {
-        launch {
-            repositoryWalletOperation.delete(operations[position])
-        }.invokeOnCompletion { loadOperations(selectedWalletPosition) }
+        Completable.fromAction { repositoryOperation.delete(operations[position]) }
+                .subscribeOn(Schedulers.io())
+                .subscribe {}
     }
 
     override fun loadWallets() {
-        launch {
-            wallets = repositoryWallet.getAll()
-            val walletNames = wallets.map { wallet -> wallet.walletName }.toMutableList()
-            launch(UI) { weakReferenceView.get()?.showWalletsSpinner(walletNames) }
-        }
+        repositoryWallet.getAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    wallets = it
+                    weakReferenceView.get()?.showWalletsSpinner(wallets.map { wallet -> wallet.walletName })
+                }
     }
 
     override fun loadOperations(position: Int) {
-        launch {
+        Completable.fromAction {
             selectedWalletPosition = position
-            operations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations() else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1])
-            launch(UI) { weakReferenceView.get()?.showOperationList(operations) }
-        }
+            val flowableOperations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations()
+            else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1])
+            flowableOperations
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        operations = it
+                        weakReferenceView.get()?.showOperationList(operations)
+                    }
+        }.subscribeOn(Schedulers.io()).subscribe {}
     }
 }

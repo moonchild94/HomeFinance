@@ -33,7 +33,6 @@ object Factory {
     private lateinit var repositoryWallet: RepositoryWallet
     private lateinit var repositoryOperation: RepositoryOperation
     private lateinit var repositoryCategory: RepositoryCategory
-    private lateinit var repositoryWalletOperation: RepositoryWalletOperation
 
     private lateinit var summaryInteractor: SummaryInteractor
     private lateinit var operationInteractor: OperationInteractor
@@ -41,12 +40,11 @@ object Factory {
     fun create(context: Context) {
         val db = HomeFinanceDatabase.getDataBase(context)
         repositoryWallet = RepositoryWalletImpl(db.getWalletDao())
-        repositoryOperation = RepositoryOperationImpl(db.getOperationDao())
-        repositoryWalletOperation = RepositoryWalletOperationImpl(db.getWalletOperationDao())
+        repositoryOperation = RepositoryOperationImpl(db.getOperationDao(), db.getWalletOperationDao())
         repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
-        operationInteractor = OperationInteractor(repositoryWalletOperation, repositoryOperation, converter)
-        summaryInteractor = SummaryInteractor(repositoryWallet, operationInteractor, converter)
+        operationInteractor = OperationInteractor(repositoryOperation, converter)
+        summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, converter)
 
         localeUtils = initUtils(context)
     }
@@ -78,7 +76,7 @@ object Factory {
     }
 
     fun getOperationListPresenter(): AbstractOperationListPresenter {
-        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryWalletOperation)
+        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryOperation)
     }
 
     fun getWalletsPresenter(): AbstractWalletsPresenter {

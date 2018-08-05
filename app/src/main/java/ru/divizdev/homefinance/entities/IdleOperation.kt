@@ -30,5 +30,5 @@ data class IdleOperation(@PrimaryKey(autoGenerate = true) var idleOperationId: I
                          @Embedded(prefix = "sumOperation") val sumCurrencyOperation: Money = sumCurrencyMain,
                          val date: Date,
                          val categoryId: Int,
-                         val pending: Boolean = false,
+                         val periodic: Boolean = false,
                          val period: Int = 0)

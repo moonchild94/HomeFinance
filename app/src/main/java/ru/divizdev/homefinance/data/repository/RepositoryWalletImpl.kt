@@ -1,5 +1,6 @@
 package ru.divizdev.homefinance.data.repository
 
+import io.reactivex.Flowable
 import ru.divizdev.homefinance.data.db.dao.WalletDao
 import ru.divizdev.homefinance.entities.Wallet
 
@@ -12,11 +13,11 @@ class RepositoryWalletImpl(private val walletDao: WalletDao) : RepositoryWallet 
         walletDao.insert(wallet)
     }
 
-    override fun getById(id: Int): Wallet? {
+    override fun getById(id: Int): Flowable<Wallet> {
         return walletDao.getById(id)
     }
 
-    override fun getAll(): List<Wallet> {
+    override fun getAll(): Flowable<List<Wallet>> {
         return walletDao.getAll()
     }
 }

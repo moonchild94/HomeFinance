@@ -1,12 +1,12 @@
 package ru.divizdev.homefinance.presentation.operation.presenter
 
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.divizdev.homefinance.data.repository.RepositoryCategory
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.*
 import ru.divizdev.homefinance.model.OperationInteractor
-import ru.divizdev.homefinance.model.SummaryInteractor
 import ru.divizdev.homefinance.presentation.operation.view.OperationUI
 import java.math.BigDecimal
 
@@ -17,25 +17,25 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
     private lateinit var categories: List<Category>
 
     override fun loadWallets() {
-        launch {
-            wallets = repositoryWallet.getAll()
-
-            launch(UI) {
-                val walletNames = wallets.map { wallet -> wallet.walletName }
-                weakReferenceView.get()?.onLoadWallets(walletNames)
-            }
-        }
+        repositoryWallet.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    wallets = it
+                    val walletNames = wallets.map { wallet -> wallet.walletName }
+                    weakReferenceView.get()?.onLoadWallets(walletNames)
+                }
     }
 
     override fun loadCategories(operationType: OperationType) {
-        launch {
-            categories = repositoryCategory.query(operationType)
-
-            launch(UI) {
-                val categoryNames = categories.map { category -> category.categoryName }
-                weakReferenceView.get()?.onLoadCategories(categoryNames)
-            }
-        }
+        repositoryCategory.query(operationType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    categories = it
+                    val categoryNames = categories.map { category -> category.categoryName }
+                    weakReferenceView.get()?.onLoadCategories(categoryNames)
+                }
     }
 
     override fun save() {
@@ -47,7 +47,9 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
             return
         }
 
-        operationInteractor.addOperation(convertOperationUiTOModel(operationUI))
+        Completable.fromAction { operationInteractor.addOperation(convertOperationUiTOModel(operationUI)) }
+                .subscribeOn(Schedulers.io())
+                .subscribe {}
 
         view.exit()
     }
@@ -62,6 +64,6 @@ class OperationPresenter(private val repositoryWallet: RepositoryWallet,
         val period = operationUI.period
 
         return Operation(comment = comment, sumCurrencyOperation = sumCurrencyOperation, date = date,
-                category = category, wallet = wallet, pending = period != 0, period = period)
+                category = category, wallet = wallet, periodic = period != 0, period = period)
     }
 }

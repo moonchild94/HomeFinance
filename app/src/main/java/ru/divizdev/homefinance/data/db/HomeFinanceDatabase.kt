@@ -6,7 +6,8 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import kotlinx.coroutines.experimental.launch
+import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
 import ru.divizdev.homefinance.data.db.dao.CategoryDao
 import ru.divizdev.homefinance.data.db.dao.OperationDao
 import ru.divizdev.homefinance.data.db.dao.WalletDao
@@ -29,7 +30,8 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
     abstract fun getWalletOperationDao(): WalletOperationDao
 
     companion object {
-        @Volatile private var INSTANCE: HomeFinanceDatabase? = null
+        @Volatile
+        private var INSTANCE: HomeFinanceDatabase? = null
 
         fun getInstance(context: Context): HomeFinanceDatabase =
                 INSTANCE ?: synchronized(this) {
@@ -43,7 +45,7 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                             override fun onCreate(db: SupportSQLiteDatabase) {
                                 super.onCreate(db)
 
-                                launch {
+                                Completable.fromAction {
                                     val wallet1 = Wallet(1, "Кошелек", Money(BigDecimal.valueOf(100), Currency.RUB))
                                     getInstance(context).getWalletDao().insert(wallet1)
                                     val wallet2 = Wallet(2, "Кошелек2", Money(BigDecimal.valueOf(10000), Currency.USD))
@@ -68,9 +70,9 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                     getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation3, wallet2)
                                     val operation4 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
                                             sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(1533157200000L),
-                                            categoryId = category2.categoryId, period = 1, pending = true)
+                                            categoryId = category2.categoryId, period = 1, periodic = true)
                                     getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation4, wallet2)
-                                }
+                                }.subscribeOn(Schedulers.io()).subscribe {}
                             }
                         })
                         .build()
