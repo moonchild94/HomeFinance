@@ -64,7 +64,7 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
         { position: Int -> showDeleteFragmentDialog(position) }
         wallets_recycler_view.adapter = listWalletsAdapter
 
-        fab.setOnClickListener {
+        add_wallet.setOnClickListener {
             AddWalletDialogFragment.newInstance().show(childFragmentManager, null)
         }
 

@@ -72,7 +72,7 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
 
         initFilters()
 
-        fab.setOnClickListener { parentView.openAddOperation() }
+        add_operation.setOnClickListener { parentView.openAddOperation() }
     }
 
     override fun onStart() {

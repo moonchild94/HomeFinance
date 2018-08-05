@@ -11,6 +11,7 @@ class Converter(private val currencyRateRepository: RepositoryCurrencyRate) {
         val mapConvert = currencyRateRepository.getCurrentRate()
         val map = mapConvert[moneyFrom.currency]
         val coefficient = map?.get(currencyTo) ?: 0f
-        return Money(BigDecimal.valueOf(moneyFrom.amount.toDouble() * coefficient), currencyTo)
+        return Money(BigDecimal.valueOf(moneyFrom.amount.toDouble() * coefficient)
+                .setScale(2, BigDecimal.ROUND_HALF_DOWN), currencyTo)
     }
 }

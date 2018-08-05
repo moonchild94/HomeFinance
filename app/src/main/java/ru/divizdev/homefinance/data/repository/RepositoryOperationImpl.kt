@@ -78,7 +78,7 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
                 val count = (now.time - periodicOperation.date.time) / (periodicOperation.period * MS_IN_DAY)
                 for (i in 0 until count) {
                     add(periodicOperation.copy(periodic = false, period = 0))
-                    periodicOperation.date = Date(periodicOperation.date.time + MS_IN_DAY * periodicOperation.period * (i + 1))
+                    periodicOperation.date = Date(periodicOperation.date.time + MS_IN_DAY * periodicOperation.period * i)
                 }
 
                 if (newNearestExecuteDate > periodicOperation.date) {
