@@ -12,15 +12,28 @@
     <string name="about_description">This is simple application for tracking your finances</string>
     <string name="title_dialog_about">About</string>
     <string name="title_version">Version</string>
-    <string name="pref_name_currency">Default transaction currency</string>
+    <string name="pref_name_currency">Default operation currency</string>
     <string name="pref_currency_default_value">RUB</string>
     <string name="text_error_available">This functionality is not yet available</string>
     <string name="title_date">Date</string>
     <string name="title_time">Time</string>
     <string name="title_type_operation">Type operation</string>
-    <string name="title_value_operation">Transaction amount</string>
+    <string name="title_value_operation">Operation amount</string>
+    <string name="title_comment_operation">Operation comment</string>
     <string name="title_save_button">Save</string>
     <string name="wallet_title_main_currency">Main currency</string>
     <string name="text_error_obligatory">Fill in the required field</string>
-
+    <string name="income">Income</string>
+    <string name="outcome">Outcome</string>
+    <string name="delete_operation_confirmation">Do you want to delete the operation</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="all">All</string>
+    <string name="adding_wallet_name">Название</string>
+    <string name="adding_wallet_start_balance">Начальный баланс</string>
+    <string name="adding_wallet_start_balance_value">0.0</string>
+    <string name="adding_wallet_title">Добавить счет</string>
+    <string name="delete_wallet_confirmation">Do you want to delete the account?</string>
+    <string name="period_in_days">Period in days</string>
+    <string name="with_period">With period</string>
 </resources>

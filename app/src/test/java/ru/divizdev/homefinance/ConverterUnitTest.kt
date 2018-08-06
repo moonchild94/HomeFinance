@@ -2,12 +2,11 @@ package ru.divizdev.homefinance
 
 import org.junit.Assert
 import org.junit.Test
-import ru.divizdev.homefinance.data.RepositoryCurrencyRate
+import ru.divizdev.homefinance.data.repository.RepositoryCurrencyRate
 import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.model.Converter
 import java.math.BigDecimal
-
 
 /**
  * Tests for [Converter]
@@ -21,9 +20,8 @@ class ConverterUnitTest {
 
         val moneyUsd = converter.convert(moneyRub, Currency.USD)
 
-        Assert.assertEquals(BigDecimal.valueOf(1.12), moneyUsd.value)
+        Assert.assertEquals(BigDecimal.valueOf(1.12), moneyUsd.amount)
         Assert.assertEquals(Currency.USD, moneyUsd.currency)
-
     }
 
     @Test
@@ -32,9 +30,8 @@ class ConverterUnitTest {
 
         val moneyTo = converter.convert(moneyRub, Currency.RUB)
 
-        Assert.assertEquals(BigDecimal.valueOf(10).setScale(2), moneyTo.value)
+        Assert.assertEquals(BigDecimal.valueOf(10).setScale(2), moneyTo.amount)
         Assert.assertEquals(Currency.RUB, moneyTo.currency)
-
     }
 
     @Test
@@ -43,9 +40,8 @@ class ConverterUnitTest {
 
         val moneyTo = converter.convert(moneyUsd, Currency.RUB)
 
-        Assert.assertEquals(BigDecimal.valueOf(1269.8).setScale(2), moneyTo.value)
+        Assert.assertEquals(BigDecimal.valueOf(1269.8).setScale(2), moneyTo.amount)
         Assert.assertEquals(Currency.USD, moneyUsd.currency)
-
     }
 
     @Test
@@ -54,8 +50,7 @@ class ConverterUnitTest {
 
         val moneyUsd = converter.convert(moneyRub, Currency.USD)
 
-        Assert.assertEquals(BigDecimal.valueOf(50).setScale(2), moneyUsd.value)
+        Assert.assertEquals(BigDecimal.valueOf(50).setScale(2), moneyUsd.amount )
         Assert.assertEquals(Currency.USD, moneyUsd.currency)
-
     }
 }

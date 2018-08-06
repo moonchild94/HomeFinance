@@ -17,9 +17,6 @@ import ru.divizdev.homefinance.presentation.main.presenter.TypeSubScreen
 import ru.divizdev.homefinance.presentation.settings.SettingsDialog
 
 class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainView {
-    override fun openTransactions() {
-        Factory.getRouter().navToTransactions(this)
-    }
 
     override fun getOpenTypeScreen(): TypeSubScreen {
         when (navigation.selectedItemId) {
@@ -30,9 +27,8 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         return TypeSubScreen.UNDEFINE
     }
 
-    override fun openAddTransaction() {
-
-        Factory.getRouter().navToAddTransaction(this)
+    override fun openAddOperation() {
+        Factory.getRouter().navToAddOperation(this)
     }
 
     override fun openHome() {
@@ -43,6 +39,9 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         Factory.getRouter().navToWallets(this)
     }
 
+    override fun openOperations() {
+        Factory.getRouter().navToOperations(this)
+    }
 
     override fun getInstancePresenter(): AbstractMainPresenter {
         return Factory.getMainPresenter()
@@ -54,7 +53,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
 
     private val TAG_ABOUT_DIALOG_FRAGMENT = "tagAbout"
     private val TAG_SETTINGS_DIALOG_FRAGMENT = "tagSettings"
-
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -79,9 +77,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
-
-
         navigation.selectedItemId = R.id.navigation_home
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -89,12 +84,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
             val homeFragment = HomeFragment()
             supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
         }
-        fab.setOnClickListener {
-            presenter.actionShowAddTransaction()
-        }
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater

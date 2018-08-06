@@ -1,19 +1,30 @@
 package ru.divizdev.homefinance.presentation.home.presenter
 
-import ru.divizdev.homefinance.entities.Currency
-import ru.divizdev.homefinance.entities.TypeTransaction
-import ru.divizdev.homefinance.model.UserWalletManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import ru.divizdev.homefinance.model.SummaryInteractor
 
+class HomePresenter(private val summaryInteractor: SummaryInteractor) : AbstractHomePresenter() {
 
-class HomePresenter(private val userWalletManager: UserWalletManager): AbstractHomePresenter(){//В дальнейшем получать models необходимо через Фабрику
+    override fun loadData() {
+        summaryInteractor.balanceRUB
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setMainBalance(it) }
 
+        summaryInteractor.balanceUSD
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setSecondaryBalance(it) }
 
-    override fun update() {
-        super.update()
-        val view = weakReferenceView.get()
-        view?.setMainBalance(userWalletManager.getBalance(Currency.RUB))
-        view?.setSecondaryBalance(userWalletManager.getBalance(Currency.USD))
-        view?.setExpense(userWalletManager.getBriefOverview(Currency.RUB, TypeTransaction.Expense))
-        view?.setRevenue(userWalletManager.getBriefOverview(Currency.RUB, TypeTransaction.Revenue))
+        summaryInteractor.briefOverviewIncome
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setRevenue(it) }
+
+        summaryInteractor.briefOverviewOutcome
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { weakReferenceView.get()?.setExpense(it) }
     }
 }

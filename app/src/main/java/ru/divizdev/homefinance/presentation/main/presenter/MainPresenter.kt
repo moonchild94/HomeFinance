@@ -1,12 +1,13 @@
 package ru.divizdev.homefinance.presentation.main.presenter
 
-import ru.divizdev.homefinance.data.RepositoryCurrencyRate
+import ru.divizdev.homefinance.data.repository.RepositoryCurrencyRate
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 
 class MainPresenter : AbstractMainPresenter() {
-    override fun actionShowAddTransaction() {
+
+    override fun actionShowAddOperation() {
         val view = weakReferenceView.get()
-        view?.openAddTransaction()
+        view?.openAddOperation()
     }
 
     override fun actionNavigationHome(): Boolean {
@@ -17,7 +18,6 @@ class MainPresenter : AbstractMainPresenter() {
         }
         return false
     }
-
 
     override fun actionShowAbout() {
         val view = weakReferenceView.get()
@@ -32,7 +32,7 @@ class MainPresenter : AbstractMainPresenter() {
     override fun actionNavigationListOperation(): Boolean {
         val view = weakReferenceView.get()
         if (view?.getOpenTypeScreen() != TypeSubScreen.OPERATIONS) {
-            view?.openTransactions()
+            view?.openOperations()
             return true
         }
         return false

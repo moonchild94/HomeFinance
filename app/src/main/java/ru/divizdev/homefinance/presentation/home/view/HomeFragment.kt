@@ -26,10 +26,9 @@ class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView>(), IHomeV
 
     private var localeUtils: LocaleUtils = Factory.getLocaleUtils()
 
-
     private fun setMoney(money: Money, value: TextView, currency: TextView) {
-        value.text = localeUtils.formatBigDecimal(money.value)
-        currency.text = localeUtils.formatCurrency(money.currency)
+        value.text = localeUtils.formatBigDecimal(money.amount)
+        currency.text = money.currency.sign
     }
 
     override fun setMainBalance(balance: Money) {
@@ -48,18 +47,14 @@ class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView>(), IHomeV
         setMoney(balance, value_expense_text_view, expense_currency_text_view)
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        presenter.loadData()
+    }
 }

@@ -23,4 +23,14 @@
     <string name="wallet_title_main_currency">Основная валюта</string>
     <string name="text_error_obligatory">Заполните необходимые поля</string>
     <string name="title_value_operation">Сумма операции</string>
+    <string name="title_comment_operation">Описание операции</string>
+    <string name="income">Доход</string>
+    <string name="outcome">Расход</string>
+    <string name="delete_operation_confirmation">Вы действительно хотите удалить операцию?</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="all">Все</string>
+    <string name="delete_wallet_confirmation">Вы действительно хотите удалить счет?</string>
+    <string name="period_in_days">Период в днях</string>
+    <string name="with_period">С периодом</string>
 </resources>

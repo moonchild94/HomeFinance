@@ -1,6 +1,5 @@
 package ru.divizdev.homefinance.presentation
 
-import ru.divizdev.homefinance.entities.Currency
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -24,14 +23,6 @@ class LocaleUtils(private val currentLocale: Locale?) {
         df.isGroupingUsed = true
         return df.format(decimalCopy)
     }
-
-    fun formatCurrency(currency: Currency): String {
-        return when (currency) {
-            Currency.RUB -> "\u20BD"
-            Currency.USD -> "\u0024"
-        }
-    }
-
 }
 
 
