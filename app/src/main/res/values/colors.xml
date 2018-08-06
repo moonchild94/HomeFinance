@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#43A047</color>
-    <color name="colorPrimaryDark">#2E7D32</color>
-    <color name="colorAccent">#FDA626</color>
+    <color name="colorPrimary"> #f33f33</color>
+    <color name="colorPrimaryDark">#d22a1f </color>
+    <color name="colorAccent">#ffdb4d</color>
+
     <color name="revenueText">#089f08</color>
     <color name="expenseText">#bf0f0f</color>
+
     <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
