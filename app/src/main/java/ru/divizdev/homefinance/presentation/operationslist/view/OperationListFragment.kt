@@ -73,11 +73,10 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         initFilters()
 
         add_operation.setOnClickListener { parentView.openAddOperation() }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.loadOperations(0)
+        periodic_operations_switch.setOnCheckedChangeListener { _, isChecked ->
+            presenter.loadOperations(filter_wallet_spinner.selectedItemPosition, isChecked)
+        }
     }
 
     override fun showOperationList(operationList: List<Operation>) {
@@ -87,7 +86,7 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
     private fun initFilters() {
         filter_wallet_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                presenter.loadOperations(position)
+                presenter.loadOperations(position, periodic_operations_switch.isChecked)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

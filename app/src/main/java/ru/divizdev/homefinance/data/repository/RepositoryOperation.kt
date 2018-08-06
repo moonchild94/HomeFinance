@@ -7,9 +7,9 @@ import ru.divizdev.homefinance.entities.Wallet
 
 interface RepositoryOperation {
 
-    fun getAll(): Flowable<List<Operation>>
+    fun getAll(isPeriodic: Boolean): Flowable<List<Operation>>
 
-    fun queryByWallet(wallet: Wallet): Flowable<List<Operation>>
+    fun queryByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>>
 
     fun queryByType(operationType: OperationType): Flowable<List<Operation>>
 

@@ -40,6 +40,32 @@
         tools:text="Кошелек" />
 
     <TextView
+        android:id="@+id/period_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/transaction_wallet_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/transaction_category_name_text_view" />
+
+    <TextView
+        android:id="@+id/period_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/period_title"
+        app:layout_constraintTop_toBottomOf="@+id/transaction_category_name_text_view"
+        tools:text="30"/>
+
+    <TextView
         android:id="@+id/transaction_value_transaction_currency_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

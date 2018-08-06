@@ -35,20 +35,20 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         walletOperationDao.deleteOperationAndUpdateWallet(idleOperation, operation.wallet)
     }
 
-    override fun getAll(): Flowable<List<Operation>> {
+    override fun getAll(isPeriodic: Boolean): Flowable<List<Operation>> {
         if (Date() > nearestExecuteDate) {
             handlePeriodicOperations()
         }
 
-        return operationDao.getAll()
+        return if (isPeriodic) operationDao.qetAllPeriodic() else operationDao.getAll()
     }
 
-    override fun queryByWallet(wallet: Wallet): Flowable<List<Operation>> {
+    override fun queryByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>> {
         if (Date() > nearestExecuteDate) {
             handlePeriodicOperations()
         }
 
-        return operationDao.queryByWallet(wallet.walletId)
+        return if (isPeriodic) operationDao.getPeriodicByWallet(wallet.walletId) else operationDao.getByWallet(wallet.walletId)
     }
 
     override fun queryByType(operationType: OperationType): Flowable<List<Operation>> {
@@ -56,7 +56,7 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
             handlePeriodicOperations()
         }
 
-        return operationDao.queryByOperationType(operationType)
+        return operationDao.getByOperationType(operationType)
     }
 
     override fun update(operation: Operation) {
@@ -69,7 +69,7 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
 
     private fun handlePeriodicOperations() {
         val now = Date()
-        val periodicOperations = operationDao.queryPeriodic()
+        val periodicOperations = operationDao.qetAllPeriodicList() // todo придумать, как через rx
         var newNearestExecuteDate = Date(Long.MAX_VALUE)
 
         for (periodicOperation in periodicOperations) {

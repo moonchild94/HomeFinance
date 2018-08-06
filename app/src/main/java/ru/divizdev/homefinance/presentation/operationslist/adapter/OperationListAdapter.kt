@@ -35,13 +35,15 @@ class OperationListAdapter(private var listOperations: List<Operation>,
 
     inner class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
-        private var transactionCategoryName: TextView = itemView.transaction_category_name_text_view
-        private var transactionCategoryComment: TextView = itemView.transaction_category_comment_text_view
-        private var transactionWalletName: TextView = itemView.transaction_wallet_text_view
-        private var transactionMainAmount: TextView = itemView.transaction_value_transaction_currency_text_view
-        private var transactionMainCurrency: TextView = itemView.transaction_main_currency_text_view
-        private var transactionCurrentAmount: TextView = itemView.transaction_balance_text_view
-        private var transactionCurrentCurrency: TextView = itemView.transaction_currency_balance_text_view
+        private var transactionCategoryName = itemView.transaction_category_name_text_view
+        private var transactionCategoryComment = itemView.transaction_category_comment_text_view
+        private var transactionWalletName = itemView.transaction_wallet_text_view
+        private var transactionMainAmount = itemView.transaction_value_transaction_currency_text_view
+        private var transactionMainCurrency = itemView.transaction_main_currency_text_view
+        private var transactionCurrentAmount = itemView.transaction_balance_text_view
+        private var transactionCurrentCurrency = itemView.transaction_currency_balance_text_view
+        private var transactionPeriodTitle = itemView.period_title
+        private var transactionPeriodValue = itemView.period_value
 
         private var operation: Operation? = null
 
@@ -71,6 +73,13 @@ class OperationListAdapter(private var listOperations: List<Operation>,
             transactionCurrentAmount.setTextColor(moneyColor)
             transactionCurrentCurrency.setTextColor(moneyColor)
 
+            if (operation.periodic) {
+                transactionPeriodTitle.setText(R.string.period_in_days_title)
+                transactionPeriodValue.text = operation.period.toString()
+            }
+            else {
+                transactionPeriodTitle.text = ""
+            }
         }
 
         private fun setMoney(money: Money, value: TextView, currency: TextView) {

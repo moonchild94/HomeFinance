@@ -15,6 +15,9 @@ import ru.divizdev.homefinance.entities.OperationType
 @Dao
 interface OperationDao {
 
+    @Update
+    fun update(operation: IdleOperation)
+
     // Удаление IdleOperation из бд
     @Delete
     fun delete(operation: IdleOperation)
@@ -22,15 +25,18 @@ interface OperationDao {
     @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.periodic != 1 ORDER BY IdleOperation.date DESC")
     fun getAll(): Flowable<List<Operation>>
 
+    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.periodic = 1 ORDER BY IdleOperation.date DESC")
+    fun qetAllPeriodic(): Flowable<List<Operation>>
+
+    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.periodic = 1 ORDER BY IdleOperation.date DESC")
+    fun qetAllPeriodicList(): List<Operation>
+
     @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.walletId = :walletId AND IdleOperation.periodic != 1 ORDER BY IdleOperation.date DESC")
-    fun queryByWallet(walletId: Int): Flowable<List<Operation>>
+    fun getByWallet(walletId: Int): Flowable<List<Operation>>
+
+    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.walletId = :walletId AND IdleOperation.periodic = 1 ORDER BY IdleOperation.date DESC")
+    fun getPeriodicByWallet(walletId: Int): Flowable<List<Operation>>
 
     @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE Category.operationType = :operationType AND IdleOperation.periodic != 1")
-    fun queryByOperationType(operationType: OperationType): Flowable<List<Operation>>
-
-    @Query("SELECT IdleOperation.idleOperationId as operationId, IdleOperation.comment, IdleOperation.date, IdleOperation.sumMainamount, IdleOperation.sumMaincurrency, IdleOperation.sumOperationamount, IdleOperation.sumOperationcurrency, IdleOperation.periodic, IdleOperation.period, Category.*, Wallet.* FROM IdleOperation INNER JOIN Category ON IdleOperation.categoryId = Category.categoryId INNER JOIN WALLET ON IdleOperation.walletId = wallet.walletId WHERE IdleOperation.periodic = 1")
-    fun queryPeriodic(): List<Operation>
-
-    @Update
-    fun update(operation: IdleOperation)
+    fun getByOperationType(operationType: OperationType): Flowable<List<Operation>>
 }

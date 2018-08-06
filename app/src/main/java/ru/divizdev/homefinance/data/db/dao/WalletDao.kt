@@ -10,19 +10,18 @@ import ru.divizdev.homefinance.entities.Wallet
 @Dao
 interface WalletDao {
 
-    // Добавление Wallet в бд
     @Insert
     fun insert(wallet: Wallet)
 
-    // Удаление Wallet из бд
     @Delete
     fun delete(wallet: Wallet)
 
-    // Получение Wallet по идентификатору
+    @Update
+    fun update(wallet: Wallet)
+
     @Query("SELECT * FROM wallet WHERE walletId = :id")
     fun getById(id: Int): Flowable<Wallet>
 
-    // Получение всех Wallet из бд
     @Query("SELECT * FROM wallet")
     fun getAll(): Flowable<List<Wallet>>
 }

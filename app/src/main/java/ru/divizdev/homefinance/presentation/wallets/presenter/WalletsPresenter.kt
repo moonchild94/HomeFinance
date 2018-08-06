@@ -7,10 +7,19 @@ import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.Wallet
 
 class WalletsPresenter(private val repositoryWallet: RepositoryWallet) : AbstractWalletsPresenter() {
+
     private lateinit var wallets: List<Wallet>
 
     override fun onDeleteOperation(position: Int) {
         Completable.fromAction { repositoryWallet.delete(wallets[position]) }
+                .subscribeOn(Schedulers.io())
+                .subscribe {}
+    }
+
+    override fun onEditOperation(position: Int, newName: String) {
+        Completable.fromAction {
+            wallets[position].walletName = newName
+            repositoryWallet.update(wallets[position]) }
                 .subscribeOn(Schedulers.io())
                 .subscribe {}
     }

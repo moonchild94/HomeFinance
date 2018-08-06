@@ -33,4 +33,7 @@
     <string name="delete_wallet_confirmation">Вы действительно хотите удалить счет?</string>
     <string name="period_in_days">Период в днях</string>
     <string name="with_period">С периодом</string>
+    <string name="period_in_days_title">Период в днях:</string>
+    <string name="period_operations">Периодические </string>
+    <string name="edit_wallet_title">Редактирование кошелька</string>
 </resources>

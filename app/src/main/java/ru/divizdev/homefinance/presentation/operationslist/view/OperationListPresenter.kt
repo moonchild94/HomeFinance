@@ -31,11 +31,11 @@ class OperationListPresenter(private val operationInteractor: OperationInteracto
                 }
     }
 
-    override fun loadOperations(position: Int) {
+    override fun loadOperations(position: Int, isPeriodic: Boolean) {
         Completable.fromAction {
             selectedWalletPosition = position
-            val flowableOperations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations()
-            else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1])
+            val flowableOperations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations(isPeriodic)
+            else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1], isPeriodic)
             flowableOperations
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {

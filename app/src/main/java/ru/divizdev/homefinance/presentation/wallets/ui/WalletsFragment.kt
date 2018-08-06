@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_edit_wallet.view.*
 import kotlinx.android.synthetic.main.fragment_wallets.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
@@ -22,11 +23,24 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
 
     override fun showDeleteFragmentDialog(position: Int) {
         AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.delete_wallet_confirmation))
-                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                .setTitle(R.string.delete_wallet_confirmation)
+                .setPositiveButton(R.string.ok) { _, _ ->
                     presenter.onDeleteOperation(position)
                 }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .create()
+                .show()
+    }
+
+    override fun showEditFragmentDialog(position: Int) {
+        val editWalletDialogView = layoutInflater.inflate(R.layout.dialog_edit_wallet, null)
+        AlertDialog.Builder(requireContext())
+                .setTitle(R.string.edit_wallet_title)
+                .setView(editWalletDialogView)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    presenter.onEditOperation(position, editWalletDialogView.wallet_name.text.toString())
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
                 .create()
                 .show()
     }
@@ -60,8 +74,8 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val linearLayoutManager = LinearLayoutManager(view.context)
         wallets_recycler_view.layoutManager = linearLayoutManager
-        listWalletsAdapter = ListWalletsAdapter(listOf(), Factory.getLocaleUtils())
-        { position: Int -> showDeleteFragmentDialog(position) }
+        listWalletsAdapter = ListWalletsAdapter(listOf(), Factory.getLocaleUtils(),
+                { showDeleteFragmentDialog(it) }, { showEditFragmentDialog(it) })
         wallets_recycler_view.adapter = listWalletsAdapter
 
         add_wallet.setOnClickListener {

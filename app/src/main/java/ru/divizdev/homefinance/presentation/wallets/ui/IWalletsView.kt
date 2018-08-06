@@ -7,4 +7,6 @@ interface IWalletsView : IMvpView {
     fun setListWallets(wallets: List<Wallet>)
 
     fun showDeleteFragmentDialog(position: Int)
+
+    fun showEditFragmentDialog(position: Int)
 }

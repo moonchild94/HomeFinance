@@ -13,7 +13,9 @@ object OperationMapper {
         val sumCurrencyOperation = operation.sumCurrencyOperation
         val date = operation.date
         val categoryId = operation.category.categoryId
+        val period = operation.period
+        val periodic = operation.periodic
 
-        return IdleOperation(id, walletId, comment, sumCurrencyMain, sumCurrencyOperation, date, categoryId)
+        return IdleOperation(id, walletId, comment, sumCurrencyMain, sumCurrencyOperation, date, categoryId, periodic, period)
     }
 }

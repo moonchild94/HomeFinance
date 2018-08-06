@@ -12,4 +12,6 @@ interface RepositoryWallet {
     fun add(wallet: Wallet)
 
     fun delete(wallet: Wallet)
+
+    fun update(wallet: Wallet)
 }
