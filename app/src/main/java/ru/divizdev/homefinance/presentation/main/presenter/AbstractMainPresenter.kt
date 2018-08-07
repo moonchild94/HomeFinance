@@ -11,6 +11,8 @@ abstract class AbstractMainPresenter: BaseMvpPresenter<IMainView>() {
 
     abstract fun actionShowSettings()
 
+    abstract fun actionShowStatistics()
+
     abstract fun actionNavigationListOperation(): Boolean
 
     abstract fun actionNavigationAccount():Boolean

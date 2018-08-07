@@ -96,7 +96,6 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
 
         when (item?.itemId) {
             R.id.option_about -> {
-
                 presenter.actionShowAbout()
                 return true
             }
@@ -104,6 +103,11 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
                 presenter.actionShowSettings()
                 return true
             }
+            R.id.option_statistics -> {
+                presenter.actionShowStatistics()
+                return true
+            }
+            else -> IllegalAccessException()
         }
 
         return super.onOptionsItemSelected(item)
@@ -119,6 +123,10 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
                 supportFragmentManager,
                 TAG_SETTINGS_DIALOG_FRAGMENT
         )
+    }
+
+    override fun showStatisticsDialog() {
+        Factory.getRouter().navToStatistics(this)
     }
 
     override fun showAboutDialog() {

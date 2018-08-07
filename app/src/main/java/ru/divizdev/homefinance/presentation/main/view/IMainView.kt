@@ -9,6 +9,8 @@ interface IMainView: IMvpView {
 
     fun showSettingsDialog()
 
+    fun showStatisticsDialog()
+
     fun showErrorNotAvailable()
 
     fun openAddOperation()

@@ -46,32 +46,24 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                 super.onCreate(db)
 
                                 Completable.fromAction {
-                                    val wallet1 = Wallet(1, "Кошелек", Money(BigDecimal.valueOf(100), Currency.RUB))
+                                    val wallet1 = Wallet(1, "Наличные", Money(BigDecimal.valueOf(100), Currency.RUB))
                                     getInstance(context).getWalletDao().insert(wallet1)
-                                    val wallet2 = Wallet(2, "Кошелек2", Money(BigDecimal.valueOf(10000), Currency.USD))
+                                    val wallet2 = Wallet(2, "Карта", Money(BigDecimal.valueOf(10000), Currency.USD))
                                     getInstance(context).getWalletDao().insert(wallet2)
 
                                     val category1 = Category(1, OperationType.OUTCOME, "Еда", "")
                                     getInstance(context).getCategoryDao().insert(category1)
-                                    val category2 = Category(2, OperationType.INCOME, "Зарплата", "")
+                                    val category2 = Category(2, OperationType.OUTCOME, "Развлечения", "")
                                     getInstance(context).getCategoryDao().insert(category2)
+                                    val category3 = Category(3, OperationType.OUTCOME, "Транспорт", "")
+                                    getInstance(context).getCategoryDao().insert(category3)
 
-                                    val operation1 = IdleOperation(walletId = wallet1.walletId, comment = "Обед",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(13.34), Currency.RUB), date = Date(),
-                                            categoryId = category1.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation1, wallet1)
-                                    val operation2 = IdleOperation(walletId = wallet2.walletId, comment = "Ужин",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(230.34), Currency.USD), date = Date(),
-                                            categoryId = category1.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation2, wallet2)
-                                    val operation3 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(),
-                                            categoryId = category2.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation3, wallet2)
-                                    val operation4 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(1533157200000L),
-                                            categoryId = category2.categoryId, period = 1, periodic = true)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation4, wallet2)
+                                    val category4 = Category(4, OperationType.INCOME, "Зарплата", "")
+                                    getInstance(context).getCategoryDao().insert(category4)
+                                    val category5 = Category(5, OperationType.INCOME, "Рента", "")
+                                    getInstance(context).getCategoryDao().insert(category5)
+                                    val category6 = Category(6, OperationType.INCOME, "Подработка", "")
+                                    getInstance(context).getCategoryDao().insert(category6)
                                 }.subscribeOn(Schedulers.io()).subscribe {}
                             }
                         })

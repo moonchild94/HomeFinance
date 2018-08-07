@@ -17,6 +17,8 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperatio
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
 import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
 import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
@@ -89,6 +91,10 @@ object Factory {
 
     fun getAddWalletPresenter(): AbstractAddWalletPresenter {
         return AddWalletPresenter(repositoryWallet)
+    }
+
+    fun getStatisticsPresenter(): AbstractStatisticsPresenter {
+        return StatisticsPresenter(repositoryOperation, repositoryWallet)
     }
 
     fun getConvertor(): Converter {

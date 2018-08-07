@@ -5,6 +5,7 @@ import ru.divizdev.homefinance.data.db.dao.OperationDao
 import ru.divizdev.homefinance.data.db.dao.WalletOperationDao
 import ru.divizdev.homefinance.data.mapper.OperationMapper
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.entities.OperationStatistics
 import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.entities.Wallet
 import java.math.BigDecimal
@@ -63,7 +64,11 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         operationDao.update(OperationMapper.mapOperationToIdleOperation(operation))
     }
 
-    private fun calculateDiff(operation: Operation, operationAmount: BigDecimal) :BigDecimal {
+    override fun getSummaryByCategories(wallet: Wallet, dateFrom: Date, dateTo: Date, operationType: OperationType): Flowable<List<OperationStatistics>> {
+        return operationDao.getOperationsSummaryByCategories(wallet.walletId, dateFrom, dateTo, operationType)
+    }
+
+    private fun calculateDiff(operation: Operation, operationAmount: BigDecimal): BigDecimal {
         return if (operation.category.operationType == OperationType.INCOME) operationAmount else operationAmount.negate()
     }
 

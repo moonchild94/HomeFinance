@@ -78,7 +78,7 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
 
         datePickerInputEditText.manager = supportFragmentManager
         timePickerInputEditText.manager = supportFragmentManager
-        datePickerInputEditText.setDateFormat(DateFormat.getMediumDateFormat(applicationContext))
+        datePickerInputEditText.setDateFormat(DateFormat.getDateFormat(applicationContext))
         timePickerInputEditText.setTimeFormat(DateFormat.getTimeFormat(applicationContext))
 
         datePickerInputEditText.date = Calendar.getInstance()
