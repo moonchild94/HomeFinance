@@ -9,10 +9,10 @@ import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
-class ListWalletsAdapter(private var listWallets: List<Wallet>,
-                         private val localeUtils: LocaleUtils,
-                         private val onDeleteAction: (position: Int) -> Unit,
-                         private val onEditAction: (position: Int) -> Unit) : RecyclerView.Adapter<ListWalletsAdapter.ViewHolder>() {
+class WalletListAdapter(private var listWallets: List<Wallet>,
+                        private val localeUtils: LocaleUtils,
+                        private val onDeleteAction: (position: Int) -> Unit,
+                        private val onEditAction: (position: Int) -> Unit) : RecyclerView.Adapter<WalletListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_wallet,

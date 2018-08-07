@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.item_operation.view.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
@@ -64,21 +65,26 @@ class OperationListAdapter(private var listOperations: List<Operation>,
             if (operation.sumCurrencyOperation.currency != operation.sumCurrencyMain.currency) {
                 setMoney(operation.sumCurrencyMain, transactionMainAmount, transactionMainCurrency)
             }
+            else {
+                transactionMainAmount.text = ""
+                transactionMainCurrency.text = ""
+            }
             setMoney(operation.sumCurrencyOperation, transactionCurrentAmount, transactionCurrentCurrency)
 
-            val colorId = if (operation.category.operationType == OperationType.OUTCOME) R.color.expenseText else R.color.revenueText
+            val colorId = if (operation.category.categoryType == CategoryType.OUTCOME) R.color.expenseText else R.color.revenueText
             val moneyColor = transactionMainAmount.context.resources.getColor(colorId)
             transactionMainAmount.setTextColor(moneyColor)
             transactionMainCurrency.setTextColor(moneyColor)
             transactionCurrentAmount.setTextColor(moneyColor)
             transactionCurrentCurrency.setTextColor(moneyColor)
 
-            if (operation.periodic) {
+            if (operation.operationType == OperationType.PERIODIC) {
                 transactionPeriodTitle.setText(R.string.period_in_days_title)
                 transactionPeriodValue.text = operation.period.toString()
             }
-            else {
+            else if (operation.operationType == OperationType.COMPLETE){
                 transactionPeriodTitle.text = ""
+                transactionPeriodValue.text = ""
             }
         }
 

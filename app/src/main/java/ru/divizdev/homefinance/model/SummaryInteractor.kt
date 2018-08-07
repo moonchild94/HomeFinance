@@ -28,13 +28,13 @@ class SummaryInteractor(repositoryWallet: RepositoryWallet,
                         balanceUSD.onNext(updateBalance(it, Currency.USD))
                     }
 
-            repositoryOperation.queryByType(OperationType.INCOME)
+            repositoryOperation.queryByType(CategoryType.INCOME)
                     .observeOn(Schedulers.io())
                     .subscribe {
                         briefOverviewIncome.onNext(updateBriefOverview(it, Currency.RUB))
                     }
 
-            repositoryOperation.queryByType(OperationType.OUTCOME)
+            repositoryOperation.queryByType(CategoryType.OUTCOME)
                     .observeOn(Schedulers.io())
                     .subscribe {
                         briefOverviewOutcome.onNext(updateBriefOverview(it, Currency.RUB))

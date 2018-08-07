@@ -28,7 +28,7 @@ class MainActivity : BaseMvpActivity<AbstractMainPresenter, IMainView>(), IMainV
     }
 
     override fun openAddOperation() {
-        Factory.getRouter().navToAddOperation(this)
+        Factory.getRouter().navToOperation(this)
     }
 
     override fun openHome() {

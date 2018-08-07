@@ -3,7 +3,7 @@ package ru.divizdev.homefinance.data.repository
 import io.reactivex.Flowable
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.entities.OperationStatistics
-import ru.divizdev.homefinance.entities.OperationType
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.Wallet
 import java.util.*
 
@@ -13,7 +13,7 @@ interface RepositoryOperation {
 
     fun queryByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>>
 
-    fun queryByType(operationType: OperationType): Flowable<List<Operation>>
+    fun queryByType(categoryType: CategoryType): Flowable<List<Operation>>
 
     fun update(operation: Operation)
 
@@ -21,5 +21,7 @@ interface RepositoryOperation {
 
     fun add(operation: Operation)
 
-    fun getSummaryByCategories(wallet: Wallet, dateFrom: Date, dateTo: Date, operationType: OperationType): Flowable<List<OperationStatistics>>
+    fun getSummaryByCategories(wallet: Wallet, dateFrom: Date, dateTo: Date, categoryType: CategoryType): Flowable<List<OperationStatistics>>
+
+    fun getTemplates(): Flowable<List<Operation>>
 }

@@ -24,6 +24,7 @@
     <string name="title_value_operation">Operation amount</string>
     <string name="title_comment_operation">Operation comment</string>
     <string name="title_save_button">Save</string>
+    <string name="title_save_template_button">Save template</string>
     <string name="wallet_title_main_currency">Main currency</string>
     <string name="text_error_obligatory">Fill in the required field</string>
     <string name="income">Income</string>
@@ -42,4 +43,7 @@
     <string name="period_in_days_title">Period in days:</string>
     <string name="period_operations">Periodic </string>
     <string name="edit_wallet_title">Wallet editing</string>
+    <string name="periodic_type">Periodic</string>
+    <string name="template_type">Template</string>
+    <string name="complete_type">Complete</string>
 </resources>

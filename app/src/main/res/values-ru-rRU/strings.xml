@@ -23,6 +23,7 @@
     <string name="title_date_to">Дата по</string>
     <string name="title_type_operation">Тип операции</string>
     <string name="title_save_button">Сохранить</string>
+    <string name="title_save_template_button">Сохранить шаблон</string>
     <string name="wallet_title_main_currency">Основная валюта</string>
     <string name="text_error_obligatory">Заполните необходимые поля</string>
     <string name="title_value_operation">Сумма операции</string>

@@ -1,14 +1,14 @@
 package ru.divizdev.homefinance.presentation.statistics.presenter
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
-import ru.divizdev.homefinance.entities.OperationType
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.model.StatisticsInteractor
 import java.util.*
 
-class StatisticsPresenter(private val repositoryOperation: RepositoryOperation,
-                          private val repositoryWallet: RepositoryWallet) : AbstractStatisticsPresenter() {
+class StatisticsPresenter(private val repositoryWallet: RepositoryWallet,
+                          private val statisticsInteractor: StatisticsInteractor) : AbstractStatisticsPresenter() {
     private lateinit var wallets: List<Wallet>
 
     override fun loadWallets() {
@@ -20,8 +20,8 @@ class StatisticsPresenter(private val repositoryOperation: RepositoryOperation,
                 }
     }
 
-    override fun loadStatistics(operationType: OperationType, walletPosition: Int, dateFrom: Date, dateTo: Date) {
-        repositoryOperation.getSummaryByCategories(wallets[walletPosition], dateFrom, dateTo, operationType)
+    override fun loadStatistics(categoryType: CategoryType, walletPosition: Int, dateFrom: Date, dateTo: Date) {
+        statisticsInteractor.getSummaryByCategories(wallets[walletPosition], dateFrom, dateTo, categoryType)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     weakReferenceView.get()?.showStatistics(it)

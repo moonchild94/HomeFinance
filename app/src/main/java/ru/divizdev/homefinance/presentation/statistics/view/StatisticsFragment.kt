@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_statistics.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.OperationStatistics
-import ru.divizdev.homefinance.entities.OperationType
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import java.util.*
@@ -52,7 +52,7 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val operationType = OperationType.values()[operation_type_spinner.selectedItemPosition]
+                val operationType = CategoryType.values()[operation_type_spinner.selectedItemPosition]
                 presenter.loadStatistics(operationType, position, date_from_input_edit_text.date.time, date_to_input_edit_text.date.time)
             }
         }
@@ -81,13 +81,13 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
 
     private fun iniOperationTypeSpinner() {
         operation_type_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item,
-                OperationType.values().map { type -> getString(type.stringId) })
+                CategoryType.values().map { type -> getString(type.stringId) })
         operation_type_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(adapter: AdapterView<*>) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                presenter.loadStatistics(OperationType.values()[position], wallet_spinner.selectedItemPosition,
+                presenter.loadStatistics(CategoryType.values()[position], wallet_spinner.selectedItemPosition,
                         date_from_input_edit_text.date.time, date_to_input_edit_text.date.time)
             }
         }

@@ -4,21 +4,23 @@ import android.content.Context
 import android.os.Build
 import ru.divizdev.homefinance.data.db.HomeFinanceDatabase
 import ru.divizdev.homefinance.data.repository.*
-import ru.divizdev.homefinance.model.Converter
-import ru.divizdev.homefinance.model.OperationInteractor
-import ru.divizdev.homefinance.model.SummaryInteractor
+import ru.divizdev.homefinance.model.*
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.Router
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
+import ru.divizdev.homefinance.presentation.operation.presenter.AbstractAddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
+import ru.divizdev.homefinance.presentation.operation.presenter.AddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
 import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
 import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
+import ru.divizdev.homefinance.presentation.template.presenter.AbstractTemplateListPresenter
+import ru.divizdev.homefinance.presentation.template.presenter.TemplateListPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
@@ -38,6 +40,8 @@ object Factory {
 
     private lateinit var summaryInteractor: SummaryInteractor
     private lateinit var operationInteractor: OperationInteractor
+    private lateinit var statisticsInteractor: StatisticsInteractor
+    private lateinit var templateInteractor: TemplateInteractor
 
     fun create(context: Context) {
         val db = HomeFinanceDatabase.getDataBase(context)
@@ -47,6 +51,8 @@ object Factory {
 
         operationInteractor = OperationInteractor(repositoryOperation, converter)
         summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, converter)
+        statisticsInteractor = StatisticsInteractor(repositoryOperation)
+        templateInteractor = TemplateInteractor(repositoryOperation)
 
         localeUtils = initUtils(context)
     }
@@ -86,7 +92,11 @@ object Factory {
     }
 
     fun getOperationPresenter(): AbstractOperationPresenter {
-        return OperationPresenter(repositoryWallet, repositoryCategory, operationInteractor)
+        return OperationPresenter()
+    }
+
+    fun getAddOperationPresenter(): AbstractAddOperationPresenter {
+        return AddOperationPresenter(repositoryWallet, repositoryCategory, operationInteractor, templateInteractor)
     }
 
     fun getAddWalletPresenter(): AbstractAddWalletPresenter {
@@ -94,7 +104,11 @@ object Factory {
     }
 
     fun getStatisticsPresenter(): AbstractStatisticsPresenter {
-        return StatisticsPresenter(repositoryOperation, repositoryWallet)
+        return StatisticsPresenter(repositoryWallet, statisticsInteractor)
+    }
+
+    fun getTemplateListPresenter(): AbstractTemplateListPresenter {
+        return TemplateListPresenter(templateInteractor)
     }
 
     fun getConvertor(): Converter {

@@ -19,6 +19,7 @@ import ru.divizdev.homefinance.presentation.operationslist.adapter.OperationList
 
 class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IOperationListView>(), IOperationListView {
     private lateinit var parentView: IMainView
+    private lateinit var operationListAdapter: OperationListAdapter
 
     override fun showDeleteFragmentDialog(position: Int) {
         AlertDialog.Builder(requireContext())
@@ -36,8 +37,6 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         walletsWithAllElement.add(0, getString(R.string.all))
         filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_item, walletsWithAllElement)
     }
-
-    private lateinit var operationListAdapter: OperationListAdapter
 
     override fun getInstancePresenter(): AbstractOperationListPresenter {
         return Factory.getOperationListPresenter()

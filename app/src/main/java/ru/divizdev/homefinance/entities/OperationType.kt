@@ -3,6 +3,7 @@ package ru.divizdev.homefinance.entities
 import ru.divizdev.homefinance.R
 
 enum class OperationType(val stringId: Int) {
-    OUTCOME(R.string.outcome),
-    INCOME(R.string.income)
+    PERIODIC(R.string.periodic_type),
+    TEMPLATE(R.string.template_type),
+    COMPLETE(R.string.complete_type)
 }

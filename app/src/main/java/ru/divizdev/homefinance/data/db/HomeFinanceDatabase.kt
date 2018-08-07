@@ -15,7 +15,6 @@ import ru.divizdev.homefinance.data.db.dao.WalletOperationDao
 import ru.divizdev.homefinance.entities.*
 import ru.divizdev.homefinance.entities.Currency
 import java.math.BigDecimal
-import java.util.*
 
 @Database(entities = [Category::class, Wallet::class, IdleOperation::class], version = 1)
 @TypeConverters(Converters::class)
@@ -51,18 +50,18 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                     val wallet2 = Wallet(2, "Карта", Money(BigDecimal.valueOf(10000), Currency.USD))
                                     getInstance(context).getWalletDao().insert(wallet2)
 
-                                    val category1 = Category(1, OperationType.OUTCOME, "Еда", "")
+                                    val category1 = Category(1, CategoryType.OUTCOME, "Еда", "")
                                     getInstance(context).getCategoryDao().insert(category1)
-                                    val category2 = Category(2, OperationType.OUTCOME, "Развлечения", "")
+                                    val category2 = Category(2, CategoryType.OUTCOME, "Развлечения", "")
                                     getInstance(context).getCategoryDao().insert(category2)
-                                    val category3 = Category(3, OperationType.OUTCOME, "Транспорт", "")
+                                    val category3 = Category(3, CategoryType.OUTCOME, "Транспорт", "")
                                     getInstance(context).getCategoryDao().insert(category3)
 
-                                    val category4 = Category(4, OperationType.INCOME, "Зарплата", "")
+                                    val category4 = Category(4, CategoryType.INCOME, "Зарплата", "")
                                     getInstance(context).getCategoryDao().insert(category4)
-                                    val category5 = Category(5, OperationType.INCOME, "Рента", "")
+                                    val category5 = Category(5, CategoryType.INCOME, "Рента", "")
                                     getInstance(context).getCategoryDao().insert(category5)
-                                    val category6 = Category(6, OperationType.INCOME, "Подработка", "")
+                                    val category6 = Category(6, CategoryType.INCOME, "Подработка", "")
                                     getInstance(context).getCategoryDao().insert(category6)
                                 }.subscribeOn(Schedulers.io()).subscribe {}
                             }

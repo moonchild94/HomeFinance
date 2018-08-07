@@ -14,11 +14,11 @@ import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
 import ru.divizdev.homefinance.presentation.main.view.IMainView
-import ru.divizdev.homefinance.presentation.wallets.adapter.ListWalletsAdapter
+import ru.divizdev.homefinance.presentation.wallets.adapter.WalletListAdapter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 
 class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(), IWalletsView {
-    private lateinit var listWalletsAdapter: ListWalletsAdapter
+    private lateinit var walletListAdapter: WalletListAdapter
     private lateinit var parentView: IMainView
 
     override fun showDeleteFragmentDialog(position: Int) {
@@ -54,7 +54,7 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     }
 
     override fun setListWallets(wallets: List<Wallet>) {
-        listWalletsAdapter.updateData(wallets)
+        walletListAdapter.updateData(wallets)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -74,9 +74,9 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val linearLayoutManager = LinearLayoutManager(view.context)
         wallets_recycler_view.layoutManager = linearLayoutManager
-        listWalletsAdapter = ListWalletsAdapter(listOf(), Factory.getLocaleUtils(),
+        walletListAdapter = WalletListAdapter(listOf(), Factory.getLocaleUtils(),
                 { showDeleteFragmentDialog(it) }, { showEditFragmentDialog(it) })
-        wallets_recycler_view.adapter = listWalletsAdapter
+        wallets_recycler_view.adapter = walletListAdapter
 
         add_wallet.setOnClickListener {
             AddWalletDialogFragment.newInstance().show(childFragmentManager, null)

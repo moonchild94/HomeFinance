@@ -14,5 +14,5 @@ data class Operation(val operationId: Int = 0,
                      val wallet: Wallet,
                      @Embedded
                      val category: Category,
-                     val periodic: Boolean = false,
+                     val operationType: OperationType,
                      val period: Int = 0)

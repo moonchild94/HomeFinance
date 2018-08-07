@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import io.reactivex.Flowable
 import ru.divizdev.homefinance.entities.Category
-import ru.divizdev.homefinance.entities.OperationType
+import ru.divizdev.homefinance.entities.CategoryType
 
 /**
  * Dao для работы с категориями.
@@ -27,6 +27,6 @@ interface CategoryDao {
     fun getAll(): Flowable<List<Category>>
 
     // Получение списка Category из бд по типу операции
-    @Query("SELECT * FROM category WHERE Category.operationType = :operationType")
-    fun query(operationType: OperationType): Flowable<List<Category>>
+    @Query("SELECT * FROM category WHERE Category.categoryType = :categoryType")
+    fun query(categoryType: CategoryType): Flowable<List<Category>>
 }

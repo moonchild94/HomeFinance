@@ -4,10 +4,7 @@ import io.reactivex.Flowable
 import ru.divizdev.homefinance.data.db.dao.OperationDao
 import ru.divizdev.homefinance.data.db.dao.WalletOperationDao
 import ru.divizdev.homefinance.data.mapper.OperationMapper
-import ru.divizdev.homefinance.entities.Operation
-import ru.divizdev.homefinance.entities.OperationStatistics
-import ru.divizdev.homefinance.entities.OperationType
-import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.entities.*
 import java.math.BigDecimal
 import java.util.*
 
@@ -52,24 +49,28 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         return if (isPeriodic) operationDao.getPeriodicByWallet(wallet.walletId) else operationDao.getByWallet(wallet.walletId)
     }
 
-    override fun queryByType(operationType: OperationType): Flowable<List<Operation>> {
+    override fun queryByType(categoryType: CategoryType): Flowable<List<Operation>> {
         if (Date() > nearestExecuteDate) {
             handlePeriodicOperations()
         }
 
-        return operationDao.getByOperationType(operationType)
+        return operationDao.getByOperationType(categoryType)
     }
 
     override fun update(operation: Operation) {
         operationDao.update(OperationMapper.mapOperationToIdleOperation(operation))
     }
 
-    override fun getSummaryByCategories(wallet: Wallet, dateFrom: Date, dateTo: Date, operationType: OperationType): Flowable<List<OperationStatistics>> {
-        return operationDao.getOperationsSummaryByCategories(wallet.walletId, dateFrom, dateTo, operationType)
+    override fun getSummaryByCategories(wallet: Wallet, dateFrom: Date, dateTo: Date, categoryType: CategoryType): Flowable<List<OperationStatistics>> {
+        return operationDao.getOperationsSummaryByCategories(wallet.walletId, dateFrom, dateTo, categoryType)
+    }
+
+    override fun getTemplates(): Flowable<List<Operation>> {
+        return operationDao.getTemplates()
     }
 
     private fun calculateDiff(operation: Operation, operationAmount: BigDecimal): BigDecimal {
-        return if (operation.category.operationType == OperationType.INCOME) operationAmount else operationAmount.negate()
+        return if (operation.category.categoryType == CategoryType.INCOME) operationAmount else operationAmount.negate()
     }
 
     private fun handlePeriodicOperations() {
@@ -82,7 +83,7 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
 
                 val count = (now.time - periodicOperation.date.time) / (periodicOperation.period * MS_IN_DAY)
                 for (i in 0 until count) {
-                    add(periodicOperation.copy(periodic = false, period = 0))
+                    add(periodicOperation.copy(operationType = OperationType.COMPLETE, period = 0))
                     periodicOperation.date = Date(periodicOperation.date.time + MS_IN_DAY * periodicOperation.period * (i + 1))
                 }
 

@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.presentation.operationslist.view
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.divizdev.homefinance.data.repository.RepositoryOperation
@@ -14,6 +15,7 @@ class OperationListPresenter(private val operationInteractor: OperationInteracto
                              private val repositoryOperation: RepositoryOperation) : AbstractOperationListPresenter() {
     private lateinit var operations: List<Operation>
     private lateinit var wallets: List<Wallet>
+    private lateinit var operationSubscription: Flowable<List<Operation>>
     private var selectedWalletPosition = 0
 
     override fun onDeleteOperation(position: Int) {
@@ -32,11 +34,16 @@ class OperationListPresenter(private val operationInteractor: OperationInteracto
     }
 
     override fun loadOperations(position: Int, isPeriodic: Boolean) {
+        selectedWalletPosition = position
+        if (::operationSubscription.isInitialized) {
+            operationSubscription.unsubscribeOn(Schedulers.io())
+        }
+
         Completable.fromAction {
-            selectedWalletPosition = position
-            val flowableOperations = if (selectedWalletPosition == 0) operationInteractor.getAllOperations(isPeriodic)
+            operationSubscription = if (selectedWalletPosition == 0) operationInteractor.getAllOperations(isPeriodic)
             else operationInteractor.queryOperationsByWallet(wallets[selectedWalletPosition - 1], isPeriodic)
-            flowableOperations
+
+            operationSubscription
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         operations = it

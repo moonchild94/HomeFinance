@@ -66,6 +66,8 @@ dependencies {
     // diagrams
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
     // tests
     implementation "com.android.support:support-v4:$appcompat_support_version"
     testImplementation 'junit:junit:4.12'
