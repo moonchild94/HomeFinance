@@ -78,6 +78,16 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.attach()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.detach()
+    }
+
     override fun showOperationList(operationList: List<Operation>) {
         operationListAdapter.setData(operationList)
     }

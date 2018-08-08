@@ -8,4 +8,8 @@ abstract class AbstractOperationListPresenter : BaseMvpPresenter<IOperationListV
     abstract fun onDeleteOperation(position: Int)
 
     abstract fun loadWallets()
+
+    abstract fun attach()
+
+    abstract fun detach()
 }

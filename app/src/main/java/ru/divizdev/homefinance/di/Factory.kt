@@ -16,7 +16,7 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperatio
 import ru.divizdev.homefinance.presentation.operation.presenter.AddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
 import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.OperationListPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
 import ru.divizdev.homefinance.presentation.template.presenter.AbstractTemplateListPresenter

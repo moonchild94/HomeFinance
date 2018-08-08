@@ -33,20 +33,20 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         walletOperationDao.deleteOperationAndUpdateWallet(idleOperation, operation.wallet)
     }
 
-    override fun getAll(isPeriodic: Boolean): Flowable<List<Operation>> {
+    override fun getAll(operationType: OperationType): Flowable<List<Operation>> {
         if (Date() > nearestExecuteDate) {
             handlePeriodicOperations()
         }
 
-        return if (isPeriodic) operationDao.qetAllPeriodic() else operationDao.getAll()
+        return operationDao.getAll(operationType)
     }
 
-    override fun queryByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>> {
+    override fun queryByWallet(wallet: Wallet, operationType: OperationType): Flowable<List<Operation>> {
         if (Date() > nearestExecuteDate) {
             handlePeriodicOperations()
         }
 
-        return if (isPeriodic) operationDao.getPeriodicByWallet(wallet.walletId) else operationDao.getByWallet(wallet.walletId)
+        return operationDao.getByWallet(wallet.walletId, operationType)
     }
 
     override fun queryByType(categoryType: CategoryType): Flowable<List<Operation>> {

@@ -1,17 +1,14 @@
 package ru.divizdev.homefinance.data.repository
 
 import io.reactivex.Flowable
-import ru.divizdev.homefinance.entities.Operation
-import ru.divizdev.homefinance.entities.OperationStatistics
-import ru.divizdev.homefinance.entities.CategoryType
-import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.entities.*
 import java.util.*
 
 interface RepositoryOperation {
 
-    fun getAll(isPeriodic: Boolean): Flowable<List<Operation>>
+    fun getAll(operationType: OperationType): Flowable<List<Operation>>
 
-    fun queryByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>>
+    fun queryByWallet(wallet: Wallet, operationType: OperationType): Flowable<List<Operation>>
 
     fun queryByType(categoryType: CategoryType): Flowable<List<Operation>>
 

@@ -3,6 +3,7 @@ package ru.divizdev.homefinance.model
 import io.reactivex.Flowable
 import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.entities.Wallet
 
 class OperationInteractor(private val repositoryOperation: RepositoryOperation,
@@ -16,11 +17,11 @@ class OperationInteractor(private val repositoryOperation: RepositoryOperation,
         repositoryOperation.add(operation)
     }
 
-    fun getAllOperations(isPeriodic: Boolean): Flowable<List<Operation>> {
-        return repositoryOperation.getAll(isPeriodic)
+    fun getAllOperations(operationType: OperationType): Flowable<List<Operation>> {
+        return repositoryOperation.getAll(operationType)
     }
 
-    fun queryOperationsByWallet(wallet: Wallet, isPeriodic: Boolean): Flowable<List<Operation>> {
-        return repositoryOperation.queryByWallet(wallet, isPeriodic)
+    fun queryOperationsByWallet(wallet: Wallet, operationType: OperationType): Flowable<List<Operation>> {
+        return repositoryOperation.queryByWallet(wallet, operationType)
     }
 }
