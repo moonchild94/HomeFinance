@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 
 abstract class BaseMvpActivity<Presenter : BaseMvpPresenter<MvpView>, MvpView : IMvpView> : AppCompatActivity(), IMvpView {
 
-    protected val presenter = getInstancePresenter()
+    val presenter = getInstancePresenter()
     protected abstract fun getInstancePresenter(): Presenter
     abstract fun getMvpView(): MvpView
 

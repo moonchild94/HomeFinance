@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
 import ru.divizdev.homefinance.R
+import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.presentation.home.view.HomeFragment
 import ru.divizdev.homefinance.presentation.operation.view.AddOperationFragment
 import ru.divizdev.homefinance.presentation.operation.view.OperationActivity
@@ -28,11 +29,7 @@ class Router {
     }
 
     fun navToStatistics(activity: FragmentActivity) {
-        activity.supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, StatisticsFragment())
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+        replaceFragmentWithBackStack(activity, StatisticsFragment())
     }
 
     fun navToOperation(activity: FragmentActivity) {
@@ -40,12 +37,25 @@ class Router {
         activity.startActivity(intent)
     }
 
-    fun navToAddOperation(activity: FragmentActivity) {
-        replaceFragment(activity, AddOperationFragment())
+    fun navToAddOperation(activity: FragmentActivity, template: Operation?) {
+        activity.supportFragmentManager.popBackStack()
+        replaceFragment(activity, AddOperationFragment.newInstance(template))
     }
 
     fun navToTemplates(activity: FragmentActivity) {
-        replaceFragment(activity, TemplateListFragment())
+        activity.supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, TemplateListFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
+    }
+
+    private fun replaceFragmentWithBackStack(activity: FragmentActivity, fragment: Fragment) {
+        activity.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
     }
 
     private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {

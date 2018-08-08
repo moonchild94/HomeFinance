@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_operation.view.*
 import ru.divizdev.homefinance.R
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.Money
 import ru.divizdev.homefinance.entities.Operation
-import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.OperationType
 import ru.divizdev.homefinance.presentation.LocaleUtils
 
 class OperationListAdapter(private var listOperations: List<Operation>,
                            private val localeUtils: LocaleUtils,
-                           private val onDeleteAction: (position: Int) -> Unit) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>() {
+                           private val onLongClickAction: (position: Int) -> Unit,
+                           private val onClickAction: (position: Int) -> Unit) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_operation, parent, false)
         return ViewHolder(view, localeUtils)
@@ -50,9 +51,10 @@ class OperationListAdapter(private var listOperations: List<Operation>,
 
         init {
             view.setOnLongClickListener {
-                onDeleteAction.invoke(adapterPosition)
+                onLongClickAction.invoke(adapterPosition)
                 true
             }
+            view.setOnClickListener { onClickAction.invoke(adapterPosition) }
         }
 
         fun setData(operation: Operation) {
@@ -64,8 +66,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
 
             if (operation.sumCurrencyOperation.currency != operation.sumCurrencyMain.currency) {
                 setMoney(operation.sumCurrencyMain, transactionMainAmount, transactionMainCurrency)
-            }
-            else {
+            } else {
                 transactionMainAmount.text = ""
                 transactionMainCurrency.text = ""
             }
@@ -81,8 +82,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
             if (operation.operationType == OperationType.PERIODIC) {
                 transactionPeriodTitle.setText(R.string.period_in_days_title)
                 transactionPeriodValue.text = operation.period.toString()
-            }
-            else if (operation.operationType == OperationType.COMPLETE){
+            } else if (operation.operationType == OperationType.COMPLETE) {
                 transactionPeriodTitle.text = ""
                 transactionPeriodValue.text = ""
             }

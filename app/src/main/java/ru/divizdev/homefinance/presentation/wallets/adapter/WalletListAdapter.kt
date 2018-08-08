@@ -34,8 +34,7 @@ class WalletListAdapter(private var listWallets: List<Wallet>,
     }
 
     inner class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view),
-            View.OnCreateContextMenuListener,
-            MenuItem.OnMenuItemClickListener {
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         private lateinit var wallet: Wallet
 

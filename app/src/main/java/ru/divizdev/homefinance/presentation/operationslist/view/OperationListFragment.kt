@@ -13,11 +13,14 @@ import kotlinx.android.synthetic.main.fragment_list_operation.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 import ru.divizdev.homefinance.presentation.operationslist.adapter.OperationListAdapter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractOperationListPresenter
 
-class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IOperationListView>(), IOperationListView {
+class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IOperationListView, IMainView, AbstractMainPresenter>(), IOperationListView {
     private lateinit var parentView: IMainView
     private lateinit var operationListAdapter: OperationListAdapter
 
@@ -39,7 +42,8 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
     }
 
     override fun getInstancePresenter(): AbstractOperationListPresenter {
-        return Factory.getOperationListPresenter()
+        return Factory.getOperationListPresenter((requireContext()
+                as BaseMvpActivity<AbstractMainPresenter, IMainView>).presenter)
     }
 
     override fun getMvpView(): IOperationListView {
@@ -65,8 +69,8 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         presenter.loadWallets()
 
         list_transaction_recylcer_view.layoutManager = LinearLayoutManager(context)
-        operationListAdapter = OperationListAdapter(listOf(), Factory.getLocaleUtils())
-        { position: Int -> showDeleteFragmentDialog(position) }
+        operationListAdapter = OperationListAdapter(listOf(), Factory.getLocaleUtils(),
+                { position: Int -> showDeleteFragmentDialog(position) }, {})
         list_transaction_recylcer_view.adapter = operationListAdapter
 
         initFilters()

@@ -12,4 +12,6 @@ interface IAddOperationView: IMvpView {
     fun exit()
 
     fun showErrorObligatoryField()
+
+    fun initializeByTemplate(template: OperationUI)
 }

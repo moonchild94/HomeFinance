@@ -12,12 +12,16 @@ import kotlinx.android.synthetic.main.fragment_wallets.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.view.IMainView
 import ru.divizdev.homefinance.presentation.wallets.adapter.WalletListAdapter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 
-class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(), IWalletsView {
+class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView, IMainView,
+        AbstractMainPresenter>(), IWalletsView {
+
     private lateinit var walletListAdapter: WalletListAdapter
     private lateinit var parentView: IMainView
 
@@ -46,7 +50,8 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     }
 
     override fun getInstancePresenter(): AbstractWalletsPresenter {
-        return Factory.getWalletsPresenter()
+        return Factory.getWalletsPresenter((requireContext()
+                as BaseMvpActivity<AbstractMainPresenter, IMainView>).presenter)
     }
 
     override fun getMvpView(): IWalletsView {

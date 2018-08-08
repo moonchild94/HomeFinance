@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,6 +58,18 @@
             app:is24HourView="true" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/search_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@id/date_to"
+        app:layout_constraintStart_toEndOf="@id/date_to"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_spinner"
+        app:layout_constraintVertical_bias="0.5" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/histogram"

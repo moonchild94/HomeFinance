@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.presentation.template.view
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,15 @@ import kotlinx.android.synthetic.main.fragment_template_list.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Operation
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
+import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
+import ru.divizdev.homefinance.presentation.operation.view.IOperationView
 import ru.divizdev.homefinance.presentation.operationslist.adapter.OperationListAdapter
 import ru.divizdev.homefinance.presentation.template.presenter.AbstractTemplateListPresenter
 
-class TemplateListFragment : BaseMvpFragment<AbstractTemplateListPresenter, ITemplateListView>(), ITemplateListView {
+class TemplateListFragment : BaseMvpFragment<AbstractTemplateListPresenter, ITemplateListView,
+        IOperationView, AbstractOperationPresenter>(), ITemplateListView {
 
     private lateinit var templateListAdapter: OperationListAdapter
 
@@ -25,9 +30,22 @@ class TemplateListFragment : BaseMvpFragment<AbstractTemplateListPresenter, ITem
         super.onViewCreated(view, savedInstanceState)
 
         templates_recycle_view.layoutManager = LinearLayoutManager(context)
-        templateListAdapter = OperationListAdapter(listOf(), Factory.getLocaleUtils()) {}
+        templateListAdapter = OperationListAdapter(listOf(), Factory.getLocaleUtils(),
+                { position: Int -> showDeleteFragmentDialog(position) },
+                { position: Int -> presenter.selectTemplate(position) })
         templates_recycle_view.adapter = templateListAdapter
         presenter.loadTemplates()
+    }
+
+    private fun showDeleteFragmentDialog(position: Int) {
+        AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.delete_template_confirmation))
+                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                    presenter.onDeleteOperation(position)
+                }
+                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                .create()
+                .show()
     }
 
     override fun showTemplates(templates: List<Operation>) {
@@ -35,7 +53,8 @@ class TemplateListFragment : BaseMvpFragment<AbstractTemplateListPresenter, ITem
     }
 
     override fun getInstancePresenter(): AbstractTemplateListPresenter {
-        return Factory.getTemplateListPresenter()
+        return Factory.getTemplateListPresenter((requireContext()
+                as BaseMvpActivity<AbstractOperationPresenter, IOperationView>).presenter)
     }
 
     override fun getMvpView(): ITemplateListView {

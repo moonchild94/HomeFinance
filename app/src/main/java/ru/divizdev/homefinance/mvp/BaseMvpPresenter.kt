@@ -2,7 +2,6 @@ package ru.divizdev.homefinance.mvp
 
 import java.lang.ref.WeakReference
 
-
 abstract class BaseMvpPresenter<T: IMvpView> {
 
     protected var weakReferenceView: WeakReference<T?> = WeakReference(null)
@@ -13,5 +12,11 @@ abstract class BaseMvpPresenter<T: IMvpView> {
 
     open fun detachView(){
         weakReferenceView.clear()
+    }
+
+    open fun attach() {
+    }
+
+    open fun detach() {
     }
 }

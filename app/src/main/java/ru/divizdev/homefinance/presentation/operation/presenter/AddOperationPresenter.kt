@@ -10,11 +10,13 @@ import ru.divizdev.homefinance.model.OperationInteractor
 import ru.divizdev.homefinance.model.TemplateInteractor
 import ru.divizdev.homefinance.presentation.operation.view.OperationUI
 import java.math.BigDecimal
+import java.util.*
 
 class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
                             private val repositoryCategory: RepositoryCategory,
                             private val operationInteractor: OperationInteractor,
-                            private val templateInteractor: TemplateInteractor) : AbstractAddOperationPresenter() {
+                            private val templateInteractor: TemplateInteractor,
+                            parentPresenter: AbstractOperationPresenter) : AbstractAddOperationPresenter(parentPresenter) {
 
     private lateinit var wallets: List<Wallet>
     private lateinit var categories: List<Category>
@@ -53,7 +55,7 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
             return
         }
 
-        Completable.fromAction { operationInteractor.addOperation(convertOperationUiTOModel(operationUI)) }
+        Completable.fromAction { operationInteractor.addOperation(convertOperationUiToModel(operationUI)) }
                 .subscribeOn(Schedulers.io())
                 .subscribe {}
 
@@ -61,14 +63,29 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
     }
 
     override fun saveTemplate() {
-        val operationUI = weakReferenceView.get()?.getOperation() ?: throw IllegalArgumentException()
+        val operationUI = weakReferenceView.get()?.getOperation()
+                ?: throw IllegalArgumentException()
         operationUI.operationType = OperationType.TEMPLATE
-        Completable.fromAction { templateInteractor.addTemplate(convertOperationUiTOModel(operationUI)) }
+        Completable.fromAction { templateInteractor.addTemplate(convertOperationUiToModel(operationUI)) }
                 .subscribeOn(Schedulers.io())
                 .subscribe {}
     }
 
-    private fun convertOperationUiTOModel(operationUI: OperationUI): Operation {
+    override fun initializeByTemplate(template: Operation?) {
+        if (template != null) {
+            var templateUi: OperationUI? = null
+            Completable.fromAction { templateUi = convertOperationUiFromModel(template) }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        if (templateUi != null) {
+                            weakReferenceView.get()?.initializeByTemplate(templateUi as OperationUI)
+                        }
+                    }
+        }
+    }
+
+    private fun convertOperationUiToModel(operationUI: OperationUI): Operation {
+
         val wallet = wallets[operationUI.walletNumber]
         val category = categories[operationUI.categoryNumber]
         val sumCurrencyOperation = Money(BigDecimal.valueOf(operationUI.value
@@ -80,5 +97,23 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
 
         return Operation(comment = comment, sumCurrencyOperation = sumCurrencyOperation, date = date,
                 category = category, wallet = wallet, operationType = operationType, period = period)
+    }
+
+    private fun convertOperationUiFromModel(operation: Operation): OperationUI {
+        val categoryType = operation.category.categoryType
+        categories = repositoryCategory.query(categoryType).blockingFirst()
+        if (!::wallets.isInitialized) {
+            wallets = repositoryWallet.getAll().blockingFirst()
+        }
+        val categoryNumber = categories.indexOf(operation.category)
+        val walletNumber = wallets.indexOf(operation.wallet)
+        val value = operation.sumCurrencyOperation.amount.toDouble()
+        val currency = operation.sumCurrencyOperation.currency
+        val comment = operation.comment
+        val period = operation.period
+        val operationType = operation.operationType
+
+        return OperationUI(Date(), Date(), categoryType, categoryNumber, walletNumber, value, currency,
+                comment, period, operationType)
     }
 }

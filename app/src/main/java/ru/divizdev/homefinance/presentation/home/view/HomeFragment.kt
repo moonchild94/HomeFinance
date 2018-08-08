@@ -9,19 +9,23 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Money
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
+import ru.divizdev.homefinance.presentation.main.view.IMainView
 
 
-class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView>(), IHomeView {
+class HomeFragment : BaseMvpFragment<AbstractHomePresenter, IHomeView, IMainView, AbstractMainPresenter>(), IHomeView {
     override fun getMvpView(): IHomeView {
         return this
     }
 
     //Заготовка для получения Presenter, пока прямая инициализация
     override fun getInstancePresenter(): AbstractHomePresenter {
-        return Factory.getHomePresenter()
+        return Factory.getHomePresenter((requireContext()
+                as BaseMvpActivity<AbstractMainPresenter, IMainView>).presenter)
     }
 
     private var localeUtils: LocaleUtils = Factory.getLocaleUtils()

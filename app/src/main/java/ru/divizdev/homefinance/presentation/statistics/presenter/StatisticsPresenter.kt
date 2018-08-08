@@ -5,10 +5,12 @@ import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.model.StatisticsInteractor
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import java.util.*
 
 class StatisticsPresenter(private val repositoryWallet: RepositoryWallet,
-                          private val statisticsInteractor: StatisticsInteractor) : AbstractStatisticsPresenter() {
+                          private val statisticsInteractor: StatisticsInteractor,
+                          parentPresenter: AbstractMainPresenter) : AbstractStatisticsPresenter(parentPresenter) {
     private lateinit var wallets: List<Wallet>
 
     override fun loadWallets() {

@@ -17,11 +17,8 @@ class OperationInteractor(private val repositoryOperation: RepositoryOperation,
         repositoryOperation.add(operation)
     }
 
-    fun getAllOperations(operationType: OperationType): Flowable<List<Operation>> {
-        return repositoryOperation.getAll(operationType)
-    }
-
-    fun queryOperationsByWallet(wallet: Wallet, operationType: OperationType): Flowable<List<Operation>> {
-        return repositoryOperation.queryByWallet(wallet, operationType)
+    fun queryOperationsByWallet(wallet: Wallet?, operationType: OperationType): Flowable<List<Operation>> {
+        return if (wallet == null) repositoryOperation.getAll(operationType) else
+            repositoryOperation.queryByWallet(wallet, operationType)
     }
 }

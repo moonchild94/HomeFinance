@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Home Finance</string>
+    <string name="app_name">Ya.Finance</string>
     <string name="title_home">Home</string>
     <string name="title_operations">Operations</string>
     <string name="title_account">Accounts</string>
@@ -29,7 +29,8 @@
     <string name="text_error_obligatory">Fill in the required field</string>
     <string name="income">Income</string>
     <string name="outcome">Outcome</string>
-    <string name="delete_operation_confirmation">Do you want to delete the operation</string>
+    <string name="delete_operation_confirmation">Do you want to delete the operation?</string>
+    <string name="delete_template_confirmation">Do you want to delete the template?</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="all">All</string>

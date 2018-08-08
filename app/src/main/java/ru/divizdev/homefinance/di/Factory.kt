@@ -15,7 +15,7 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractAddOpera
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractOperationListPresenter
 import ru.divizdev.homefinance.presentation.operationslist.presenter.OperationListPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
@@ -71,8 +71,8 @@ object Factory {
         return localeUtils
     }
 
-    fun getHomePresenter(): AbstractHomePresenter {
-        return HomePresenter(summaryInteractor)
+    fun getHomePresenter(parentPresenter: AbstractMainPresenter): AbstractHomePresenter {
+        return HomePresenter(summaryInteractor, parentPresenter)
     }
 
     fun getMainPresenter(): AbstractMainPresenter {
@@ -83,32 +83,32 @@ object Factory {
         return router
     }
 
-    fun getOperationListPresenter(): AbstractOperationListPresenter {
-        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryOperation)
+    fun getOperationListPresenter(parentPresenter: AbstractMainPresenter): AbstractOperationListPresenter {
+        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryOperation, parentPresenter)
     }
 
-    fun getWalletsPresenter(): AbstractWalletsPresenter {
-        return WalletsPresenter(repositoryWallet)
+    fun getWalletsPresenter(parentPresenter: AbstractMainPresenter): AbstractWalletsPresenter {
+        return WalletsPresenter(repositoryWallet, parentPresenter)
     }
 
     fun getOperationPresenter(): AbstractOperationPresenter {
         return OperationPresenter()
     }
 
-    fun getAddOperationPresenter(): AbstractAddOperationPresenter {
-        return AddOperationPresenter(repositoryWallet, repositoryCategory, operationInteractor, templateInteractor)
+    fun getAddOperationPresenter(parentPresenter: AbstractOperationPresenter): AbstractAddOperationPresenter {
+        return AddOperationPresenter(repositoryWallet, repositoryCategory, operationInteractor, templateInteractor, parentPresenter)
     }
 
     fun getAddWalletPresenter(): AbstractAddWalletPresenter {
         return AddWalletPresenter(repositoryWallet)
     }
 
-    fun getStatisticsPresenter(): AbstractStatisticsPresenter {
-        return StatisticsPresenter(repositoryWallet, statisticsInteractor)
+    fun getStatisticsPresenter(parentPresenter: AbstractMainPresenter): AbstractStatisticsPresenter {
+        return StatisticsPresenter(repositoryWallet, statisticsInteractor, parentPresenter)
     }
 
-    fun getTemplateListPresenter(): AbstractTemplateListPresenter {
-        return TemplateListPresenter(templateInteractor)
+    fun getTemplateListPresenter(parentPresenter: AbstractOperationPresenter): AbstractTemplateListPresenter {
+        return TemplateListPresenter(templateInteractor, repositoryOperation, parentPresenter)
     }
 
     fun getConvertor(): Converter {

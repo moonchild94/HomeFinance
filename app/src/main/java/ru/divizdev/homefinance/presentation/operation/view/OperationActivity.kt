@@ -4,6 +4,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.toolbar.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
+import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 
@@ -22,8 +23,12 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
         setContentView(R.layout.activity_operation)
         setSupportActionBar(toolbar)
         if (savedInstanceState == null) {
-            Factory.getRouter().navToAddOperation(this)
+            openAddOperation(null)
         }
+    }
+
+    override fun openAddOperation(template: Operation?) {
+        Factory.getRouter().navToAddOperation(this, template)
     }
 
     override fun onSupportNavigateUp(): Boolean {
