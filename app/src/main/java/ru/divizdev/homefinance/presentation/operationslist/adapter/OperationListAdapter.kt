@@ -1,5 +1,6 @@
 package ru.divizdev.homefinance.presentation.operationslist.adapter
 
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,8 @@ class OperationListAdapter(private var listOperations: List<Operation>,
         fun setData(operation: Operation) {
             this.operation = operation
 
-      //      transactionCategoryName.text = operation.category.categoryName
+            val imageUri = Uri.parse("android.resource://ru.divizdev.homefinance/drawable/" + operation.category.iconUri)
+            transactionCategoryName.setImageURI(imageUri)
             transactionCategoryComment.text = operation.comment
             transactionWalletName.text = operation.wallet.walletName
 

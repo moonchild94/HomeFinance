@@ -42,4 +42,24 @@
     <string name="period_in_days_title">Период в днях:</string>
     <string name="period_operations">Периодические </string>
     <string name="edit_wallet_title">Редактирование кошелька</string>
+
+    <string name="food_category">Еда</string>
+    <string name="entertainment_category">Развлечения</string>
+    <string name="transport_category">Транспорт</string>
+    <string name="education_category">Образование</string>
+    <string name="shopping_category">Покупки</string>
+    <string name="accommodation_category">Жилье</string>
+    <string name="health_category">Здравоохранение</string>
+    <string name="vacation_category">Отпуск</string>
+    <string name="other_outcome_category">Другое</string>
+    <string name="salary_category">Зарплата</string>
+    <string name="gifts_category">Подарки</string>
+    <string name="alimony_category">Алименты</string>
+    <string name="cash_back_category">Возврат денег</string>
+    <string name="dividends_category">Дивиденды</string>
+    <string name="sale_category">Продажа</string>
+    <string name="other_income_category">Другое</string>
+
+    <string name="cash">Наличные</string>
+    <string name="card">Карта</string>
 </resources>

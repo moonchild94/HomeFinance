@@ -74,9 +74,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_template" />
-                            <entry key="sourceFile" value="C:\Users\Dagny\Desktop\open-male-purse.svg" />
+                            <entry key="outputName" value="ic_trip" />
+                            <entry key="sourceFile" value="D:\projects\homefinance\app\src\main\res\drawable\category\trip.svg" />
                           </map>
                         </option>
                       </PersistentState>

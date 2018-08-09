@@ -48,4 +48,24 @@
     <string name="periodic_type">Periodic</string>
     <string name="template_type">Template</string>
     <string name="complete_type">Complete</string>
+
+    <string name="food_category">Food</string>
+    <string name="entertainment_category">Entertainment</string>
+    <string name="transport_category">Transport</string>
+    <string name="education_category">Education</string>
+    <string name="shopping_category">Shopping</string>
+    <string name="accommodation_category">Accommodation</string>
+    <string name="health_category">Health</string>
+    <string name="vacation_category">Vacation</string>
+    <string name="other_outcome_category">Other</string>
+    <string name="salary_category">Salary</string>
+    <string name="gifts_category">Gifts</string>
+    <string name="alimony_category">Alimony</string>
+    <string name="cash_back_category">Cash back</string>
+    <string name="dividends_category">Dividends</string>
+    <string name="sale_category">Sale</string>
+    <string name="other_income_category">Other</string>
+
+    <string name="cash">Cash</string>
+    <string name="card">Card</string>
 </resources>

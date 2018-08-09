@@ -20,8 +20,11 @@ class OperationActivity : BaseMvpActivity<AbstractOperationPresenter, IOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_operation)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         if (savedInstanceState == null) {
             openAddOperation(null)
         }

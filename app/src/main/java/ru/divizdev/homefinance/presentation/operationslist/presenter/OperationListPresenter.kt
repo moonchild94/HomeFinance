@@ -40,6 +40,7 @@ class OperationListPresenter(private val operationInteractor: OperationInteracto
         subscription
                 .observeOn(Schedulers.io())
                 .switchMap { filter: OperationFilter ->
+                    while (!::wallets.isInitialized) { }
                     val wallet = if (filter.walletPosition == 0) null else wallets[filter.walletPosition - 1]
                     operationInteractor.queryOperationsByWallet(wallet, filter.operationType)
                             .toObservable()

@@ -10,7 +10,7 @@ import java.util.*
 
 class StatisticsPresenter(private val repositoryWallet: RepositoryWallet,
                           private val statisticsInteractor: StatisticsInteractor,
-                          parentPresenter: AbstractMainPresenter) : AbstractStatisticsPresenter(parentPresenter) {
+                          parentPresenter: AbstractStatisticsMainPresenter) : AbstractStatisticsPresenter(parentPresenter) {
     private lateinit var wallets: List<Wallet>
 
     override fun loadWallets() {

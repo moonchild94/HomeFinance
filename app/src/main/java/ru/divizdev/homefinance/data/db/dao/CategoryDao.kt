@@ -14,19 +14,18 @@ import ru.divizdev.homefinance.entities.CategoryType
 @Dao
 interface CategoryDao {
 
-    // Добавление Category в бд
+    @Insert
+    fun insertAll(category: List<Category>)
+
     @Insert
     fun insert(category: Category)
 
-    // Удаление Category из бд
     @Delete
     fun delete(category: Category)
 
-    // Получение всех Category из бд
     @Query("SELECT * FROM category")
     fun getAll(): Flowable<List<Category>>
 
-    // Получение списка Category из бд по типу операции
     @Query("SELECT * FROM category WHERE Category.categoryType = :categoryType")
     fun query(categoryType: CategoryType): Flowable<List<Category>>
 }

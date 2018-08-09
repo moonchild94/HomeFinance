@@ -17,13 +17,18 @@ import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.OperationStatistics
 import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
-import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
-import ru.divizdev.homefinance.presentation.main.view.IMainView
+import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsMainPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import java.util.*
 
-class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatisticsView, IMainView, AbstractMainPresenter>(),
+private const val SELECTED_ITEM_POS_KEY = "selectedItemPosition"
+
+class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatisticsView, IStatisticsMainView, AbstractStatisticsMainPresenter>(),
         IStatisticsView {
+
+    private var selectedWalletPosition = -1
+
+    private lateinit var walletListAdapter: ArrayAdapter<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return layoutInflater.inflate(R.layout.fragment_statistics, container, false)
@@ -32,7 +37,13 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
+        selectedWalletPosition = savedInstanceState?.getInt(SELECTED_ITEM_POS_KEY) ?: 0
         presenter.loadWallets()
+
+        walletListAdapter = ArrayAdapter(wallet_spinner.context, android.R.layout.simple_spinner_dropdown_item, mutableListOf())
+        wallet_spinner.adapter = walletListAdapter
 
         histogram.xAxis.isEnabled = false
         histogram.description.isEnabled = false
@@ -43,9 +54,14 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
         search_button.setOnClickListener { loadStatistics() }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(SELECTED_ITEM_POS_KEY, wallet_spinner.selectedItemPosition)
+    }
+
     override fun getInstancePresenter(): AbstractStatisticsPresenter {
         return Factory.getStatisticsPresenter((requireContext()
-                as BaseMvpActivity<AbstractMainPresenter, IMainView>).presenter)
+                as BaseMvpActivity<AbstractStatisticsMainPresenter, IStatisticsMainView>).presenter)
     }
 
     override fun getMvpView(): IStatisticsView {
@@ -53,7 +69,13 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
     }
 
     override fun showWallets(wallets: List<String>) {
-        wallet_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, wallets)
+        walletListAdapter.clear()
+        walletListAdapter.addAll(wallets)
+
+        if (selectedWalletPosition >= 0) {
+            wallet_spinner.setSelection(selectedWalletPosition)
+            selectedWalletPosition = -1
+        }
     }
 
     override fun showStatistics(statisticsValues: List<OperationStatistics>) {
