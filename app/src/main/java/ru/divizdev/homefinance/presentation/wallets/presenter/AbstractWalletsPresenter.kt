@@ -1,5 +1,6 @@
 package ru.divizdev.homefinance.presentation.wallets.presenter
 
+import ru.divizdev.homefinance.entities.Wallet
 import ru.divizdev.homefinance.mvp.BaseMvpChildPresenter
 import ru.divizdev.homefinance.mvp.BaseMvpPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
@@ -11,7 +12,5 @@ abstract class AbstractWalletsPresenter(parentPresenter: AbstractMainPresenter) 
 
     abstract fun loadData()
 
-    abstract fun onDeleteOperation(position: Int)
-
-    abstract fun onEditOperation(position: Int, newName: String)
+    abstract fun getWallet(position: Int) : Wallet
 }

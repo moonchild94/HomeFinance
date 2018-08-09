@@ -15,16 +15,15 @@ import ru.divizdev.homefinance.presentation.operation.presenter.AbstractAddOpera
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractDeleteOperationPresenter
 import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractOperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.DeleteOperationPresenter
 import ru.divizdev.homefinance.presentation.operationslist.presenter.OperationListPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
 import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
 import ru.divizdev.homefinance.presentation.template.presenter.AbstractTemplateListPresenter
 import ru.divizdev.homefinance.presentation.template.presenter.TemplateListPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.WalletsPresenter
+import ru.divizdev.homefinance.presentation.wallets.presenter.*
 import java.util.*
 
 object Factory {
@@ -84,7 +83,7 @@ object Factory {
     }
 
     fun getOperationListPresenter(parentPresenter: AbstractMainPresenter): AbstractOperationListPresenter {
-        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryOperation, parentPresenter)
+        return OperationListPresenter(operationInteractor, repositoryWallet, parentPresenter)
     }
 
     fun getWalletsPresenter(parentPresenter: AbstractMainPresenter): AbstractWalletsPresenter {
@@ -99,8 +98,21 @@ object Factory {
         return AddOperationPresenter(repositoryWallet, repositoryCategory, operationInteractor, templateInteractor, parentPresenter)
     }
 
+    fun getDeleteOperationPresenter(): AbstractDeleteOperationPresenter {
+        return DeleteOperationPresenter(repositoryOperation)
+    }
+
+
     fun getAddWalletPresenter(): AbstractAddWalletPresenter {
         return AddWalletPresenter(repositoryWallet)
+    }
+
+    fun getDeleteWalletPresenter(): DeleteWalletPresenter {
+        return DeleteWalletPresenter(repositoryWallet)
+    }
+
+    fun getEditWalletPresenter(): EditWalletPresenter {
+        return EditWalletPresenter(repositoryWallet)
     }
 
     fun getStatisticsPresenter(parentPresenter: AbstractMainPresenter): AbstractStatisticsPresenter {

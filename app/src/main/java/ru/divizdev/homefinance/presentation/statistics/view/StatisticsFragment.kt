@@ -37,7 +37,7 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
         histogram.xAxis.isEnabled = false
         histogram.description.isEnabled = false
         initDatesFilters()
-        operation_type_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item,
+        operation_type_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item,
                 CategoryType.values().map { type -> getString(type.stringId) })
 
         search_button.setOnClickListener { loadStatistics() }
@@ -53,7 +53,7 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
     }
 
     override fun showWallets(wallets: List<String>) {
-        wallet_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, wallets)
+        wallet_spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, wallets)
     }
 
     override fun showStatistics(statisticsValues: List<OperationStatistics>) {

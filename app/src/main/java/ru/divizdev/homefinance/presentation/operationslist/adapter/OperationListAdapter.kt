@@ -37,7 +37,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
 
     inner class ViewHolder(view: View, private val localeUtils: LocaleUtils) : RecyclerView.ViewHolder(view) {
 
-        private var transactionCategoryName = itemView.transaction_category_name_text_view
+        private var transactionCategoryName = itemView.transaction_category_name_image_view
         private var transactionCategoryComment = itemView.transaction_category_comment_text_view
         private var transactionWalletName = itemView.transaction_wallet_text_view
         private var transactionMainAmount = itemView.transaction_value_transaction_currency_text_view
@@ -60,7 +60,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
         fun setData(operation: Operation) {
             this.operation = operation
 
-            transactionCategoryName.text = operation.category.categoryName
+      //      transactionCategoryName.text = operation.category.categoryName
             transactionCategoryComment.text = operation.comment
             transactionWalletName.text = operation.wallet.walletName
 

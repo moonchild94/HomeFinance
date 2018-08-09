@@ -13,8 +13,6 @@ abstract class AbstractAddOperationPresenter(parentPresenter: AbstractOperationP
 
     abstract fun saveTemplate()
 
-    abstract fun openTemplates()
-
     abstract fun loadWallets()
 
     abstract fun loadCategories(categoryType: CategoryType)

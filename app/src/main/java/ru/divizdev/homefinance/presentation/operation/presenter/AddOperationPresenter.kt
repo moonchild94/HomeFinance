@@ -43,10 +43,6 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
                 }
     }
 
-    override fun openTemplates() {
-
-    }
-
     override fun save() {
         val view = weakReferenceView.get()
         val operationUI = view?.getOperation()

@@ -26,27 +26,13 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView, 
     private lateinit var parentView: IMainView
 
     override fun showDeleteFragmentDialog(position: Int) {
-        AlertDialog.Builder(requireContext())
-                .setTitle(R.string.delete_wallet_confirmation)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    presenter.onDeleteOperation(position)
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .create()
-                .show()
+        DeleteWalletDialogFragment.newInstance(presenter.getWallet(position))
+                .show(childFragmentManager, null)
     }
 
     override fun showEditFragmentDialog(position: Int) {
-        val editWalletDialogView = layoutInflater.inflate(R.layout.dialog_edit_wallet, null)
-        AlertDialog.Builder(requireContext())
-                .setTitle(R.string.edit_wallet_title)
-                .setView(editWalletDialogView)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    presenter.onEditOperation(position, editWalletDialogView.wallet_name.text.toString())
-                }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .create()
-                .show()
+        EditWalletDialogFragment.newInstance(presenter.getWallet(position))
+                .show(childFragmentManager, null)
     }
 
     override fun getInstancePresenter(): AbstractWalletsPresenter {

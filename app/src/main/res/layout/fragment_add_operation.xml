@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,54 +12,17 @@
         android:orientation="vertical"
         tools:context=".presentation.operation.view.OperationActivity">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="4dp"
-            android:gravity="center"
-            android:text="@string/title_type_operation"
-            app:layout_constraintBottom_toBottomOf="@id/open_templates"
-            app:layout_constraintEnd_toStartOf="@+id/open_templates"
-            app:layout_constraintHorizontal_bias="0.594"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/open_templates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="3dp"
-            android:src="@drawable/ic_template"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/type_category_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/periodicSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/with_period"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type_category_spinner"
-            app:thumbTextPadding="4dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:foregroundGravity="center"
+            android:textSize="16sp"
+            app:thumbTextPadding="8dp" />
 
         <ViewSwitcher
             android:id="@+id/periodicSwitcher"
@@ -81,7 +45,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:hintAnimationEnabled="false"
                     app:layout_constraintHorizontal_weight="3">
@@ -126,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
                     android:hint="@string/period_in_days"/>
 
@@ -135,12 +97,11 @@
         </ViewSwitcher>
 
         <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/category_spinner"
+            android:id="@+id/type_category_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:foregroundGravity="center"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,11 +109,22 @@
             app:layout_constraintTop_toBottomOf="@+id/periodicSwitcher" />
 
         <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_category_spinner" />
+
+        <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/wallet_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:foregroundGravity="center"
             android:gravity="center"
@@ -165,7 +137,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             app:hintAnimationEnabled="false"
@@ -187,7 +158,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             app:hintAnimationEnabled="false"
@@ -222,7 +192,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:padding="4dp"
+            android:padding="8dp"
             android:background="@color/colorAccent"
             android:text="@string/title_save_template_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -237,7 +207,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:padding="4dp"
+            android:padding="8dp"
             android:background="@color/colorAccent"
             android:text="@string/title_save_button"
             app:layout_constraintBottom_toBottomOf="parent"

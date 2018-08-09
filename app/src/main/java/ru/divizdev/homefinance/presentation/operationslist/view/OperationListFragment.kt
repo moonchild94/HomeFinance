@@ -25,20 +25,14 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
     private lateinit var operationListAdapter: OperationListAdapter
 
     override fun showDeleteFragmentDialog(position: Int) {
-        AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.delete_operation_confirmation))
-                .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                    presenter.onDeleteOperation(position)
-                }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-                .create()
-                .show()
+        DeleteOperationDialogFragment.newInstance(presenter.getOperation(position))
+                .show(childFragmentManager, null)
     }
 
     override fun showWalletsSpinner(wallets: List<String>) {
         val walletsWithAllElement = wallets.toMutableList()
         walletsWithAllElement.add(0, getString(R.string.all))
-        filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_item, walletsWithAllElement)
+        filter_wallet_spinner.adapter = ArrayAdapter<String>(filter_wallet_spinner.context, android.R.layout.simple_spinner_dropdown_item, walletsWithAllElement)
     }
 
     override fun getInstancePresenter(): AbstractOperationListPresenter {

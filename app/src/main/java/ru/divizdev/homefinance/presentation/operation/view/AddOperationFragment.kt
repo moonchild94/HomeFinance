@@ -2,9 +2,7 @@ package ru.divizdev.homefinance.presentation.operation.view
 
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -37,11 +35,11 @@ class AddOperationFragment : BaseMvpFragment<AbstractAddOperationPresenter, IAdd
     }
 
     override fun onLoadCategories(categories: List<String>) {
-        category_spinner.adapter = ArrayAdapter(category_spinner.context, android.R.layout.simple_spinner_item, categories)
+        category_spinner.adapter = ArrayAdapter(category_spinner.context, android.R.layout.simple_spinner_dropdown_item, categories)
     }
 
     override fun onLoadWallets(wallets: List<String>) {
-        wallet_spinner.adapter = ArrayAdapter(wallet_spinner.context, android.R.layout.simple_spinner_item, wallets)
+        wallet_spinner.adapter = ArrayAdapter(wallet_spinner.context, android.R.layout.simple_spinner_dropdown_item, wallets)
     }
 
     override fun showErrorObligatoryField() {
@@ -62,6 +60,7 @@ class AddOperationFragment : BaseMvpFragment<AbstractAddOperationPresenter, IAdd
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         return layoutInflater.inflate(R.layout.fragment_add_operation, container, false)
     }
 
@@ -70,13 +69,11 @@ class AddOperationFragment : BaseMvpFragment<AbstractAddOperationPresenter, IAdd
 
         presenter.loadWallets()
 
-        open_templates.setOnClickListener {Factory.getRouter().navToTemplates(requireActivity()) }
-
         initCategoryTypeSpinner()
         initSwitchPeriodicType()
 
         val currencies = Currency.values().map { currency -> currency.sign }
-        currency_spinner.adapter = ArrayAdapter(currency_spinner.context, android.R.layout.simple_spinner_item, currencies)
+        currency_spinner.adapter = ArrayAdapter(currency_spinner.context, android.R.layout.simple_spinner_dropdown_item, currencies)
 
         datePickerInputEditText.manager = fragmentManager
         timePickerInputEditText.manager = fragmentManager
@@ -92,6 +89,23 @@ class AddOperationFragment : BaseMvpFragment<AbstractAddOperationPresenter, IAdd
 
         save_button.setOnClickListener { presenter.save() }
         save_template_button.setOnClickListener { presenter.saveTemplate() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_option_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.templates -> {
+                Factory.getRouter().navToTemplates(requireActivity())
+                return true
+            }
+            else -> IllegalAccessException()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onStart() {
@@ -144,7 +158,7 @@ class AddOperationFragment : BaseMvpFragment<AbstractAddOperationPresenter, IAdd
 
     private fun initCategoryTypeSpinner() {
         val operationTypes = CategoryType.values().map { type -> getString(type.stringId) }
-        type_category_spinner.adapter = ArrayAdapter(type_category_spinner.context, android.R.layout.simple_spinner_item, operationTypes)
+        type_category_spinner.adapter = ArrayAdapter(type_category_spinner.context, android.R.layout.simple_spinner_dropdown_item, operationTypes)
 
         type_category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(adapter: AdapterView<*>) {
