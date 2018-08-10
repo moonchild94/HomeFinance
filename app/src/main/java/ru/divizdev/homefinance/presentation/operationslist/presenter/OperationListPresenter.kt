@@ -4,7 +4,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
-import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
 import ru.divizdev.homefinance.entities.Operation
 import ru.divizdev.homefinance.entities.OperationType

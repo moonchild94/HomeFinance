@@ -80,7 +80,7 @@ class StatisticsFragment : BaseMvpFragment<AbstractStatisticsPresenter, IStatist
 
     override fun showStatistics(statisticsValues: List<OperationStatistics>) {
         var order = 0f
-        val statisticsDataSet = BarDataSet(statisticsValues.map { BarEntry(order++, it.amount.toFloat()) }, null)
+        val statisticsDataSet = BarDataSet(statisticsValues.map { BarEntry(order++, it.amount.toFloat(), it.category.categoryName) }, null)
         statisticsDataSet.colors = ColorTemplate.JOYFUL_COLORS.toList()
         histogram.data = BarData(statisticsDataSet)
         histogram.notifyDataSetChanged()

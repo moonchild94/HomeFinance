@@ -1,7 +1,9 @@
 package ru.divizdev.homefinance.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
+import android.preference.PreferenceManager
 import ru.divizdev.homefinance.data.db.HomeFinanceDatabase
 import ru.divizdev.homefinance.data.repository.*
 import ru.divizdev.homefinance.model.*
@@ -38,20 +40,28 @@ object Factory {
     private lateinit var repositoryWallet: RepositoryWallet
     private lateinit var repositoryOperation: RepositoryOperation
     private lateinit var repositoryCategory: RepositoryCategory
+    private lateinit var settingsRepository: SettingsRepository
 
     private lateinit var summaryInteractor: SummaryInteractor
     private lateinit var operationInteractor: OperationInteractor
     private lateinit var statisticsInteractor: StatisticsInteractor
     private lateinit var templateInteractor: TemplateInteractor
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     fun create(context: Context) {
         val db = HomeFinanceDatabase.getDataBase(context)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         repositoryWallet = RepositoryWalletImpl(db.getWalletDao())
         repositoryOperation = RepositoryOperationImpl(db.getOperationDao(), db.getWalletOperationDao())
         repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
+        settingsRepository = SettingsRepositoryImpl(sharedPreferences)
+
         operationInteractor = OperationInteractor(repositoryOperation, converter)
-        summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, converter)
+        summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, settingsRepository, converter)
         statisticsInteractor = StatisticsInteractor(repositoryOperation)
         templateInteractor = TemplateInteractor(repositoryOperation)
 
@@ -129,7 +139,15 @@ object Factory {
         return converter
     }
 
+    fun getSharedPreference() : SharedPreferences {
+        return sharedPreferences
+    }
+
     fun getStatisticsMainPresenter() : AbstractStatisticsMainPresenter {
         return StatisticsMainPresenter()
+    }
+
+    fun getSettingsRepository() : SettingsRepository {
+        return settingsRepository
     }
 }
