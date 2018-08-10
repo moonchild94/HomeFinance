@@ -8,7 +8,7 @@ import ru.divizdev.homefinance.entities.*
 import java.math.BigDecimal
 import java.util.*
 
-private const val MS_IN_DAY = 86400000
+const val MS_IN_DAY = 86400000
 
 class RepositoryOperationImpl(private val operationDao: OperationDao,
                               private val walletOperationDao: WalletOperationDao) : RepositoryOperation {
@@ -16,12 +16,7 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
     private var nearestExecuteDate: Date = Date()
 
     override fun add(operation: Operation) {
-        val idleOperation = OperationMapper.mapOperationToIdleOperation(operation)
-        val operationAmount = idleOperation.sumCurrencyMain.amount
-        operation.wallet.balance.amount =
-                operation.wallet.balance.amount.plus(calculateDiff(operation, operationAmount))
-        walletOperationDao.insertOperationAndUpdateWallet(idleOperation, operation.wallet)
-
+        addWithoutCheck(operation)
         handlePeriodicOperations()
     }
 
@@ -81,9 +76,9 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         for (periodicOperation in periodicOperations) {
             if (periodicOperation.date <= now) {
 
-                val count = (now.time - periodicOperation.date.time) / (periodicOperation.period * MS_IN_DAY)
+                val count = (now.time - periodicOperation.date.time) / (periodicOperation.period * MS_IN_DAY) + 1
                 for (i in 0 until count) {
-                    add(periodicOperation.copy(operationType = OperationType.COMPLETE, period = 0))
+                    addWithoutCheck(periodicOperation.copy(operationType = OperationType.COMPLETE, period = 0))
                     periodicOperation.date = Date(periodicOperation.date.time + MS_IN_DAY * periodicOperation.period * (i + 1))
                 }
 
@@ -96,5 +91,13 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
         }
 
         nearestExecuteDate = newNearestExecuteDate
+    }
+
+    private fun addWithoutCheck(operation: Operation) {
+        val idleOperation = OperationMapper.mapOperationToIdleOperation(operation)
+        val operationAmount = idleOperation.sumCurrencyMain.amount
+        operation.wallet.balance.amount =
+                operation.wallet.balance.amount.plus(calculateDiff(operation, operationAmount))
+        walletOperationDao.insertOperationAndUpdateWallet(idleOperation, operation.wallet)
     }
 }

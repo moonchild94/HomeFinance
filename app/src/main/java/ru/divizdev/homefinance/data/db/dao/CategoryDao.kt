@@ -27,5 +27,5 @@ interface CategoryDao {
     fun getAll(): Flowable<List<Category>>
 
     @Query("SELECT * FROM category WHERE Category.categoryType = :categoryType")
-    fun getByCategoryType(categoryType: CategoryType): Flowable<List<Category>>
+    fun getByType(categoryType: CategoryType): Flowable<List<Category>>
 }

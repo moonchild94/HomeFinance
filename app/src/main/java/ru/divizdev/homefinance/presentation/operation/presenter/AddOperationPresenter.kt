@@ -33,7 +33,7 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
     }
 
     override fun loadCategories(categoryType: CategoryType) {
-        repositoryCategory.query(categoryType)
+        repositoryCategory.getByType(categoryType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -97,7 +97,7 @@ class AddOperationPresenter(private val repositoryWallet: RepositoryWallet,
 
     private fun convertOperationUiFromModel(operation: Operation): OperationUI {
         val categoryType = operation.category.categoryType
-        categories = repositoryCategory.query(categoryType).blockingFirst()
+        categories = repositoryCategory.getByType(categoryType).blockingFirst()
         if (!::wallets.isInitialized) {
             wallets = repositoryWallet.getAll().blockingFirst()
         }

@@ -7,5 +7,5 @@ import ru.divizdev.homefinance.entities.CategoryType
 interface RepositoryCategory {
     fun getAll(): Flowable<List<Category>>
 
-    fun query(categoryType: CategoryType): Flowable<List<Category>>
+    fun getByType(categoryType: CategoryType): Flowable<List<Category>>
 }
