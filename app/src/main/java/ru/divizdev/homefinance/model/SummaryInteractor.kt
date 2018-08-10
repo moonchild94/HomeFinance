@@ -1,45 +1,53 @@
 package ru.divizdev.homefinance.model
 
-import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import ru.divizdev.homefinance.data.repository.RepositoryOperation
 import ru.divizdev.homefinance.data.repository.RepositoryWallet
+import ru.divizdev.homefinance.data.repository.SettingsRepository
 import ru.divizdev.homefinance.entities.*
 import java.math.BigDecimal
 
 class SummaryInteractor(repositoryWallet: RepositoryWallet,
                         repositoryOperation: RepositoryOperation,
+                        settingsRepository: SettingsRepository,
                         private val converter: Converter) {
 
-    val balanceRUB: Subject<Money> = BehaviorSubject.create()
-    val balanceUSD: Subject<Money> = BehaviorSubject.create()
+    val balanceMain: Subject<Money> = BehaviorSubject.create()
+    val balanceSecondary: Subject<Money> = BehaviorSubject.create()
 
     val briefOverviewIncome: Subject<Money> = BehaviorSubject.create()
     val briefOverviewOutcome: Subject<Money> = BehaviorSubject.create()
 
     init {
-        Completable.fromAction {
-            repositoryWallet.getAll()
-                    .observeOn(Schedulers.io())
-                    .subscribe {
-                        balanceRUB.onNext(updateBalance(it, Currency.RUB))
-                        balanceUSD.onNext(updateBalance(it, Currency.USD))
-                    }
 
-            repositoryOperation.queryByType(OperationType.INCOME)
-                    .observeOn(Schedulers.io())
-                    .subscribe {
-                        briefOverviewIncome.onNext(updateBriefOverview(it, Currency.RUB))
-                    }
+        settingsRepository.subscribeMainCurrency()
+                .observeOn(Schedulers.io())
+                .subscribe {
 
-            repositoryOperation.queryByType(OperationType.OUTCOME)
-                    .observeOn(Schedulers.io())
-                    .subscribe {
-                        briefOverviewOutcome.onNext(updateBriefOverview(it, Currency.RUB))
-                    }
-        }.subscribeOn(Schedulers.io()).subscribe {}
+                    val mainCurrency = it
+                    val secondaryCurrency = Currency.values().find { it != mainCurrency }
+                            ?: Currency.USD
+                    repositoryWallet.getAll()
+                            .observeOn(Schedulers.io())
+                            .subscribe {
+                                balanceMain.onNext(updateBalance(it, mainCurrency))
+                                balanceSecondary.onNext(updateBalance(it, secondaryCurrency))
+                            }
+
+                    repositoryOperation.queryByType(CategoryType.INCOME)
+                            .observeOn(Schedulers.io())
+                            .subscribe {
+                                briefOverviewIncome.onNext(updateBriefOverview(it, mainCurrency))
+                            }
+
+                    repositoryOperation.queryByType(CategoryType.OUTCOME)
+                            .observeOn(Schedulers.io())
+                            .subscribe {
+                                briefOverviewOutcome.onNext(updateBriefOverview(it, mainCurrency))
+                            }
+                }
     }
 
     private fun updateBriefOverview(operations: List<Operation>, currency: Currency): Money {

@@ -29,6 +29,10 @@ class MainPresenter : AbstractMainPresenter() {
         view?.showSettingsDialog()
     }
 
+    override fun actionShowStatistics() {
+        weakReferenceView.get()?.showStatisticsDialog()
+    }
+
     override fun actionNavigationListOperation(): Boolean {
         val view = weakReferenceView.get()
         if (view?.getOpenTypeScreen() != TypeSubScreen.OPERATIONS) {

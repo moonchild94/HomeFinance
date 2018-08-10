@@ -1,8 +1,11 @@
 package ru.divizdev.homefinance.entities
 
 import android.arch.persistence.room.Embedded
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 data class Operation(val operationId: Int = 0,
                      val comment: String,
                      @Embedded(prefix = "sumOperation")
@@ -14,5 +17,5 @@ data class Operation(val operationId: Int = 0,
                      val wallet: Wallet,
                      @Embedded
                      val category: Category,
-                     val periodic: Boolean = false,
-                     val period: Int = 0)
+                     val operationType: OperationType,
+                     val period: Int = 0) : Parcelable

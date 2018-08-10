@@ -2,17 +2,20 @@ package ru.divizdev.homefinance.presentation.home.presenter
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import ru.divizdev.homefinance.entities.Currency
 import ru.divizdev.homefinance.model.SummaryInteractor
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 
-class HomePresenter(private val summaryInteractor: SummaryInteractor) : AbstractHomePresenter() {
+class HomePresenter(private val summaryInteractor: SummaryInteractor, parentPresenter: AbstractMainPresenter)
+    : AbstractHomePresenter(parentPresenter) {
 
     override fun loadData() {
-        summaryInteractor.balanceRUB
+        summaryInteractor.balanceMain
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { weakReferenceView.get()?.setMainBalance(it) }
 
-        summaryInteractor.balanceUSD
+        summaryInteractor.balanceSecondary
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { weakReferenceView.get()?.setSecondaryBalance(it) }

@@ -7,32 +7,37 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_edit_wallet.view.*
 import kotlinx.android.synthetic.main.fragment_wallets.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
 import ru.divizdev.homefinance.entities.Wallet
+import ru.divizdev.homefinance.mvp.BaseMvpActivity
 import ru.divizdev.homefinance.mvp.BaseMvpFragment
+import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.view.IMainView
-import ru.divizdev.homefinance.presentation.wallets.adapter.ListWalletsAdapter
+import ru.divizdev.homefinance.presentation.wallets.adapter.WalletListAdapter
 import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
 
-class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(), IWalletsView {
-    private lateinit var listWalletsAdapter: ListWalletsAdapter
+class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView, IMainView,
+        AbstractMainPresenter>(), IWalletsView {
+
+    private lateinit var walletListAdapter: WalletListAdapter
     private lateinit var parentView: IMainView
 
     override fun showDeleteFragmentDialog(position: Int) {
-        AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.delete_wallet_confirmation))
-                .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                    presenter.onDeleteOperation(position)
-                }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-                .create()
-                .show()
+        DeleteWalletDialogFragment.newInstance(presenter.getWallet(position))
+                .show(childFragmentManager, null)
+    }
+
+    override fun showEditFragmentDialog(position: Int) {
+        EditWalletDialogFragment.newInstance(presenter.getWallet(position))
+                .show(childFragmentManager, null)
     }
 
     override fun getInstancePresenter(): AbstractWalletsPresenter {
-        return Factory.getWalletsPresenter()
+        return Factory.getWalletsPresenter((requireContext()
+                as BaseMvpActivity<AbstractMainPresenter, IMainView>).presenter)
     }
 
     override fun getMvpView(): IWalletsView {
@@ -40,7 +45,7 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     }
 
     override fun setListWallets(wallets: List<Wallet>) {
-        listWalletsAdapter.updateData(wallets)
+        walletListAdapter.updateData(wallets)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +65,9 @@ class WalletsFragment : BaseMvpFragment<AbstractWalletsPresenter, IWalletsView>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val linearLayoutManager = LinearLayoutManager(view.context)
         wallets_recycler_view.layoutManager = linearLayoutManager
-        listWalletsAdapter = ListWalletsAdapter(listOf(), Factory.getLocaleUtils())
-        { position: Int -> showDeleteFragmentDialog(position) }
-        wallets_recycler_view.adapter = listWalletsAdapter
+        walletListAdapter = WalletListAdapter(listOf(), Factory.getLocaleUtils(),
+                { showDeleteFragmentDialog(it) }, { showEditFragmentDialog(it) })
+        wallets_recycler_view.adapter = walletListAdapter
 
         add_wallet.setOnClickListener {
             AddWalletDialogFragment.newInstance().show(childFragmentManager, null)

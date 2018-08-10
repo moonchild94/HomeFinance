@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
+import kotlinx.android.synthetic.main.dialog_add_wallet.*
 import kotlinx.android.synthetic.main.dialog_add_wallet.view.*
 import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.di.Factory
@@ -32,9 +33,10 @@ class AddWalletDialogFragment : BaseMvpDialogFragment<AbstractAddWalletPresenter
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialogView?.wallet_currency_spinner?.adapter = ArrayAdapter<Currency>(context, android.R.layout.simple_spinner_item, Currency.values())
+        val currencies = Currency.values().map { currency -> currency.sign }
+        dialogView?.wallet_currency_spinner?.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, currencies)
 
-        dialogView?.wallet_name?.addTextChangedListener(object : TextWatcher {
+        dialogView?.wallet_name_edit_text?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -51,7 +53,7 @@ class AddWalletDialogFragment : BaseMvpDialogFragment<AbstractAddWalletPresenter
 
     override fun onStart() {
         super.onStart()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = dialogView?.wallet_name?.text?.isNotEmpty() ?: false
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = dialogView?.wallet_name_edit_text?.text?.isNotEmpty() ?: false
     }
 
     override fun getInstancePresenter(): AbstractAddWalletPresenter {
@@ -63,9 +65,9 @@ class AddWalletDialogFragment : BaseMvpDialogFragment<AbstractAddWalletPresenter
     }
 
     private fun onAddWallet() {
-        val walletName = dialogView?.wallet_name?.text.toString()
-        val startAmount = dialogView?.wallet_start_amount?.text.toString()
-        val currency = dialogView?.wallet_currency_spinner?.selectedItem as Currency
+        val walletName = dialogView?.wallet_name_edit_text?.text.toString()
+        val startAmount = dialogView?.wallet_start_amount_edit_text?.text.toString()
+        val currency: Currency = Currency.values()[dialogView?.wallet_currency_spinner?.selectedItemPosition ?: 0]
         val balance = Money(if (startAmount.isEmpty()) BigDecimal.valueOf(0) else startAmount.toBigDecimal(), currency)
         val wallet = Wallet(walletName = walletName, balance = balance)
         presenter.onAddWallet(wallet)

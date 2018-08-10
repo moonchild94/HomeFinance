@@ -16,20 +16,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/periodic_operations_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:thumbTextPadding="4dp"
+        android:text="@string/period_operations"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_transaction_recylcer_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_wallet_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/periodic_operations_switch" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_operation"

@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
+import ru.divizdev.homefinance.R
 import ru.divizdev.homefinance.data.db.dao.CategoryDao
 import ru.divizdev.homefinance.data.db.dao.OperationDao
 import ru.divizdev.homefinance.data.db.dao.WalletDao
@@ -15,7 +16,6 @@ import ru.divizdev.homefinance.data.db.dao.WalletOperationDao
 import ru.divizdev.homefinance.entities.*
 import ru.divizdev.homefinance.entities.Currency
 import java.math.BigDecimal
-import java.util.*
 
 @Database(entities = [Category::class, Wallet::class, IdleOperation::class], version = 1)
 @TypeConverters(Converters::class)
@@ -46,38 +46,44 @@ abstract class HomeFinanceDatabase : RoomDatabase() {
                                 super.onCreate(db)
 
                                 Completable.fromAction {
-                                    val wallet1 = Wallet(1, "Кошелек", Money(BigDecimal.valueOf(100), Currency.RUB))
+                                    val wallet1 = Wallet(1, context.getString(R.string.cash), Money(BigDecimal.valueOf(100), Currency.RUB))
                                     getInstance(context).getWalletDao().insert(wallet1)
-                                    val wallet2 = Wallet(2, "Кошелек2", Money(BigDecimal.valueOf(10000), Currency.USD))
+                                    val wallet2 = Wallet(2, context.getString(R.string.card), Money(BigDecimal.valueOf(10000), Currency.USD))
                                     getInstance(context).getWalletDao().insert(wallet2)
 
-                                    val category1 = Category(1, OperationType.OUTCOME, "Еда", "")
-                                    getInstance(context).getCategoryDao().insert(category1)
-                                    val category2 = Category(2, OperationType.INCOME, "Зарплата", "")
-                                    getInstance(context).getCategoryDao().insert(category2)
+                                    getInstance(context).getCategoryDao().insertAll(createIncomeCategories(context))
+                                    getInstance(context).getCategoryDao().insertAll(createOutcomeCategories(context))
 
-                                    val operation1 = IdleOperation(walletId = wallet1.walletId, comment = "Обед",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(13.34), Currency.RUB), date = Date(),
-                                            categoryId = category1.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation1, wallet1)
-                                    val operation2 = IdleOperation(walletId = wallet2.walletId, comment = "Ужин",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(230.34), Currency.USD), date = Date(),
-                                            categoryId = category1.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation2, wallet2)
-                                    val operation3 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(),
-                                            categoryId = category2.categoryId)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation3, wallet2)
-                                    val operation4 = IdleOperation(walletId = wallet2.walletId, comment = "Зп",
-                                            sumCurrencyMain = Money(BigDecimal.valueOf(1000.00), Currency.USD), date = Date(1533157200000L),
-                                            categoryId = category2.categoryId, period = 1, periodic = true)
-                                    getInstance(context).getWalletOperationDao().insertOperationAndUpdateWallet(operation4, wallet2)
                                 }.subscribeOn(Schedulers.io()).subscribe {}
                             }
                         })
                         .build()
             }
             return INSTANCE as HomeFinanceDatabase
+        }
+
+        private fun createIncomeCategories(context: Context) : List<Category> {
+            val category1 = Category(1, CategoryType.OUTCOME, context.getString(R.string.food_category), "ic_food")
+            val category2 = Category(2, CategoryType.OUTCOME, context.getString(R.string.entertainment_category), "ic_movie")
+            val category3 = Category(3, CategoryType.OUTCOME, context.getString(R.string.transport_category), "ic_car")
+            val category4 = Category(4, CategoryType.OUTCOME, context.getString(R.string.education_category), "ic_education")
+            val category5 = Category(5, CategoryType.OUTCOME, context.getString(R.string.shopping_category), "ic_shopping")
+            val category6 = Category(6, CategoryType.OUTCOME, context.getString(R.string.accommodation_category), "ic_home")
+            val category7 = Category(7, CategoryType.OUTCOME, context.getString(R.string.health_category), "ic_health")
+            val category8 = Category(8, CategoryType.OUTCOME, context.getString(R.string.vacation_category),  "ic_trip")
+            val category9 = Category(9, CategoryType.OUTCOME, context.getString(R.string.other_outcome_category), "ic_shopping-other")
+            return listOf(category1, category2, category3, category4, category5, category6, category7, category8, category9)
+        }
+
+        private fun createOutcomeCategories(context: Context) : List<Category> {
+            val category1 = Category(10, CategoryType.INCOME, context.getString(R.string.salary_category), "ic_salary")
+            val category2 = Category(11, CategoryType.INCOME, context.getString(R.string.gifts_category), "ic_gift")
+            val category3 = Category(12, CategoryType.INCOME, context.getString(R.string.alimony_category), "ic_alimony")
+            val category4 = Category(13, CategoryType.INCOME, context.getString(R.string.cash_back_category), "ic_cash-back")
+            val category5 = Category(14, CategoryType.INCOME, context.getString(R.string.dividends_category),  "ic_dividends")
+            val category6 = Category(15, CategoryType.INCOME, context.getString(R.string.salary_category),  "ic_sale")
+            val category7 = Category(16, CategoryType.INCOME, context.getString(R.string.other_income_category), "ic_other")
+            return listOf(category1, category2, category3, category4, category5, category6, category7)
         }
     }
 }

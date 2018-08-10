@@ -1,26 +1,33 @@
 package ru.divizdev.homefinance.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
+import android.preference.PreferenceManager
 import ru.divizdev.homefinance.data.db.HomeFinanceDatabase
 import ru.divizdev.homefinance.data.repository.*
-import ru.divizdev.homefinance.model.Converter
-import ru.divizdev.homefinance.model.OperationInteractor
-import ru.divizdev.homefinance.model.SummaryInteractor
+import ru.divizdev.homefinance.model.*
 import ru.divizdev.homefinance.presentation.LocaleUtils
 import ru.divizdev.homefinance.presentation.Router
 import ru.divizdev.homefinance.presentation.home.presenter.AbstractHomePresenter
 import ru.divizdev.homefinance.presentation.home.presenter.HomePresenter
 import ru.divizdev.homefinance.presentation.main.presenter.AbstractMainPresenter
 import ru.divizdev.homefinance.presentation.main.presenter.MainPresenter
+import ru.divizdev.homefinance.presentation.operation.presenter.AbstractAddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.AbstractOperationPresenter
+import ru.divizdev.homefinance.presentation.operation.presenter.AddOperationPresenter
 import ru.divizdev.homefinance.presentation.operation.presenter.OperationPresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.AbstractOperationListPresenter
-import ru.divizdev.homefinance.presentation.operationslist.view.OperationListPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractAddWalletPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AbstractWalletsPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.AddWalletPresenter
-import ru.divizdev.homefinance.presentation.wallets.presenter.WalletsPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractDeleteOperationPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.AbstractOperationListPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.DeleteOperationPresenter
+import ru.divizdev.homefinance.presentation.operationslist.presenter.OperationListPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsMainPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.AbstractStatisticsPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsMainPresenter
+import ru.divizdev.homefinance.presentation.statistics.presenter.StatisticsPresenter
+import ru.divizdev.homefinance.presentation.template.presenter.AbstractTemplateListPresenter
+import ru.divizdev.homefinance.presentation.template.presenter.TemplateListPresenter
+import ru.divizdev.homefinance.presentation.wallets.presenter.*
 import java.util.*
 
 object Factory {
@@ -33,18 +40,30 @@ object Factory {
     private lateinit var repositoryWallet: RepositoryWallet
     private lateinit var repositoryOperation: RepositoryOperation
     private lateinit var repositoryCategory: RepositoryCategory
+    private lateinit var settingsRepository: SettingsRepository
 
     private lateinit var summaryInteractor: SummaryInteractor
     private lateinit var operationInteractor: OperationInteractor
+    private lateinit var statisticsInteractor: StatisticsInteractor
+    private lateinit var templateInteractor: TemplateInteractor
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     fun create(context: Context) {
         val db = HomeFinanceDatabase.getDataBase(context)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         repositoryWallet = RepositoryWalletImpl(db.getWalletDao())
         repositoryOperation = RepositoryOperationImpl(db.getOperationDao(), db.getWalletOperationDao())
         repositoryCategory = RepositoryCategoryImpl(db.getCategoryDao())
 
+        settingsRepository = SettingsRepositoryImpl(sharedPreferences)
+
         operationInteractor = OperationInteractor(repositoryOperation, converter)
-        summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, converter)
+        summaryInteractor = SummaryInteractor(repositoryWallet, repositoryOperation, settingsRepository, converter)
+        statisticsInteractor = StatisticsInteractor(repositoryOperation)
+        templateInteractor = TemplateInteractor(repositoryOperation)
 
         localeUtils = initUtils(context)
     }
@@ -63,8 +82,8 @@ object Factory {
         return localeUtils
     }
 
-    fun getHomePresenter(): AbstractHomePresenter {
-        return HomePresenter(summaryInteractor)
+    fun getHomePresenter(parentPresenter: AbstractMainPresenter): AbstractHomePresenter {
+        return HomePresenter(summaryInteractor, parentPresenter)
     }
 
     fun getMainPresenter(): AbstractMainPresenter {
@@ -75,23 +94,60 @@ object Factory {
         return router
     }
 
-    fun getOperationListPresenter(): AbstractOperationListPresenter {
-        return OperationListPresenter(operationInteractor, repositoryWallet, repositoryOperation)
+    fun getOperationListPresenter(parentPresenter: AbstractMainPresenter): AbstractOperationListPresenter {
+        return OperationListPresenter(operationInteractor, repositoryWallet, parentPresenter)
     }
 
-    fun getWalletsPresenter(): AbstractWalletsPresenter {
-        return WalletsPresenter(repositoryWallet)
+    fun getWalletsPresenter(parentPresenter: AbstractMainPresenter): AbstractWalletsPresenter {
+        return WalletsPresenter(repositoryWallet, parentPresenter)
     }
 
     fun getOperationPresenter(): AbstractOperationPresenter {
-        return OperationPresenter(repositoryWallet, repositoryCategory, operationInteractor)
+        return OperationPresenter()
     }
+
+    fun getAddOperationPresenter(parentPresenter: AbstractOperationPresenter): AbstractAddOperationPresenter {
+        return AddOperationPresenter(repositoryWallet, repositoryCategory, operationInteractor, templateInteractor, parentPresenter)
+    }
+
+    fun getDeleteOperationPresenter(): AbstractDeleteOperationPresenter {
+        return DeleteOperationPresenter(repositoryOperation)
+    }
+
 
     fun getAddWalletPresenter(): AbstractAddWalletPresenter {
         return AddWalletPresenter(repositoryWallet)
     }
 
+    fun getDeleteWalletPresenter(): DeleteWalletPresenter {
+        return DeleteWalletPresenter(repositoryWallet)
+    }
+
+    fun getEditWalletPresenter(): EditWalletPresenter {
+        return EditWalletPresenter(repositoryWallet)
+    }
+
+    fun getStatisticsPresenter(parentPresenter: AbstractStatisticsMainPresenter): AbstractStatisticsPresenter {
+        return StatisticsPresenter(repositoryWallet, statisticsInteractor, parentPresenter)
+    }
+
+    fun getTemplateListPresenter(parentPresenter: AbstractOperationPresenter): AbstractTemplateListPresenter {
+        return TemplateListPresenter(templateInteractor, repositoryOperation, parentPresenter)
+    }
+
     fun getConvertor(): Converter {
         return converter
+    }
+
+    fun getSharedPreference() : SharedPreferences {
+        return sharedPreferences
+    }
+
+    fun getStatisticsMainPresenter() : AbstractStatisticsMainPresenter {
+        return StatisticsMainPresenter()
+    }
+
+    fun getSettingsRepository() : SettingsRepository {
+        return settingsRepository
     }
 }

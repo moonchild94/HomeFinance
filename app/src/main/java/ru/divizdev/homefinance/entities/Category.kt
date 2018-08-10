@@ -2,14 +2,16 @@ package ru.divizdev.homefinance.entities
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import ru.divizdev.homefinance.entities.OperationType
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Категория.
  */
 @Entity
-data class Category(
+@Parcelize
+data class Category (
         @PrimaryKey(autoGenerate = true) val categoryId: Int = 0,
-        val operationType: OperationType,
+        val categoryType: CategoryType,
         val categoryName: String,
-        val iconUri: String)
+        val iconUri: String) : Parcelable

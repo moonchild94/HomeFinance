@@ -7,6 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('D:/projects/keystore/sign.jks')
+            keyAlias 'key0'
+            keyPassword '123456'
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "ru.divizdev.homefinance"
@@ -19,8 +27,13 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.config
+            proguardFile 'D:/projects/homefinance/app/proguard-rules.pro'
+            versionNameSuffix '0.1'
         }
     }
 }
@@ -35,8 +48,7 @@ ext {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // support
@@ -63,6 +75,13 @@ dependencies {
     // rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
+    // diagrams
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    // monitoring
+
+    // implementation 'com.facebook.stetho:stetho:1.5.0'
+
     // tests
     implementation "com.android.support:support-v4:$appcompat_support_version"
     testImplementation 'junit:junit:4.12'
@@ -70,4 +89,10 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_version"
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1'
 }
+
+androidExtensions {
+    experimental = true
+}
+

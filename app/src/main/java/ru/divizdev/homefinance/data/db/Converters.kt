@@ -2,6 +2,7 @@ package ru.divizdev.homefinance.data.db
 
 import android.arch.persistence.room.TypeConverter
 import ru.divizdev.homefinance.entities.Currency
+import ru.divizdev.homefinance.entities.CategoryType
 import ru.divizdev.homefinance.entities.OperationType
 import java.math.BigDecimal
 import java.util.*
@@ -28,13 +29,13 @@ class Converters {
     }
 
     @TypeConverter
-    fun operationTypeFromOrdinal(value: Int?): OperationType? {
-        return if (value == null) null else OperationType.values()[value]
+    fun categoryTypeFromOrdinal(value: Int?): CategoryType? {
+        return if (value == null) null else CategoryType.values()[value]
     }
 
     @TypeConverter
-    fun operationTypeToOrdinal(operationType: OperationType?): Int? {
-        return operationType?.ordinal
+    fun categoryTypeToOrdinal(categoryType: CategoryType?): Int? {
+        return categoryType?.ordinal
     }
 
     @TypeConverter
@@ -45,5 +46,15 @@ class Converters {
     @TypeConverter
     fun currencyToOrdinal(currency: Currency?): Int? {
         return currency?.ordinal
+    }
+
+    @TypeConverter
+    fun operationTypeFromOrdinal(value: Int?): OperationType? {
+        return if (value == null) null else OperationType.values()[value]
+    }
+
+    @TypeConverter
+    fun operationTypeToOrdinal(operationType: OperationType?): Int? {
+        return operationType?.ordinal
     }
 }

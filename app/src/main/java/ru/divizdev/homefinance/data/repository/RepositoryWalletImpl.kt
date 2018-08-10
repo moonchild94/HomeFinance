@@ -5,6 +5,10 @@ import ru.divizdev.homefinance.data.db.dao.WalletDao
 import ru.divizdev.homefinance.entities.Wallet
 
 class RepositoryWalletImpl(private val walletDao: WalletDao) : RepositoryWallet {
+    override fun update(wallet: Wallet) {
+        walletDao.update(wallet)
+    }
+
     override fun delete(wallet: Wallet) {
         walletDao.delete(wallet)
     }

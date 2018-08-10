@@ -1,13 +1,13 @@
 package ru.divizdev.homefinance.entities
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Money(amount: BigDecimal, var currency: Currency) {
-    var amount: BigDecimal = amount
-        set (value) {
-            field = value.setScale(2, RoundingMode.HALF_UP)
-        }
+@Parcelize
+class Money(var amount: BigDecimal,
+            var currency: Currency) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

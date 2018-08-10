@@ -3,49 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="12dp">
 
-    <TextView
-        android:text="@string/adding_wallet_name"
-        android:id="@+id/wallet_name_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/wallet_name"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/wallet_name_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wallet_name_title"
-        android:inputType="text" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:hintAnimationEnabled="false"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:text="@string/adding_wallet_start_balance"
-        android:textSize="20sp"
-        android:id="@+id/wallet_start_amount_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wallet_name" />
+        <EditText
+            android:id="@+id/wallet_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/adding_wallet_name"
+            android:inputType="textAutoComplete" />
 
-    <EditText
-        android:id="@+id/wallet_start_amount"
-        android:layout_width="200dp"
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/wallet_start_amount_input_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:inputType="numberDecimal"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:hintAnimationEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wallet_start_amount_title"
-        android:text="@string/adding_wallet_start_balance_value"/>
+        app:layout_constraintEnd_toStartOf="@+id/wallet_currency_spinner"
+        app:layout_constraintTop_toBottomOf="@id/wallet_name_text_input_layout">
+
+        <EditText
+            android:id="@+id/wallet_start_amount_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/adding_wallet_start_balance"
+            android:inputType="numberDecimal" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
         android:id="@+id/wallet_currency_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/wallet_start_amount_title"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/wallet_start_amount_input_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wallet_start_amount_input_layout" />
 
 </android.support.constraint.ConstraintLayout>

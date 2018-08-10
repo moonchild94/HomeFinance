@@ -1,10 +1,7 @@
 package ru.divizdev.homefinance.data.db
 
-import android.arch.persistence.room.Room
-import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import io.reactivex.schedulers.Schedulers
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,21 +17,14 @@ private const val WALLET_AMOUNT = 12.90
 private const val WALLET_ID = 1
 
 @RunWith(AndroidJUnit4::class)
-class WalletDaoTest {
+class WalletDaoTest : AbstractDaoTest() {
 
-    private lateinit var homeFinanceDatabase: HomeFinanceDatabase
     private lateinit var walletDao: WalletDao
 
     @Before
-    fun initDb() {
-        homeFinanceDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                HomeFinanceDatabase::class.java).build()
+    override fun initDb() {
+        super.initDb()
         walletDao = homeFinanceDatabase.getWalletDao()
-    }
-
-    @After
-    fun closeDb() {
-        homeFinanceDatabase.close()
     }
 
     @Test
