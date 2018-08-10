@@ -6,17 +6,16 @@ import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import ru.divizdev.homefinance.R
+import ru.divizdev.homefinance.entities.Currency
 
 private const val KEY_NAME_PREF = "pref_currency"
 
 class SettingsDialog : DialogFragment() {
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-
         val currencyDefaultValue = context!!.getString(R.string.pref_currency_default_value)
-        val stringArray = context!!.resources.getStringArray(R.array.pref_currency_array)
+        val stringArray = Currency.values().map { it.sign }.toTypedArray()
 
         val currentValue = PreferenceManager.getDefaultSharedPreferences(context).getString(KEY_NAME_PREF, currencyDefaultValue)
         var index = 0

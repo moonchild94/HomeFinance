@@ -11,6 +11,6 @@ class RepositoryCategoryImpl(private val categoryDao: CategoryDao) : RepositoryC
     }
 
     override fun query(categoryType: CategoryType): Flowable<List<Category>> {
-        return categoryDao.query(categoryType)
+        return categoryDao.getByCategoryType(categoryType)
     }
 }

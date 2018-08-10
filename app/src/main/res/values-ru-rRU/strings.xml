@@ -36,6 +36,9 @@
     <string name="cancel">Отмена</string>
     <string name="ok">ОК</string>
     <string name="all">Все</string>
+    <string name="adding_wallet_name">Название</string>
+    <string name="adding_wallet_start_balance">Начальный баланс</string>
+    <string name="adding_wallet_title">Добавить счет</string>
     <string name="delete_wallet_confirmation">Вы действительно хотите удалить счет?</string>
     <string name="period_in_days">Период в днях</string>
     <string name="with_period">С периодом</string>

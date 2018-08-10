@@ -1,6 +1,7 @@
 package ru.divizdev.homefinance.presentation.operationslist.adapter
 
 import android.net.Uri
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -75,7 +76,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
             setMoney(operation.sumCurrencyOperation, transactionCurrentAmount, transactionCurrentCurrency)
 
             val colorId = if (operation.category.categoryType == CategoryType.OUTCOME) R.color.expenseText else R.color.revenueText
-            val moneyColor = transactionMainAmount.context.resources.getColor(colorId)
+            val moneyColor = ContextCompat.getColor(itemView.context, colorId)
             transactionMainAmount.setTextColor(moneyColor)
             transactionMainCurrency.setTextColor(moneyColor)
             transactionCurrentAmount.setTextColor(moneyColor)

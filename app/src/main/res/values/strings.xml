@@ -35,19 +35,15 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="all">All</string>
-    <string name="adding_wallet_name">Название</string>
-    <string name="adding_wallet_start_balance">Начальный баланс</string>
-    <string name="adding_wallet_start_balance_value">0.0</string>
-    <string name="adding_wallet_title">Добавить счет</string>
+    <string name="adding_wallet_name">Name</string>
+    <string name="adding_wallet_start_balance">Start balance</string>
+    <string name="adding_wallet_title">Add account</string>
     <string name="delete_wallet_confirmation">Do you want to delete the account?</string>
     <string name="period_in_days">Period in days</string>
     <string name="with_period">With period</string>
     <string name="period_in_days_title">Period in days:</string>
     <string name="period_operations">Periodic </string>
     <string name="edit_wallet_title">Wallet editing</string>
-    <string name="periodic_type">Periodic</string>
-    <string name="template_type">Template</string>
-    <string name="complete_type">Complete</string>
 
     <string name="food_category">Food</string>
     <string name="entertainment_category">Entertainment</string>

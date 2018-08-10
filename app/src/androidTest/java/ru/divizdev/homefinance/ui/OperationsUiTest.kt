@@ -38,7 +38,7 @@ class OperationsUiTest {
 
         val startPosition = getLastPositionInRecycle(R.id.list_transaction_recylcer_view)
 
-        selectSpinnerItem(R.id.type_operation_spinner, "Расход")
+        selectSpinnerItem(R.id.type_category_spinner, "Расход")
         selectSpinnerItem(R.id.category_spinner, "Еда")
         selectSpinnerItem(R.id.wallet_spinner, "Кошелек2")
         typeTextInEditText(R.id.value_edit_text, "100")
