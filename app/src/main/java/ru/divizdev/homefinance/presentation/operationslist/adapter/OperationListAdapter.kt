@@ -76,7 +76,7 @@ class OperationListAdapter(private var listOperations: List<Operation>,
             setMoney(operation.sumCurrencyOperation, transactionCurrentAmount, transactionCurrentCurrency)
 
             val colorId = if (operation.category.categoryType == CategoryType.OUTCOME) R.color.expenseText else R.color.revenueText
-            val moneyColor = ContextCompat.getColor(itemView.context, colorId)
+            val moneyColor = transactionMainAmount.context.resources.getColor(colorId)
             transactionMainAmount.setTextColor(moneyColor)
             transactionMainCurrency.setTextColor(moneyColor)
             transactionCurrentAmount.setTextColor(moneyColor)

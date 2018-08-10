@@ -17,7 +17,9 @@ class RepositoryOperationImpl(private val operationDao: OperationDao,
 
     override fun add(operation: Operation) {
         addWithoutCheck(operation)
-        handlePeriodicOperations()
+        if (operation.operationType != OperationType.PERIODIC) {
+            handlePeriodicOperations()
+        }
     }
 
     override fun delete(operation: Operation) {

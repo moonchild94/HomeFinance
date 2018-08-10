@@ -39,7 +39,7 @@ class OperationListFragment : BaseMvpFragment<AbstractOperationListPresenter, IO
         val walletsWithAllElement = wallets.toMutableList()
         walletsWithAllElement.add(0, getString(R.string.all))
         walletListAdapter.clear()
-        walletListAdapter.addAll(wallets)
+        walletListAdapter.addAll(walletsWithAllElement)
 
         if (selectedWalletPosition >= 0) {
             filter_wallet_spinner.setSelection(selectedWalletPosition)
